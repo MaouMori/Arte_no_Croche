@@ -4,7 +4,8 @@ import { CreditCard, History, ClipboardList, Settings, MessageSquare, FileText, 
 import { useAdmin } from '../../context/useAdmin'
 import { AdminFeedback } from '../../components/admin/AdminFeedback'
 import { supabase } from '../../lib/supabase'
-import { DEFAULT_DISCORD_URL, slugifyHelpTitle, useHelpTopics, type HelpTopic } from '../../lib/siteConfig'
+import { DEFAULT_DISCORD_URL, DEFAULT_WHATSAPP_MESSAGE, DEFAULT_WHATSAPP_NUMBER, slugifyHelpTitle, useHelpTopics, type HelpTopic } from '../../lib/siteConfig'
+import { normalizeWhatsAppNumber, setWhatsAppSettings } from '../../lib/whatsapp'
 
 export default function AdminClientes() {
   const { customers } = useAdmin()
@@ -571,30 +572,64 @@ export function AdminDepoimentos() {
 
 export function AdminConfiguracoes() {
   const [discordUrl, setDiscordUrl] = useState(DEFAULT_DISCORD_URL)
+  const [whatsappNumber, setWhatsappNumber] = useState(DEFAULT_WHATSAPP_NUMBER)
+  const [whatsappMessage, setWhatsappMessage] = useState(DEFAULT_WHATSAPP_MESSAGE)
   const [saving, setSaving] = useState(false)
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
       void (async () => {
-        const { data } = await supabase.from('site_settings').select('value').eq('key', 'discord_url').maybeSingle<{ value: string }>()
-        if (data?.value) setDiscordUrl(data.value)
+        const { data } = await supabase
+          .from('site_settings')
+          .select('key,value')
+          .in('key', ['discord_url', 'whatsapp_number', 'whatsapp_message'])
+        if (!data) return
+
+        const settings = Object.fromEntries(data.map(item => [item.key, item.value]))
+        if (settings.discord_url) setDiscordUrl(settings.discord_url)
+        if (settings.whatsapp_number) setWhatsappNumber(settings.whatsapp_number)
+        if (settings.whatsapp_message) setWhatsappMessage(settings.whatsapp_message)
       })()
     }, 0)
     return () => window.clearTimeout(timeoutId)
   }, [])
 
   const saveSettings = async () => {
+    const cleanedWhatsApp = normalizeWhatsAppNumber(whatsappNumber)
+    if (!cleanedWhatsApp) {
+      setFeedback({ type: 'error', message: 'Informe o numero do WhatsApp com DDD.' })
+      return
+    }
+
     setSaving(true)
-    const { error } = await supabase.from('site_settings').upsert({
-      key: 'discord_url',
-      value: discordUrl.trim() || DEFAULT_DISCORD_URL,
-      updated_at: new Date().toISOString(),
-    }, { onConflict: 'key' })
+    const updatedAt = new Date().toISOString()
+    const { error } = await supabase.from('site_settings').upsert([
+      {
+        key: 'discord_url',
+        value: discordUrl.trim() || DEFAULT_DISCORD_URL,
+        updated_at: updatedAt,
+      },
+      {
+        key: 'whatsapp_number',
+        value: cleanedWhatsApp,
+        updated_at: updatedAt,
+      },
+      {
+        key: 'whatsapp_message',
+        value: whatsappMessage.trim() || DEFAULT_WHATSAPP_MESSAGE,
+        updated_at: updatedAt,
+      },
+    ], { onConflict: 'key' })
     setSaving(false)
-    setFeedback(error
-      ? { type: 'error', message: error.message }
-      : { type: 'success', message: 'Configuracoes salvas.' })
+
+    if (error) {
+      setFeedback({ type: 'error', message: error.message })
+      return
+    }
+
+    setWhatsAppSettings(cleanedWhatsApp, whatsappMessage.trim() || DEFAULT_WHATSAPP_MESSAGE)
+    setFeedback({ type: 'success', message: 'Configuracoes salvas. Os botoes do WhatsApp ja usam o novo link.' })
   }
 
   return (
@@ -604,17 +639,36 @@ export function AdminConfiguracoes() {
         <p className="text-text-dim text-sm">Configure informacoes gerais</p>
       </div>
       {feedback && <AdminFeedback type={feedback.type} message={feedback.message} />}
-      <div className="review-card rounded-xl p-5 max-w-2xl">
+      <div className="review-card rounded-xl p-5 max-w-3xl space-y-5">
         <h2 className="font-heading font-bold text-text-main mb-4 flex items-center gap-2">
           <Settings className="w-5 h-5 text-neon-pink" />
-          Links oficiais
+          Links e atendimento
         </h2>
-        <label className="block text-xs font-heading font-bold text-text-main tracking-wider mb-2">Link do Discord</label>
-        <input value={discordUrl} onChange={event => setDiscordUrl(event.target.value)}
-          placeholder="https://discord.gg/seu-servidor"
-          className="w-full bg-void-light border border-neon-pink/20 rounded-lg px-3 py-2 text-text-main" />
-        <p className="text-text-dim text-xs mt-2">Esse link alimenta todos os botoes de Entrar no Discord do site.</p>
-        <button onClick={saveSettings} disabled={saving} className="mt-4 bg-neon-pink text-white rounded-lg px-4 py-2 flex items-center gap-2 disabled:opacity-50">
+        <div>
+          <label className="block text-xs font-heading font-bold text-text-main tracking-wider mb-2">WhatsApp oficial</label>
+          <input value={whatsappNumber} onChange={event => setWhatsappNumber(event.target.value)}
+            placeholder="5512999999999"
+            className="w-full bg-void-light border border-neon-pink/20 rounded-lg px-3 py-2 text-text-main" />
+          <p className="text-text-dim text-xs mt-2">Use codigo do pais + DDD + numero. Exemplo: 5512999999999.</p>
+        </div>
+
+        <div>
+          <label className="block text-xs font-heading font-bold text-text-main tracking-wider mb-2">Mensagem padrao do WhatsApp</label>
+          <textarea value={whatsappMessage} onChange={event => setWhatsappMessage(event.target.value)}
+            rows={4}
+            placeholder="Mensagem que abre quando a cliente clica no WhatsApp sem produto especifico"
+            className="w-full bg-void-light border border-neon-pink/20 rounded-lg px-3 py-2 text-text-main resize-none" />
+        </div>
+
+        <div>
+          <label className="block text-xs font-heading font-bold text-text-main tracking-wider mb-2">Link do Discord antigo/opcional</label>
+          <input value={discordUrl} onChange={event => setDiscordUrl(event.target.value)}
+            placeholder="https://discord.gg/seu-servidor"
+            className="w-full bg-void-light border border-neon-pink/20 rounded-lg px-3 py-2 text-text-main" />
+          <p className="text-text-dim text-xs mt-2">Pode deixar guardado; o site atual usa WhatsApp como canal principal.</p>
+        </div>
+
+        <button onClick={saveSettings} disabled={saving} className="bg-neon-pink text-white rounded-lg px-4 py-2 flex items-center gap-2 disabled:opacity-50">
           <Save className="w-4 h-4" /> {saving ? 'Salvando...' : 'Salvar configuracoes'}
         </button>
       </div>

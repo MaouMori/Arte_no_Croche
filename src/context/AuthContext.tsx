@@ -50,6 +50,12 @@ const normalizeEmail = (email: string) =>
     .trim()
     .toLowerCase()
 const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+const ADMIN_EMAILS = (import.meta.env.VITE_ADMIN_EMAILS || 'maou@gmail.com')
+  .split(',')
+  .map((email: string) => normalizeEmail(email))
+  .filter(Boolean)
+
+const isAdminEmail = (email?: string | null) => !!email && ADMIN_EMAILS.includes(normalizeEmail(email))
 
 const withTimeout = async <T,>(promise: PromiseLike<T>, timeoutMs: number, message: string): Promise<T> => {
   let timeoutId: number | undefined
@@ -79,24 +85,29 @@ const getAuthUserAvatar = (authUser: SupabaseUser) => {
   return typeof avatarUrl === 'string' && avatarUrl.trim() ? avatarUrl : '/avatars/default.jpg'
 }
 
-const mapProfileToUser = (profile: ProfileRow, authUser?: SupabaseUser): User => ({
-  id: profile.id,
-  name: profile.name || (authUser ? getAuthUserName(authUser) : 'Usuario'),
-  email: profile.email || authUser?.email || '',
-  avatar: profile.avatar || '/avatars/default.jpg',
-  role: profile.role || 'Cliente',
-  roleColor: profile.role_color || '#ff2d95',
-  permissions: profile.permissions || [],
-})
+const mapProfileToUser = (profile: ProfileRow, authUser?: SupabaseUser): User => {
+  const email = profile.email || authUser?.email || ''
+  const shouldBeAdmin = isAdminEmail(email)
+
+  return {
+    id: profile.id,
+    name: profile.name || (authUser ? getAuthUserName(authUser) : 'Usuario'),
+    email,
+    avatar: profile.avatar || '/avatars/default.jpg',
+    role: shouldBeAdmin ? 'Administrador' : profile.role || 'Cliente',
+    roleColor: shouldBeAdmin ? '#df745c' : profile.role_color || '#ff2d95',
+    permissions: shouldBeAdmin ? ['all'] : profile.permissions || [],
+  }
+}
 
 const buildFallbackUser = (authUser: SupabaseUser): User => ({
   id: authUser.id,
   name: getAuthUserName(authUser),
   email: authUser.email || '',
   avatar: getAuthUserAvatar(authUser),
-  role: 'Cliente',
-  roleColor: '#ff2d95',
-  permissions: [],
+  role: isAdminEmail(authUser.email) ? 'Administrador' : 'Cliente',
+  roleColor: isAdminEmail(authUser.email) ? '#df745c' : '#ff2d95',
+  permissions: isAdminEmail(authUser.email) ? ['all'] : [],
 })
 
 const getErrorMessage = (err: unknown) => {
@@ -138,7 +149,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return buildFallbackUser(authUser)
     }
 
-    if (data) return mapProfileToUser(data, authUser)
+    if (data) {
+      const mapped = mapProfileToUser(data, authUser)
+      if (isAdminEmail(mapped.email) && data.role !== 'Administrador') {
+        const { error: adminProfileError } = await supabase.from('profiles').upsert({
+          id: authUser.id,
+          name: mapped.name,
+          email: mapped.email,
+          avatar: mapped.avatar,
+          role: 'Administrador',
+          role_color: '#df745c',
+          permissions: ['all'],
+        }, { onConflict: 'id' })
+        if (adminProfileError) console.warn('Nao foi possivel promover o perfil admin automaticamente:', adminProfileError.message)
+      }
+      return mapped
+    }
 
     const fallback = buildFallbackUser(authUser)
     const { error: upsertError } = await supabase.from('profiles').upsert({
@@ -146,9 +172,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       name: fallback.name,
       email: fallback.email,
       avatar: fallback.avatar,
-      role: 'Cliente',
-      role_color: '#ff2d95',
-      permissions: [],
+      role: fallback.role,
+      role_color: fallback.roleColor,
+      permissions: fallback.permissions,
     }, { onConflict: 'id' })
 
     if (upsertError) console.warn('Erro ao criar perfil do usuario:', upsertError.message)
@@ -356,7 +382,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null)
   }, [])
 
-  const isAdmin = user?.role === 'Administrador'
+  const isAdmin = !!(user?.role === 'Administrador' || user?.permissions.includes('all') || user?.permissions.includes('*'))
   const isAuthenticated = !!user
 
   return (

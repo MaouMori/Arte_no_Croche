@@ -107,7 +107,8 @@ export default function Produto() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="bg-[#fff8f2]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
       {/* Breadcrumb */}
       <nav className="flex flex-wrap items-center gap-2 text-sm text-text-dim mb-6">
         <Link to="/" className="hover:text-neon-pink transition-colors">Home</Link>
@@ -127,10 +128,10 @@ export default function Produto() {
         </Link>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[1.08fr_0.92fr] lg:gap-12">
         {/* Images */}
         <div className="space-y-4">
-          <div className="relative aspect-square rounded-2xl overflow-hidden border border-neon-pink/10 bg-void-lighter">
+          <div className="relative aspect-square overflow-hidden rounded-[2rem] border border-neon-pink/15 bg-[#fff1e8] shadow-2xl shadow-[#9f7e56]/10">
             <img
               src={allImages[selectedImage] || product.image}
               alt={product.name}
@@ -199,9 +200,15 @@ export default function Produto() {
         </div>
 
         {/* Info */}
-        <div className="space-y-6">
-          <div>
-            <h1 className="font-heading font-bold text-2xl sm:text-3xl text-text-main">
+        <div className="rounded-[2rem] border border-neon-pink/15 bg-white/80 p-5 shadow-xl shadow-[#9f7e56]/10 backdrop-blur sm:p-7 lg:sticky lg:top-28">
+          <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-[#fff1e8] px-4 py-2 text-xs font-extrabold uppercase tracking-[0.14em] text-neon-pink">
+            <Heart className="h-4 w-4" />
+            Peca artesanal
+          </div>
+
+          <div className="space-y-6">
+            <div>
+            <h1 className="font-display text-4xl font-semibold leading-tight text-text-main sm:text-5xl">
               {product.name}
             </h1>
             <div className="flex items-center gap-3 mt-2">
@@ -247,7 +254,7 @@ export default function Produto() {
           <div className="space-y-4 border-t border-neon-pink/10 pt-5">
             <h2 className="font-heading font-bold text-sm tracking-wider text-text-main">DESCRICAO</h2>
             <div className="space-y-4">
-              <p className="text-text-muted leading-relaxed">{product.description}</p>
+              <p className="text-text-muted leading-8">{product.description}</p>
 
               {product.specs && product.specs.length > 0 && (
                 <div className="space-y-2">
@@ -327,6 +334,7 @@ export default function Produto() {
           </div>
         </div>
       </div>
+      </div>
 
       {/* Related Products */}
       {related.length > 0 && (
@@ -371,6 +379,7 @@ export default function Produto() {
           </div>
         </div>
       )}
+      </div>
     </div>
   )
 }

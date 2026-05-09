@@ -39,6 +39,7 @@ import AdminClientes, {
   AdminIntegracoes,
   AdminLogs,
 } from './pages/admin/AdminPages'
+import { useSiteSettingsLoader } from './lib/siteConfig'
 
 function RequireAuth({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isAdmin, isLoading } = useAuth()
@@ -67,6 +68,7 @@ function ScrollToTop() {
 function AppContent() {
   const location = useLocation()
   const hideStoreChrome = location.pathname === '/login'
+  useSiteSettingsLoader()
 
   return (
     <Routes>

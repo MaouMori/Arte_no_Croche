@@ -1,11 +1,14 @@
 import { useCallback, useEffect, useState } from 'react'
 import { supabase } from './supabase'
+import { setWhatsAppSettings, WHATSAPP_DEFAULT_MESSAGE, WHATSAPP_NUMBER } from './whatsapp'
 
 const isSupabaseConfigured = () => {
   return !!(import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY)
 }
 
 export const DEFAULT_DISCORD_URL = 'https://discord.gg/quanticstore'
+export const DEFAULT_WHATSAPP_NUMBER = WHATSAPP_NUMBER
+export const DEFAULT_WHATSAPP_MESSAGE = WHATSAPP_DEFAULT_MESSAGE
 
 export const DEFAULT_HELP_TOPICS = [
   {
@@ -92,6 +95,39 @@ export function useDiscordUrl() {
   }, [refresh])
 
   return discordUrl
+}
+
+export function useSiteSettingsLoader() {
+  const refresh = useCallback(async () => {
+    if (!isSupabaseConfigured()) return
+
+    try {
+      const { data, error } = await supabase
+        .from('site_settings')
+        .select('key,value')
+        .in('key', ['whatsapp_number', 'whatsapp_message'])
+
+      if (error || !data) return
+
+      const settings = Object.fromEntries(data.map(item => [item.key, item.value]))
+      setWhatsAppSettings(settings.whatsapp_number, settings.whatsapp_message)
+    } catch (error) {
+      console.warn('Nao foi possivel carregar configuracoes globais do site.', error)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!isSupabaseConfigured()) return
+    const timeoutId = window.setTimeout(() => void refresh(), 0)
+    const intervalId = window.setInterval(() => {
+      if (!document.hidden) void refresh()
+    }, 15000)
+
+    return () => {
+      window.clearTimeout(timeoutId)
+      window.clearInterval(intervalId)
+    }
+  }, [refresh])
 }
 
 export function useHelpTopics() {

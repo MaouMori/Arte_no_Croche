@@ -77,13 +77,10 @@ export default function ColecaoDetalhe() {
   const aboutText = collection.subtitle || `A colecao ${collection.name} foi criada para representar atitude, estilo e autenticidade.`
 
   return (
-    <div className="bg-void">
-      <section className="relative overflow-hidden border-b border-neon-pink/15">
+    <div className="bg-[#fff8f2]">
+      <section className="relative overflow-hidden bg-[#fbefe3]">
         <div className="absolute inset-0">
-          <img src={collection.image} alt="" className="w-full h-full object-cover object-center opacity-60" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-black/25" />
-          <div className="absolute inset-0 bg-gradient-to-t from-void via-void/10 to-black/45" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_35%,rgba(255,45,149,0.18),transparent_34%)]" />
+          <div className="absolute inset-y-0 left-0 hidden w-[44%] bg-[#fff8f2] lg:block" />
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12 lg:pb-16">
@@ -95,14 +92,14 @@ export default function ColecaoDetalhe() {
             <span className="text-text-main">{collection.name}</span>
           </nav>
 
-          <div className="grid lg:grid-cols-[0.78fr_1.22fr] items-center gap-8 lg:gap-10">
+          <div className="grid items-center gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:gap-12">
             <div className="max-w-xl">
               <p className="font-heading font-bold text-neon-pink tracking-wider mb-4">COLECAO</p>
-              <h1 className="font-display text-4xl sm:text-6xl lg:text-8xl tracking-wide leading-[0.9] text-white drop-shadow-[0_0_22px_rgba(255,45,149,0.25)]">
+              <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl tracking-wide leading-[0.92] text-text-main">
                 <span className="block">{firstLine}</span>
-                {secondLine && <span className="block text-neon-pink">{secondLine}</span>}
+                {secondLine && <span className="block font-['Caveat'] text-[1.16em] text-neon-pink">{secondLine}</span>}
               </h1>
-              <p className="text-text-main text-lg sm:text-xl leading-relaxed mt-8 max-w-lg">
+              <p className="text-text-muted text-lg sm:text-xl leading-8 mt-8 max-w-lg">
                 {aboutText}
               </p>
 
@@ -125,7 +122,7 @@ export default function ColecaoDetalhe() {
                 ))}
               </div>
 
-              <div className="mt-10 rounded-xl border border-neon-pink/25 bg-black/45 backdrop-blur-sm p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full">
+              <div className="mt-10 rounded-2xl border border-neon-pink/20 bg-white/75 backdrop-blur-sm p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full shadow-xl shadow-[#9f7e56]/10">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-lg border border-neon-pink/30 bg-white flex items-center justify-center">
                     <MessageCircle className="w-7 h-7 text-void" />
@@ -148,12 +145,12 @@ export default function ColecaoDetalhe() {
             </div>
 
             <div className="relative w-full">
-              <div className="absolute -inset-4 rounded-2xl bg-neon-pink/20 blur-2xl opacity-60" />
-              <div className="relative overflow-hidden rounded-xl border border-neon-pink/25 bg-black/45 shadow-2xl shadow-neon-pink/10">
+              <div className="absolute -inset-4 rounded-[2rem] bg-neon-pink/10 blur-2xl opacity-70" />
+              <div className="relative overflow-hidden rounded-[2rem] border border-neon-pink/20 bg-[#fff1e8] shadow-2xl shadow-[#9f7e56]/10">
                 <img
                   src={collection.image}
                   alt={collection.name}
-                  className="block w-full aspect-video object-contain bg-black"
+                  className="block w-full aspect-[4/3] object-cover"
                 />
               </div>
             </div>
