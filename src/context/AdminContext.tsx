@@ -213,6 +213,20 @@ const fail = (message?: string): AdminActionResult => ({
   error: message || 'Operacao nao concluida no Supabase.',
 })
 
+const isMissingStockColumnError = (message?: string) =>
+  String(message || '').toLowerCase().includes('stock_quantity')
+
+const fileToBase64 = (file: File) =>
+  new Promise<string>((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => {
+      const result = String(reader.result || '')
+      resolve(result.includes(',') ? result.split(',')[1] : result)
+    }
+    reader.onerror = () => reject(reader.error)
+    reader.readAsDataURL(file)
+  })
+
 function mapDbProduct(row: ProductRow): Product {
   return {
     id: row.id,
@@ -571,7 +585,34 @@ export function AdminProvider({ children }: { children: ReactNode }) {
 
     if (uploadError) {
       console.error('Upload error:', uploadError)
-      return null
+      const { data: sessionData } = await supabase.auth.getSession()
+      const token = sessionData.session?.access_token
+      if (!token) return null
+
+      try {
+        const response = await fetch('/api/admin-upload-image', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            fileBase64: await fileToBase64(file),
+            fileName: file.name,
+            contentType: file.type || 'application/octet-stream',
+            path,
+          }),
+        })
+        const result = await response.json().catch(() => null)
+        if (!response.ok) {
+          console.error('Admin upload error:', result?.error || response.statusText)
+          return null
+        }
+        return result?.url || null
+      } catch (error) {
+        console.error('Admin upload error:', error)
+        return null
+      }
     }
 
     const { data } = supabase.storage.from('images').getPublicUrl(filePath)
@@ -580,7 +621,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
 
   const addProduct = useCallback(async (product: Omit<Product, 'id'>) => {
     if (!isSupabaseConfigured()) return notConfigured()
-    const { error } = await supabase.from('products').insert({
+    const payload = {
       name: product.name,
       price: product.price,
       image: product.image,
@@ -600,8 +641,17 @@ export function AdminProvider({ children }: { children: ReactNode }) {
       description: product.description,
       in_game_images: product.inGameImages || [],
       specs: product.specs || [],
-    })
-    if (error) return fail(error.message)
+    }
+    const { error } = await supabase.from('products').insert(payload)
+    if (error) {
+      if (isMissingStockColumnError(error.message)) {
+        const { stock_quantity: _stockQuantity, ...withoutStock } = payload
+        const retry = await supabase.from('products').insert(withoutStock)
+        if (retry.error) return fail(retry.error.message)
+      } else {
+        return fail(error.message)
+      }
+    }
     await refreshProducts()
     return ok()
   }, [refreshProducts])
@@ -653,7 +703,15 @@ export function AdminProvider({ children }: { children: ReactNode }) {
     }
 
     const { error } = await supabase.from('products').upsert(updateData)
-    if (error) return fail(error.message)
+    if (error) {
+      if (isMissingStockColumnError(error.message)) {
+        const { stock_quantity: _stockQuantity, ...withoutStock } = updateData
+        const retry = await supabase.from('products').upsert(withoutStock)
+        if (retry.error) return fail(retry.error.message)
+      } else {
+        return fail(error.message)
+      }
+    }
     await refreshProducts()
     return ok()
   }, [refreshProducts])
