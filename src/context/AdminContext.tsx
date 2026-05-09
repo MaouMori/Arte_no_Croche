@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, type ReactNode } from 'react'
 import { supabase } from '../lib/supabase'
 import type { Tables } from '../lib/supabase'
-import { products as defaultProducts, storeCollections as defaultStoreCollections } from '../data/storeData'
 import type { Product } from '../data/storeData'
 import { AdminContext } from './adminContextValue'
 
@@ -202,36 +201,6 @@ type ProductCategoryRow = Tables['product_categories']
 type ProductStyleRow = Tables['product_styles']
 type ProductColorRow = Tables['product_colors']
 
-const defaultBanners: Banner[] = [
-  {
-    id: '00000000-0000-4000-8000-000000000101',
-    title: 'Home - Croche artesanal',
-    image: '/crochet/choce.png',
-    link: '/',
-    position: 'home',
-    active: true,
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: '00000000-0000-4000-8000-000000000102',
-    title: 'Loja - Arte no Croche',
-    image: '/crochet/hero-crochet.png',
-    link: '/loja',
-    position: 'loja',
-    active: true,
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: '00000000-0000-4000-8000-000000000103',
-    title: 'Colecoes artesanais',
-    image: '/crochet/foto_2.jpeg',
-    link: '/colecoes',
-    position: 'colecoes',
-    active: true,
-    createdAt: new Date().toISOString(),
-  },
-]
-
 const notConfigured = (): AdminActionResult => ({
   success: false,
   error: 'Supabase nao configurado. Verifique VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY.',
@@ -385,13 +354,13 @@ function mapDbFeedback(row: FeedbackRow): Feedback {
 }
 
 export function AdminProvider({ children }: { children: ReactNode }) {
-  const [products, setProducts] = useState<Product[]>(defaultProducts)
+  const [products, setProducts] = useState<Product[]>([])
   const [orders, setOrders] = useState<Order[]>([])
   const [coupons, setCoupons] = useState<Coupon[]>([])
   const [customers, setCustomers] = useState<Customer[]>([])
-  const [banners, setBanners] = useState<Banner[]>(defaultBanners)
+  const [banners, setBanners] = useState<Banner[]>([])
   const [roles, setRoles] = useState<Role[]>([])
-  const [storeCollections, setStoreCollections] = useState<StoreCollection[]>(defaultStoreCollections)
+  const [storeCollections, setStoreCollections] = useState<StoreCollection[]>([])
   const [productCategories, setProductCategories] = useState<ProductCategory[]>([])
   const [productStyles, setProductStyles] = useState<ProductStyle[]>([])
   const [productColors, setProductColors] = useState<ProductColor[]>([])
@@ -405,7 +374,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
       .from('products')
       .select('*')
       .order('created_at', { ascending: false })
-    if (!error && data) setProducts(data.length > 0 ? data.map(mapDbProduct) : defaultProducts)
+    if (!error && data) setProducts(data.map(mapDbProduct))
   }, [])
 
   const refreshOrders = useCallback(async () => {
@@ -441,7 +410,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
       .from('banners')
       .select('*')
       .order('created_at', { ascending: false })
-    if (!error && data) setBanners(data.length > 0 ? data.map(mapDbBanner) : defaultBanners)
+    if (!error && data) setBanners(data.map(mapDbBanner))
   }, [])
 
   const refreshRoles = useCallback(async () => {
@@ -468,7 +437,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
       .from('collections')
       .select('*')
       .order('created_at', { ascending: false })
-    if (!error && data) setStoreCollections(data.length > 0 ? data.map(mapDbStoreCollection) : defaultStoreCollections)
+    if (!error && data) setStoreCollections(data.map(mapDbStoreCollection))
   }, [])
 
   const refreshProductCategories = useCallback(async () => {

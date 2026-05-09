@@ -1,17 +1,14 @@
 import { Heart, Leaf, MapPin, MessageCircle, PackageCheck, ShieldCheck, Truck } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useAdmin } from '../context/useAdmin'
-import { products as defaultProducts, reviews as defaultReviews } from '../data/storeData'
 import { getWhatsAppUrl } from '../lib/whatsapp'
 
 const formatPrice = (price: number) => `R$ ${price.toFixed(2).replace('.', ',')}`
 
 export default function Home() {
   const { products, feedbacks } = useAdmin()
-  const featuredProducts = (products.length ? products : defaultProducts).slice(0, 5)
-  const homeReviews = feedbacks.filter(feedback => feedback.approved).length
-    ? feedbacks.filter(feedback => feedback.approved).slice(0, 3)
-    : defaultReviews
+  const featuredProducts = products.slice(0, 5)
+  const homeReviews = feedbacks.filter(feedback => feedback.approved).slice(0, 3)
 
   return (
     <div className="overflow-hidden">
@@ -111,6 +108,9 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5 lg:gap-6">
+            {featuredProducts.length === 0 && (
+              <p className="col-span-full text-center text-sm text-text-muted">Nenhum produto cadastrado no Supabase.</p>
+            )}
             {featuredProducts.map(product => (
               <article key={product.id} className="overflow-hidden rounded-xl border border-neon-pink/15 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl hover:shadow-[#9f7e56]/10">
                 <Link to={`/produto/${product.id}`} className="block aspect-[4/4.2] overflow-hidden bg-void-light">
@@ -164,6 +164,9 @@ export default function Home() {
             <h2 className="font-display text-3xl font-semibold text-text-main">O que nossas clientes dizem</h2>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
+            {homeReviews.length === 0 && (
+              <p className="col-span-full text-center text-sm text-text-muted">Nenhum depoimento publicado ainda.</p>
+            )}
             {homeReviews.map(review => (
               <div key={review.id} className="rounded-xl border border-neon-pink/15 bg-white p-6 shadow-sm">
                 <p className="text-5xl leading-none text-neon-pink/70">"</p>

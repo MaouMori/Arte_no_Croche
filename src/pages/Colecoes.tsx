@@ -14,7 +14,6 @@ import {
   WandSparkles,
   Zap,
 } from 'lucide-react'
-import { categories as defaultCategories } from '../data/storeData'
 import type { Product } from '../data/storeData'
 import { useAdmin } from '../context/useAdmin'
 import { getWhatsAppUrl } from '../lib/whatsapp'
@@ -59,9 +58,7 @@ export default function Colecoes() {
 
   const categoryOptions = [
     { value: 'todos', label: 'Todas' },
-    ...(productCategories.length > 0
-      ? productCategories.filter(item => item.active).map(item => ({ value: item.slug, label: item.name }))
-      : defaultCategories.filter(item => item.value !== 'todos').map(item => ({ value: item.value, label: item.label }))),
+    ...productCategories.filter(item => item.active).map(item => ({ value: item.slug, label: item.name })),
   ]
 
   const featuredCollection = collections.find(collection => collection.id === selectedCollectionId) || collections[0]

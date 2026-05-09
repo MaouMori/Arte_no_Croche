@@ -10,37 +10,6 @@ export const DEFAULT_EXTRA_LINK_URL = 'https://instagram.com/artenocroche'
 export const DEFAULT_WHATSAPP_NUMBER = WHATSAPP_NUMBER
 export const DEFAULT_WHATSAPP_MESSAGE = WHATSAPP_DEFAULT_MESSAGE
 
-export const DEFAULT_HELP_TOPICS = [
-  {
-    id: 'faq',
-    title: 'Perguntas Frequentes',
-    answer: 'Aqui voce encontra respostas para as principais duvidas sobre produtos, pedidos, entrega e suporte.',
-    sortOrder: 1,
-    active: true,
-  },
-  {
-    id: 'como-comprar',
-    title: 'Como comprar',
-    answer: 'Escolha a peca desejada e clique em comprar pelo WhatsApp. O atendimento, combinados de entrega e pagamento acontecem por la.',
-    sortOrder: 2,
-    active: true,
-  },
-  {
-    id: 'trocas-devolucoes',
-    title: 'Trocas e Devolucoes',
-    answer: 'Como as pecas sao artesanais, trocas e ajustes sao avaliados pelo atendimento de acordo com cada caso.',
-    sortOrder: 3,
-    active: true,
-  },
-  {
-    id: 'fale-conosco',
-    title: 'Fale Conosco',
-    answer: 'O atendimento acontece pelo WhatsApp oficial da loja. Chame a gente para tirar duvidas, combinar entrega e fazer seu pedido.',
-    sortOrder: 4,
-    active: true,
-  },
-]
-
 export type HelpTopic = {
   id: string
   title: string
@@ -92,12 +61,12 @@ export function useSiteSettingsLoader() {
 }
 
 export function useHelpTopics() {
-  const [topics, setTopics] = useState<HelpTopic[]>(DEFAULT_HELP_TOPICS)
+  const [topics, setTopics] = useState<HelpTopic[]>([])
   const [loading, setLoading] = useState(isSupabaseConfigured())
 
   const refresh = useCallback(async () => {
     if (!isSupabaseConfigured()) {
-      setTopics(DEFAULT_HELP_TOPICS)
+      setTopics([])
       setLoading(false)
       return
     }
@@ -109,7 +78,7 @@ export function useHelpTopics() {
         .select('id,title,answer,sort_order,active')
         .order('sort_order', { ascending: true })
 
-      if (!error && data && data.length > 0) {
+      if (!error && data) {
         setTopics(data.map((topic, index) => ({
           id: topic.id || `topico-${index + 1}`,
           title: topic.title || 'Ajuda',
@@ -120,7 +89,7 @@ export function useHelpTopics() {
       }
     } catch (error) {
       console.warn('Nao foi possivel carregar os topicos de ajuda.', error)
-      setTopics(DEFAULT_HELP_TOPICS)
+      setTopics([])
     } finally {
       setLoading(false)
     }

@@ -9,7 +9,6 @@ import {
   X,
   Search,
 } from 'lucide-react'
-import { categories as defaultCategories, products as defaultProducts, styles as defaultStyles, colors as defaultColors } from '../data/storeData'
 import { useAdmin } from '../context/useAdmin'
 import { getWhatsAppUrl } from '../lib/whatsapp'
 
@@ -30,20 +29,14 @@ const normalizeSlug = (value = '') =>
 
 export default function Loja() {
   const { products, banners, productCategories, productStyles, productColors } = useAdmin()
-  const visibleProducts = products.length > 0 ? products : defaultProducts
+  const visibleProducts = products
   const pageBanners = banners.filter(banner => banner.active && banner.position === 'loja')
   const categories = [
     { value: 'todos', label: 'Todos os produtos' },
-    ...(productCategories.length > 0
-      ? productCategories.filter(item => item.active).map(item => ({ value: item.slug, label: item.name }))
-      : defaultCategories.filter(item => item.value !== 'todos')),
+    ...productCategories.filter(item => item.active).map(item => ({ value: item.slug, label: item.name })),
   ]
-  const styles = productStyles.length > 0
-    ? productStyles.filter(item => item.active).map(item => ({ value: item.slug, label: item.name }))
-    : defaultStyles
-  const colors = productColors.length > 0
-    ? productColors.filter(item => item.active).map(item => ({ value: item.slug, hex: item.hex, label: item.name }))
-    : defaultColors.map(item => ({ value: item.value, hex: item.hex, label: item.value }))
+  const styles = productStyles.filter(item => item.active).map(item => ({ value: item.slug, label: item.name }))
+  const colors = productColors.filter(item => item.active).map(item => ({ value: item.slug, hex: item.hex, label: item.name }))
   const [category, setCategory] = useState('todos')
   const [selectedStyles, setSelectedStyles] = useState<Set<string>>(new Set())
   const [selectedColors, setSelectedColors] = useState<Set<string>>(new Set())

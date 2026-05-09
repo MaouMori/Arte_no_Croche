@@ -14,7 +14,7 @@ import {
 } from 'lucide-react'
 import { useAdmin } from '../../context/useAdmin'
 import type { AdminActionResult } from '../../context/AdminContext'
-import { categories as defaultCategories, styles as defaultStyles, colors as defaultColors, type Product } from '../../data/storeData'
+import type { Product } from '../../data/storeData'
 import { AdminFeedback } from '../../components/admin/AdminFeedback'
 
 export default function AdminProdutos() {
@@ -47,12 +47,8 @@ export default function AdminProdutos() {
     p.name.toLowerCase().includes(search.toLowerCase())
   )
   const categoryLabelBySlug = new Map(
-    (productCategories.length > 0 ? productCategories : defaultCategories.map(category => ({
-      slug: category.value,
-      name: category.label,
-      active: true,
-    })))
-      .filter(category => category.slug !== 'todos')
+    productCategories
+      .filter(category => category.active)
       .map(category => [category.slug, category.name])
   )
   const getCategoryLabel = (slug: string) => categoryLabelBySlug.get(slug) || slug
@@ -232,7 +228,7 @@ function ProductModal({
       price: 0,
       image: '',
       images: [],
-      category: 'croches',
+      category: '',
       isNew: true,
       isBestseller: false,
       discountPercent: 0,
@@ -330,19 +326,9 @@ function ProductModal({
     })
   }
 
-  const activeCategories = categories.length > 0
-    ? categories.filter(category => category.active)
-    : defaultCategories.filter(category => category.value !== 'todos').map(category => ({
-      name: category.label,
-      slug: category.value,
-      active: true,
-    }))
-  const activeStyles = styles.length > 0
-    ? styles.filter(style => style.active)
-    : defaultStyles.map(style => ({ name: style.label, slug: style.value, active: true }))
-  const activeColors = colors.length > 0
-    ? colors.filter(color => color.active)
-    : defaultColors.map(color => ({ name: color.value, slug: color.value, hex: color.hex, active: true }))
+  const activeCategories = categories.filter(category => category.active)
+  const activeStyles = styles.filter(style => style.active)
+  const activeColors = colors.filter(color => color.active)
   const activeCollections = collections.filter(collection => collection.active)
 
   return (
@@ -376,14 +362,10 @@ function ProductModal({
 
             <div>
               <label className="block text-xs font-heading font-bold text-text-main tracking-wider mb-1">Categoria</label>
-              <select value={form.category || 'croches'} onChange={e => setForm({ ...form, category: e.target.value })}
-                className="w-full bg-void-light border border-neon-pink/20 rounded-lg px-4 py-2 text-text-main focus:outline-none focus:border-neon-pink/50">
-                {(activeCategories.length > 0 ? activeCategories : [
-                  { slug: 'croches', name: 'Croches artesanais' },
-                  { slug: 'decoracao', name: 'Decoracao' },
-                  { slug: 'almofadas', name: 'Almofadas' },
-                  { slug: 'acessorios', name: 'Acessorios' },
-                ]).map(category => (
+              <select value={form.category || ''} onChange={e => setForm({ ...form, category: e.target.value })}
+                className="w-full bg-void-light border border-neon-pink/20 rounded-lg px-4 py-2 text-text-main focus:outline-none focus:border-neon-pink/50" required>
+                <option value="" disabled>{activeCategories.length ? 'Selecione uma categoria' : 'Cadastre uma categoria primeiro'}</option>
+                {activeCategories.map(category => (
                   <option key={category.slug} value={category.slug}>{category.name}</option>
                 ))}
               </select>
