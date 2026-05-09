@@ -5,9 +5,7 @@ import { useAdmin } from '../../context/useAdmin'
 import {
   LayoutDashboard,
   Package,
-  ShoppingBag,
   Users,
-  Ticket,
   FolderTree,
   Tag,
   Shield,
@@ -17,14 +15,12 @@ import {
   FileText,
   MessageSquare,
   Settings,
-  CreditCard,
-  History,
   ClipboardList,
   ChevronDown,
   LogOut,
   Bell,
   Menu,
-  Skull,
+  Heart,
   Store,
   User,
 } from 'lucide-react'
@@ -39,12 +35,10 @@ const menuGroups = [
   {
     title: 'GERENCIAMENTO',
     items: [
-      { path: '/admin/produtos', label: 'Produtos', icon: Package },
+      { path: '/admin/produtos', label: 'Croches', icon: Package },
       { path: '/admin/colecoes', label: 'Colecoes', icon: FolderTree },
-      { path: '/admin/pedidos', label: 'Pedidos', icon: ShoppingBag },
       { path: '/admin/clientes', label: 'Clientes', icon: Users },
-      { path: '/admin/cupons', label: 'Cupons', icon: Ticket },
-      { path: '/admin/categorias', label: 'Categorias', icon: FolderTree },
+      { path: '/admin/categorias', label: 'Tipos de croche', icon: FolderTree },
       { path: '/admin/tags', label: 'Estilos e Cores', icon: Tag },
     ],
   },
@@ -60,24 +54,15 @@ const menuGroups = [
     title: 'CONTEUDO',
     items: [
       { path: '/admin/banners', label: 'Banners', icon: Image },
-      { path: '/admin/paginas', label: 'Paginas', icon: FileText },
+      { path: '/admin/paginas', label: 'Ajuda', icon: FileText },
       { path: '/admin/depoimentos', label: 'Depoimentos', icon: MessageSquare },
       { path: '/admin/configuracoes', label: 'Configuracoes do Site', icon: Settings },
-    ],
-  },
-  {
-    title: 'FINANCEIRO',
-    items: [
-      { path: '/admin/transacoes', label: 'Transacoes', icon: CreditCard },
-      { path: '/admin/historico', label: 'Historico de Compras', icon: History },
-      { path: '/admin/valores', label: 'Valores e Taxas', icon: ClipboardList },
     ],
   },
   {
     title: 'CONFIGURACOES',
     items: [
       { path: '/admin/loja', label: 'Loja', icon: Settings },
-      { path: '/admin/integracoes', label: 'Integracoes', icon: CreditCard },
       { path: '/admin/logs', label: 'Logs do Sistema', icon: ClipboardList },
     ],
   },
@@ -85,7 +70,7 @@ const menuGroups = [
 
 export default function AdminLayout() {
   const { user, logout, isLoading } = useAuth()
-  const { products, orders, banners, coupons } = useAdmin()
+  const { products, orders, banners } = useAdmin()
   const location = useLocation()
   const navigate = useNavigate()
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -96,7 +81,6 @@ export default function AdminLayout() {
     `${products.length} produtos cadastrados`,
     `${orders.length} pedidos no painel`,
     `${banners.filter(banner => banner.active).length} banners ativos`,
-    `${coupons.filter(coupon => coupon.active).length} cupons ativos`,
   ]
 
   const handleLogout = async () => {
@@ -139,10 +123,10 @@ export default function AdminLayout() {
         {/* Logo */}
         <div className="p-4 border-b border-neon-pink/10">
           <div className="flex items-center gap-2">
-            <Skull className="w-6 h-6 text-neon-pink" />
+            <Heart className="w-6 h-6 text-neon-pink" />
             <div>
-              <span className="font-display text-xl text-neon-pink tracking-wider">QUANTIC</span>
-              <span className="block text-[10px] text-text-dim tracking-widest">STORE</span>
+              <span className="font-display text-xl text-neon-pink tracking-wider">Arte</span>
+              <span className="block font-['Caveat'] text-lg leading-none text-text-dim">no croche</span>
             </div>
           </div>
         </div>
@@ -211,7 +195,7 @@ export default function AdminLayout() {
             </button>
           </div>
           <p className="text-[10px] text-text-dim mt-3 text-center">
-            Quantic Store - Painel v1.0
+            Arte no Croche - Painel v1.0
           </p>
         </div>
       </aside>

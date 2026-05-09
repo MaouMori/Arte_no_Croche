@@ -21,7 +21,7 @@ export default function Navbar() {
 
   const navLinks = [
     { path: '/', label: 'Inicio' },
-    { path: '/loja', label: 'Tapecarias' },
+    { path: '/loja', label: 'Croches' },
     { path: '/colecoes', label: 'Colecoes' },
     { path: '/sobre', label: 'Sobre nos' },
     { path: '/ajuda', label: 'Ajuda' },

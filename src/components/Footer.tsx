@@ -66,7 +66,7 @@ export default function Footer() {
             <ul className="space-y-1.5">
               {[
                 { path: '/', label: 'Inicio' },
-                { path: '/loja', label: 'Tapecarias' },
+                { path: '/loja', label: 'Croches' },
                 { path: '/colecoes', label: 'Colecoes' },
                 { path: '/sobre', label: 'Sobre' },
                 { path: '/ajuda', label: 'Ajuda' },

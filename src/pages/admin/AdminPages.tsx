@@ -4,7 +4,7 @@ import { CreditCard, History, ClipboardList, Settings, MessageSquare, FileText, 
 import { useAdmin } from '../../context/useAdmin'
 import { AdminFeedback } from '../../components/admin/AdminFeedback'
 import { supabase } from '../../lib/supabase'
-import { DEFAULT_DISCORD_URL, DEFAULT_WHATSAPP_MESSAGE, DEFAULT_WHATSAPP_NUMBER, slugifyHelpTitle, useHelpTopics, type HelpTopic } from '../../lib/siteConfig'
+import { DEFAULT_EXTRA_LINK_URL, DEFAULT_WHATSAPP_MESSAGE, DEFAULT_WHATSAPP_NUMBER, slugifyHelpTitle, useHelpTopics, type HelpTopic } from '../../lib/siteConfig'
 import { normalizeWhatsAppNumber, setWhatsAppSettings } from '../../lib/whatsapp'
 
 export default function AdminClientes() {
@@ -22,7 +22,7 @@ export default function AdminClientes() {
             <thead>
               <tr className="text-left text-[10px] text-text-dim uppercase tracking-wider">
                 <th className="pb-3">Cliente</th>
-                <th className="pb-3">Discord</th>
+                <th className="pb-3">WhatsApp</th>
                 <th className="pb-3">Pedidos</th>
                 <th className="pb-3">Gasto total</th>
                 <th className="pb-3">Desde</th>
@@ -571,7 +571,7 @@ export function AdminDepoimentos() {
 }
 
 export function AdminConfiguracoes() {
-  const [discordUrl, setDiscordUrl] = useState(DEFAULT_DISCORD_URL)
+  const [extraLinkUrl, setExtraLinkUrl] = useState(DEFAULT_EXTRA_LINK_URL)
   const [whatsappNumber, setWhatsappNumber] = useState(DEFAULT_WHATSAPP_NUMBER)
   const [whatsappMessage, setWhatsappMessage] = useState(DEFAULT_WHATSAPP_MESSAGE)
   const [saving, setSaving] = useState(false)
@@ -587,7 +587,7 @@ export function AdminConfiguracoes() {
         if (!data) return
 
         const settings = Object.fromEntries(data.map(item => [item.key, item.value]))
-        if (settings.discord_url) setDiscordUrl(settings.discord_url)
+        if (settings.extra_link_url || settings.discord_url) setExtraLinkUrl(settings.extra_link_url || settings.discord_url)
         if (settings.whatsapp_number) setWhatsappNumber(settings.whatsapp_number)
         if (settings.whatsapp_message) setWhatsappMessage(settings.whatsapp_message)
       })()
@@ -606,8 +606,8 @@ export function AdminConfiguracoes() {
     const updatedAt = new Date().toISOString()
     const { error } = await supabase.from('site_settings').upsert([
       {
-        key: 'discord_url',
-        value: discordUrl.trim() || DEFAULT_DISCORD_URL,
+        key: 'extra_link_url',
+        value: extraLinkUrl.trim() || DEFAULT_EXTRA_LINK_URL,
         updated_at: updatedAt,
       },
       {
@@ -661,9 +661,9 @@ export function AdminConfiguracoes() {
         </div>
 
         <div>
-          <label className="block text-xs font-heading font-bold text-text-main tracking-wider mb-2">Link do Discord antigo/opcional</label>
-          <input value={discordUrl} onChange={event => setDiscordUrl(event.target.value)}
-            placeholder="https://discord.gg/seu-servidor"
+          <label className="block text-xs font-heading font-bold text-text-main tracking-wider mb-2">Link extra opcional</label>
+          <input value={extraLinkUrl} onChange={event => setExtraLinkUrl(event.target.value)}
+            placeholder="https://instagram.com/sua-loja"
             className="w-full bg-void-light border border-neon-pink/20 rounded-lg px-3 py-2 text-text-main" />
           <p className="text-text-dim text-xs mt-2">Pode deixar guardado; o site atual usa WhatsApp como canal principal.</p>
         </div>
@@ -680,12 +680,12 @@ export function AdminTransacoes() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-heading font-bold text-xl text-text-main">Transacoes</h1>
-        <p className="text-text-dim text-sm">Historico de transacoes</p>
+        <h1 className="font-heading font-bold text-xl text-text-main">Atendimentos</h1>
+        <p className="text-text-dim text-sm">Historico de combinados feitos fora do site</p>
       </div>
       <div className="review-card rounded-xl p-5 text-center py-16">
         <CreditCard className="w-12 h-12 text-text-dim mx-auto mb-4" />
-        <p className="text-text-muted">Historico de transacoes em desenvolvimento.</p>
+        <p className="text-text-muted">Historico de atendimentos em desenvolvimento.</p>
       </div>
     </div>
   )
@@ -756,8 +756,8 @@ export function AdminValores() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-heading font-bold text-xl text-text-main">Valores e Taxas</h1>
-        <p className="text-text-dim text-sm">Configure precos e taxas</p>
+        <h1 className="font-heading font-bold text-xl text-text-main">Valores das Pecas</h1>
+        <p className="text-text-dim text-sm">Configure informacoes de precos das pecas artesanais</p>
       </div>
       <div className="review-card rounded-xl p-5 text-center py-16">
         <ClipboardList className="w-12 h-12 text-text-dim mx-auto mb-4" />

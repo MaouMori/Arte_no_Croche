@@ -23,7 +23,7 @@ export interface Product {
 
 export const categories = [
   { value: 'todos', label: 'Todos os produtos' },
-  { value: 'tapecarias', label: 'Tapecarias' },
+  { value: 'tapecarias', label: 'Croches artesanais' },
   { value: 'quadros', label: 'Quadros' },
   { value: 'almofadas', label: 'Almofadas' },
   { value: 'acessorios', label: 'Acessorios' },
@@ -77,7 +77,7 @@ export const products: Product[] = [
     rating: 5,
     ratingCount: 18,
     collectionId: 1,
-    description: 'Tapecaria artesanal em croche com desenho botanico, feita para transformar paredes com delicadeza.',
+    description: 'Peca artesanal em croche com desenho botanico, feita para transformar paredes com delicadeza.',
     specs: [
       { label: 'Material', value: 'Fio de algodao' },
       { label: 'Producao', value: 'Feita a mao' },
@@ -121,7 +121,7 @@ export const products: Product[] = [
     rating: 5,
     ratingCount: 21,
     collectionId: 2,
-    description: 'Tapecaria em tons suaves, pensada para quartos, salas e espacos de descanso.',
+    description: 'Croche artesanal em tons suaves, pensado para quartos, salas e espacos de descanso.',
     specs: [
       { label: 'Material', value: 'Algodao premium' },
       { label: 'Cuidados', value: 'Limpeza delicada' },
@@ -270,7 +270,7 @@ export const products: Product[] = [
     rating: 5,
     ratingCount: 13,
     collectionId: 2,
-    description: 'Quadro/tapecaria floral para trazer delicadeza e textura para a parede.',
+    description: 'Quadro floral em croche para trazer delicadeza e textura para a parede.',
     specs: [
       { label: 'Material', value: 'Fio de algodao' },
       { label: 'Acabamento', value: 'Artesanal' },
@@ -312,7 +312,7 @@ export const products: Product[] = [
     rating: 5,
     ratingCount: 8,
     collectionId: 2,
-    description: 'Tapecaria artesanal para deixar a casa mais acolhedora e com identidade propria.',
+    description: 'Croche artesanal para deixar a casa mais acolhedora e com identidade propria.',
     specs: [
       { label: 'Material', value: 'Fio artesanal' },
       { label: 'Producao', value: 'Feita a mao' },
@@ -324,8 +324,8 @@ export const products: Product[] = [
 export const storeCollections = [
   {
     id: 1,
-    name: 'Tapecarias Autorais',
-    subtitle: 'Pecas de parede feitas a mao para dar alma ao ambiente.',
+    name: 'Croches Autorais',
+    subtitle: 'Pecas de croche feitas a mao para dar alma ao ambiente.',
     image: crochetImages[0],
     color: '#df745c',
     price: 299.90,
@@ -382,7 +382,7 @@ export const reviews = [
     name: 'Fernanda L.',
     avatar: '/avatars/default.jpg',
     rating: 5,
-    text: 'A tapecaria deixou minha sala linda e super aconchegante. Da para sentir o amor em cada detalhe.',
+    text: 'A peca de croche deixou minha sala linda e super aconchegante. Da para sentir o amor em cada detalhe.',
   },
 ]
 
@@ -392,7 +392,7 @@ export const heroSlides = [
     title: 'Sua casa.',
     title2: 'Sua essencia.',
     title3: 'Feita a mao.',
-    subtitle: 'Tapecarias exclusivas em croche que levam aconchego, beleza e personalidade para o seu ambiente.',
+    subtitle: 'Croches exclusivos que levam aconchego, beleza e personalidade para o seu ambiente.',
     cta: 'Comprar pelo WhatsApp',
     image: heroImage,
   },

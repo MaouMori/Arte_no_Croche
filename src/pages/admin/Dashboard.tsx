@@ -196,8 +196,8 @@ export default function Dashboard() {
             ))}
           </div>
           <div className="grid grid-cols-3 gap-3 pt-4 border-t border-neon-pink/10">
-            <div><p className="text-[10px] text-neon-pink mb-0.5">Melhor categoria</p><p className="text-sm font-bold text-text-main">Acessorios</p><p className="text-[10px] text-text-dim">R$ 12.560,00</p></div>
-            <div><p className="text-[10px] text-neon-pink mb-0.5">Melhor produto</p><p className="text-sm font-bold text-text-main">Conjunto Rebel Girl</p><p className="text-[10px] text-text-dim">156 vendas</p></div>
+            <div><p className="text-[10px] text-neon-pink mb-0.5">Melhor categoria</p><p className="text-sm font-bold text-text-main">Croches</p><p className="text-[10px] text-text-dim">Atendimento direto</p></div>
+            <div><p className="text-[10px] text-neon-pink mb-0.5">Peca destaque</p><p className="text-sm font-bold text-text-main">Croche autoral</p><p className="text-[10px] text-text-dim">Feito a mao</p></div>
             <div><p className="text-[10px] text-neon-pink mb-0.5">Canal de venda</p><p className="text-sm font-bold text-text-main">WhatsApp</p><p className="text-[10px] text-text-dim">Atendimento direto</p></div>
           </div>
         </div>
@@ -257,7 +257,7 @@ export default function Dashboard() {
                         <span className="text-text-main font-medium">{product.name}</span>
                       </div>
                     </td>
-                    <td className="py-3 text-text-dim capitalize">{product.category}</td>
+                    <td className="py-3 text-text-dim">{product.category === 'tapecarias' ? 'Croches artesanais' : product.category}</td>
                     <td className="py-3 text-neon-pink font-semibold">R$ {product.price.toFixed(2).replace('.', ',')}</td>
                     <td className="py-3 text-text-dim">∞</td>
                     <td className="py-3"><span className="text-[10px] bg-green-500/10 text-green-400 px-2 py-0.5 rounded-full">Ativo</span></td>
@@ -283,7 +283,7 @@ export default function Dashboard() {
             {[
               { icon: Package, label: 'Novo produto', color: 'text-red-400', link: '/admin/produtos' },
               { icon: Image, label: 'Novo banner', color: 'text-neon-pink', link: '/admin/banners' },
-              { icon: Ticket, label: 'Novo cupom', color: 'text-neon-purple', link: '/admin/cupons' },
+              { icon: Ticket, label: 'Configurar WhatsApp', color: 'text-neon-purple', link: '/admin/configuracoes' },
               { icon: ShoppingCart, label: 'Novo pedido manual', color: 'text-green-400', link: '/admin/pedidos' },
               { icon: Users, label: 'Novo usuario', color: 'text-blue-400', link: '/admin/usuarios' },
               { icon: Globe, label: 'Ver site', color: 'text-soft-pink', link: '/' },

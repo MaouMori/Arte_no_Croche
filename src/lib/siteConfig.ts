@@ -6,7 +6,7 @@ const isSupabaseConfigured = () => {
   return !!(import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY)
 }
 
-export const DEFAULT_DISCORD_URL = 'https://discord.gg/quanticstore'
+export const DEFAULT_EXTRA_LINK_URL = 'https://instagram.com/artenocroche'
 export const DEFAULT_WHATSAPP_NUMBER = WHATSAPP_NUMBER
 export const DEFAULT_WHATSAPP_MESSAGE = WHATSAPP_DEFAULT_MESSAGE
 
@@ -57,45 +57,6 @@ export const slugifyHelpTitle = (value: string) =>
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '')
-
-export function useDiscordUrl() {
-  const [discordUrl, setDiscordUrl] = useState(DEFAULT_DISCORD_URL)
-
-  const refresh = useCallback(async () => {
-    if (!isSupabaseConfigured()) return
-
-    try {
-      const { data } = await supabase
-        .from('site_settings')
-        .select('value')
-        .eq('key', 'discord_url')
-        .maybeSingle<{ value: string }>()
-      setDiscordUrl(data?.value || DEFAULT_DISCORD_URL)
-    } catch (error) {
-      console.warn('Nao foi possivel carregar o link do Discord.', error)
-      setDiscordUrl(DEFAULT_DISCORD_URL)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (!isSupabaseConfigured()) return
-
-    const timeoutId = window.setTimeout(() => {
-      void refresh()
-    }, 0)
-
-    const intervalId = window.setInterval(() => {
-      if (!document.hidden) void refresh()
-    }, 15000)
-
-    return () => {
-      window.clearTimeout(timeoutId)
-      window.clearInterval(intervalId)
-    }
-  }, [refresh])
-
-  return discordUrl
-}
 
 export function useSiteSettingsLoader() {
   const refresh = useCallback(async () => {

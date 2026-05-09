@@ -18,7 +18,7 @@ export default function BestSellers() {
   const trackRef = useRef<HTMLDivElement>(null)
 
   const newArrivals = products
-    .filter(p => p.isNew && p.category === 'cabelos' && (p.sellIndividually ?? true))
+    .filter(p => p.isNew && (p.sellIndividually ?? true))
     .sort((a, b) => getCreatedTime(b.createdAt) - getCreatedTime(a.createdAt) || b.id - a.id)
   const visibleCount = typeof window !== 'undefined' && window.innerWidth >= 1024 ? 5 : window.innerWidth >= 640 ? 3 : 2
   const maxIndex = Math.max(0, newArrivals.length - visibleCount)
@@ -61,7 +61,7 @@ export default function BestSellers() {
         </div>
 
         {newArrivals.length === 0 ? (
-          <p className="text-text-dim text-sm">Nenhum cabelo marcado como novo no painel.</p>
+          <p className="text-text-dim text-sm">Nenhuma peca nova cadastrada no painel.</p>
         ) : (
         <div className="relative">
           <button

@@ -46,6 +46,16 @@ export default function AdminProdutos() {
   const filtered = products.filter(p =>
     p.name.toLowerCase().includes(search.toLowerCase())
   )
+  const categoryLabelBySlug = new Map(
+    (productCategories.length > 0 ? productCategories : defaultCategories.map(category => ({
+      slug: category.value,
+      name: category.label,
+      active: true,
+    })))
+      .filter(category => category.slug !== 'todos')
+      .map(category => [category.slug, category.name])
+  )
+  const getCategoryLabel = (slug: string) => categoryLabelBySlug.get(slug) || slug
 
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE)
   const paginated = filtered.slice(
@@ -140,7 +150,7 @@ export default function AdminProdutos() {
                       <span className="text-text-main font-medium">{product.name}</span>
                     </div>
                   </td>
-                  <td className="py-3 text-text-dim capitalize">{product.category}</td>
+                  <td className="py-3 text-text-dim">{getCategoryLabel(product.category)}</td>
                   <td className="py-3 text-neon-pink font-semibold">R$ {product.price.toFixed(2).replace('.', ',')}</td>
                   <td className="py-3">
                     <span className="text-[10px] bg-green-500/10 text-green-400 px-2 py-0.5 rounded-full">{product.isNew ? 'Novo' : 'Ativo'}</span>
@@ -222,7 +232,7 @@ function ProductModal({
       price: 0,
       image: '',
       images: [],
-      category: 'cabelos',
+      category: 'croches',
       isNew: true,
       isBestseller: false,
       discountPercent: 0,
@@ -366,14 +376,13 @@ function ProductModal({
 
             <div>
               <label className="block text-xs font-heading font-bold text-text-main tracking-wider mb-1">Categoria</label>
-              <select value={form.category || 'cabelos'} onChange={e => setForm({ ...form, category: e.target.value })}
+              <select value={form.category || 'croches'} onChange={e => setForm({ ...form, category: e.target.value })}
                 className="w-full bg-void-light border border-neon-pink/20 rounded-lg px-4 py-2 text-text-main focus:outline-none focus:border-neon-pink/50">
                 {(activeCategories.length > 0 ? activeCategories : [
-                  { slug: 'cabelos', name: 'Cabelos' },
-                  { slug: 'roupas', name: 'Roupas' },
+                  { slug: 'croches', name: 'Croches artesanais' },
+                  { slug: 'decoracao', name: 'Decoracao' },
+                  { slug: 'almofadas', name: 'Almofadas' },
                   { slug: 'acessorios', name: 'Acessorios' },
-                  { slug: 'conjuntos', name: 'Conjuntos' },
-                  { slug: 'outros', name: 'Outros' },
                 ]).map(category => (
                   <option key={category.slug} value={category.slug}>{category.name}</option>
                 ))}
@@ -467,7 +476,7 @@ function ProductModal({
             </div>
 
             <div className="sm:col-span-2">
-              <label className="block text-xs font-heading font-bold text-text-main tracking-wider mb-2">Cor do cabelo</label>
+              <label className="block text-xs font-heading font-bold text-text-main tracking-wider mb-2">Cor da peca</label>
               <div className="flex flex-wrap gap-2">
                 {activeColors.map(color => (
                   <button

@@ -5,7 +5,7 @@ create extension if not exists pgcrypto;
 
 insert into public.product_categories (name, slug, active)
 values
-  ('Tapecarias', 'tapecarias', true),
+  ('Croches artesanais', 'tapecarias', true),
   ('Quadros', 'quadros', true),
   ('Almofadas', 'almofadas', true),
   ('Acessorios', 'acessorios', true)
@@ -39,7 +39,7 @@ on conflict (slug) do update set
 
 insert into public.collections (id, name, subtitle, image, color, price, discount_percent, active, product_ids, created_at)
 values
-  (1, 'Tapecarias Autorais', 'Pecas de parede feitas a mao para dar alma ao ambiente.', '/crochet/foto_2.jpeg', '#df745c', 299.90, 0, true, array[1,2,8,11], '2026-05-01T10:00:00.000Z'),
+  (1, 'Croches Autorais', 'Pecas de croche feitas a mao para dar alma ao ambiente.', '/crochet/foto_2.jpeg', '#df745c', 299.90, 0, true, array[1,2,8,11], '2026-05-01T10:00:00.000Z'),
   (2, 'Tons da Terra', 'Texturas em cru, rose, verde e terracota para uma casa acolhedora.', '/crochet/foto_5.jpeg', '#9f7e56', 329.90, 0, true, array[3,4,10,12], '2026-05-02T10:00:00.000Z'),
   (3, 'Afetos da Casa', 'Quadros, almofadas e detalhes para presentear ou morar melhor.', '/crochet/foto_7.jpeg', '#75815f', 159.90, 0, true, array[5,6,7,9], '2026-05-03T10:00:00.000Z')
 on conflict (id) do update set

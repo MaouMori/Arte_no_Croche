@@ -20,7 +20,6 @@ import AdminLayout from './pages/admin/AdminLayout'
 import Dashboard from './pages/admin/Dashboard'
 import AdminProdutos from './pages/admin/AdminProdutos'
 import AdminPedidos from './pages/admin/AdminPedidos'
-import AdminCupons from './pages/admin/AdminCupons'
 import AdminCargos from './pages/admin/AdminCargos'
 import AdminBanners from './pages/admin/AdminBanners'
 import AdminColecoes from './pages/admin/AdminColecoes'
@@ -32,9 +31,7 @@ import AdminClientes, {
   AdminPaginas,
   AdminDepoimentos,
   AdminConfiguracoes,
-  AdminTransacoes,
   AdminHistorico,
-  AdminValores,
   AdminLoja,
   AdminIntegracoes,
   AdminLogs,
@@ -88,7 +85,7 @@ function AppContent() {
         <Route path="colecoes" element={<AdminColecoes />} />
         <Route path="pedidos" element={<AdminPedidos />} />
         <Route path="clientes" element={<AdminClientes />} />
-        <Route path="cupons" element={<AdminCupons />} />
+        <Route path="cupons" element={<Navigate to="/admin/configuracoes" replace />} />
         <Route path="categorias" element={<AdminCategorias />} />
         <Route path="tags" element={<AdminTags />} />
         <Route path="cargos" element={<AdminCargos />} />
@@ -98,9 +95,9 @@ function AppContent() {
         <Route path="paginas" element={<AdminPaginas />} />
         <Route path="depoimentos" element={<AdminDepoimentos />} />
         <Route path="configuracoes" element={<AdminConfiguracoes />} />
-        <Route path="transacoes" element={<AdminTransacoes />} />
+        <Route path="transacoes" element={<Navigate to="/admin" replace />} />
         <Route path="historico" element={<AdminHistorico />} />
-        <Route path="valores" element={<AdminValores />} />
+        <Route path="valores" element={<Navigate to="/admin/produtos" replace />} />
         <Route path="loja" element={<AdminLoja />} />
         <Route path="integracoes" element={<AdminIntegracoes />} />
         <Route path="logs" element={<AdminLogs />} />

@@ -102,7 +102,7 @@ export default function Home() {
       <section className="bg-[#fff8f2] px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mb-8 text-center">
-            <h2 className="font-display text-3xl font-semibold text-text-main">Nossas tapecarias</h2>
+            <h2 className="font-display text-3xl font-semibold text-text-main">Nossos croches artesanais</h2>
             <div className="mx-auto mt-3 flex w-36 items-center justify-center gap-2 text-neon-pink">
               <span className="h-px flex-1 bg-neon-pink/35" />
               <Heart className="h-4 w-4" />

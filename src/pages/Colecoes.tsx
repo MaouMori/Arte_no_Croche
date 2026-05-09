@@ -6,12 +6,9 @@ import {
   Crown,
   Diamond,
   Gift,
-  Headphones,
   MessageCircle,
   Package,
   Search,
-  Shirt,
-  Skull,
   Sparkles,
   Star,
   WandSparkles,
@@ -31,11 +28,10 @@ const getCreatedTime = (createdAt?: string) => createdAt ? new Date(createdAt).g
 
 const categoryIcons: Record<string, typeof Package> = {
   todos: Package,
-  cabelos: Headphones,
+  tapecarias: WandSparkles,
   acessorios: Star,
-  roupas: Shirt,
-  conjuntos: WandSparkles,
-  outros: Skull,
+  quadros: Sparkles,
+  almofadas: Gift,
 }
 
 export default function Colecoes() {

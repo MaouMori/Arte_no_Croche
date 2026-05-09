@@ -106,7 +106,7 @@ export default function AdminPedidos() {
               <tr className="text-left text-[10px] text-text-dim uppercase tracking-wider">
                 <th className="pb-3">Pedido</th>
                 <th className="pb-3">Cliente</th>
-                <th className="pb-3">Discord</th>
+                <th className="pb-3">WhatsApp</th>
                 <th className="pb-3">Data</th>
                 <th className="pb-3">Status</th>
                 <th className="pb-3">Total</th>
@@ -300,7 +300,7 @@ function OrderModal({
             </div>
             <div>
               <p className="text-text-main font-semibold">{order.customer}</p>
-              <p className="text-text-dim text-sm">{order.customerDiscord || 'Discord nao informado'}</p>
+              <p className="text-text-dim text-sm">{order.customerDiscord || 'WhatsApp nao informado'}</p>
               <p className="text-text-dim text-sm">{order.date}</p>
             </div>
           </div>
@@ -312,12 +312,12 @@ function OrderModal({
               className="bg-void-light border border-neon-pink/20 rounded-lg px-3 py-2 text-text-main text-sm" placeholder="Email" />
             <div className="sm:col-span-2 grid grid-cols-[1fr_auto_auto] gap-2">
               <input value={form.customerDiscord} onChange={event => setForm(prev => ({ ...prev, customerDiscord: event.target.value }))}
-                className="bg-void-light border border-neon-pink/20 rounded-lg px-3 py-2 text-text-main text-sm" placeholder="Discord" />
+                className="bg-void-light border border-neon-pink/20 rounded-lg px-3 py-2 text-text-main text-sm" placeholder="WhatsApp" />
               <button type="button" onClick={() => navigator.clipboard?.writeText(form.customerDiscord)}
                 className="w-10 rounded-lg border border-neon-pink/20 text-neon-pink flex items-center justify-center">
                 <Copy className="w-4 h-4" />
               </button>
-              <a href={`https://discord.com/users/${form.customerDiscord.replace(/[<@!>]/g, '')}`} target="_blank" rel="noopener noreferrer"
+              <a href={`https://wa.me/${form.customerDiscord.replace(/\\D/g, '')}`} target="_blank" rel="noopener noreferrer"
                 className="w-10 rounded-lg border border-neon-pink/20 text-neon-pink flex items-center justify-center">
                 <MessageCircle className="w-4 h-4" />
               </a>
@@ -333,7 +333,7 @@ function OrderModal({
             </select>
             <label className="sm:col-span-2 flex items-center gap-2 text-sm text-text-muted">
               <input type="checkbox" checked={form.discordVerified} onChange={event => setForm(prev => ({ ...prev, discordVerified: event.target.checked }))} className="accent-neon-pink" />
-              Discord verificado manualmente
+              WhatsApp verificado manualmente
             </label>
           </div>
 

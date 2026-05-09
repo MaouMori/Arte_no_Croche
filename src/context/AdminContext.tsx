@@ -202,6 +202,36 @@ type ProductCategoryRow = Tables['product_categories']
 type ProductStyleRow = Tables['product_styles']
 type ProductColorRow = Tables['product_colors']
 
+const defaultBanners: Banner[] = [
+  {
+    id: '00000000-0000-4000-8000-000000000101',
+    title: 'Home - Croche artesanal',
+    image: '/crochet/choce.png',
+    link: '/',
+    position: 'home',
+    active: true,
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: '00000000-0000-4000-8000-000000000102',
+    title: 'Loja - Arte no Croche',
+    image: '/crochet/hero-crochet.png',
+    link: '/loja',
+    position: 'loja',
+    active: true,
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: '00000000-0000-4000-8000-000000000103',
+    title: 'Colecoes artesanais',
+    image: '/crochet/foto_2.jpeg',
+    link: '/colecoes',
+    position: 'colecoes',
+    active: true,
+    createdAt: new Date().toISOString(),
+  },
+]
+
 const notConfigured = (): AdminActionResult => ({
   success: false,
   error: 'Supabase nao configurado. Verifique VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY.',
@@ -359,7 +389,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
   const [orders, setOrders] = useState<Order[]>([])
   const [coupons, setCoupons] = useState<Coupon[]>([])
   const [customers, setCustomers] = useState<Customer[]>([])
-  const [banners, setBanners] = useState<Banner[]>([])
+  const [banners, setBanners] = useState<Banner[]>(defaultBanners)
   const [roles, setRoles] = useState<Role[]>([])
   const [storeCollections, setStoreCollections] = useState<StoreCollection[]>(defaultStoreCollections)
   const [productCategories, setProductCategories] = useState<ProductCategory[]>([])
@@ -375,7 +405,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
       .from('products')
       .select('*')
       .order('created_at', { ascending: false })
-    if (!error && data) setProducts(data.map(mapDbProduct))
+    if (!error && data) setProducts(data.length > 0 ? data.map(mapDbProduct) : defaultProducts)
   }, [])
 
   const refreshOrders = useCallback(async () => {
@@ -411,7 +441,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
       .from('banners')
       .select('*')
       .order('created_at', { ascending: false })
-    if (!error && data) setBanners(data.map(mapDbBanner))
+    if (!error && data) setBanners(data.length > 0 ? data.map(mapDbBanner) : defaultBanners)
   }, [])
 
   const refreshRoles = useCallback(async () => {
@@ -438,7 +468,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
       .from('collections')
       .select('*')
       .order('created_at', { ascending: false })
-    if (!error && data) setStoreCollections(data.map(mapDbStoreCollection))
+    if (!error && data) setStoreCollections(data.length > 0 ? data.map(mapDbStoreCollection) : defaultStoreCollections)
   }, [])
 
   const refreshProductCategories = useCallback(async () => {
@@ -607,7 +637,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
 
   const updateProduct = useCallback(async (id: number, product: Partial<Product>) => {
     if (!isSupabaseConfigured()) return notConfigured()
-    const updateData: Partial<ProductRow> = {}
+    const updateData: Partial<ProductRow> = { id }
     if (product.name !== undefined) updateData.name = product.name
     if (product.price !== undefined) updateData.price = product.price
     if (product.image !== undefined) updateData.image = product.image
@@ -627,7 +657,29 @@ export function AdminProvider({ children }: { children: ReactNode }) {
     if (product.inGameImages !== undefined) updateData.in_game_images = product.inGameImages
     if (product.specs !== undefined) updateData.specs = product.specs
 
-    const { error } = await supabase.from('products').update(updateData).eq('id', id)
+    const existing = products.find(item => item.id === id)
+    if (existing) {
+      updateData.name ??= existing.name
+      updateData.price ??= existing.price
+      updateData.image ??= existing.image
+      updateData.images ??= existing.images || []
+      updateData.category ??= existing.category
+      updateData.style ??= existing.style || []
+      updateData.color ??= existing.color || []
+      updateData.is_new ??= existing.isNew
+      updateData.is_bestseller ??= existing.isBestseller
+      updateData.discount_percent ??= existing.discountPercent || 0
+      updateData.rating ??= existing.rating || 0
+      updateData.rating_count ??= existing.ratingCount || 0
+      updateData.collection_id ??= existing.collectionId || null
+      updateData.sell_individually ??= existing.sellIndividually ?? true
+      updateData.description ??= existing.description
+      updateData.in_game_images ??= existing.inGameImages || []
+      updateData.specs ??= existing.specs || []
+      updateData.created_at ??= existing.createdAt
+    }
+
+    const { error } = await supabase.from('products').upsert(updateData)
     if (error) return fail(error.message)
     await refreshProducts()
     return ok()
@@ -815,14 +867,24 @@ export function AdminProvider({ children }: { children: ReactNode }) {
 
   const updateBanner = useCallback(async (id: string, banner: Partial<Banner>) => {
     if (!isSupabaseConfigured()) return notConfigured()
-    const updateData: Partial<BannerRow> = {}
+    const updateData: Partial<BannerRow> = { id }
     if (banner.title !== undefined) updateData.title = banner.title
     if (banner.image !== undefined) updateData.image = banner.image
     if (banner.link !== undefined) updateData.link = banner.link
     if (banner.position !== undefined) updateData.position = banner.position
     if (banner.active !== undefined) updateData.active = banner.active
 
-    const { error } = await supabase.from('banners').update(updateData).eq('id', id)
+    const existing = banners.find(item => item.id === id)
+    if (existing) {
+      updateData.title ??= existing.title
+      updateData.image ??= existing.image
+      updateData.link ??= existing.link
+      updateData.position ??= existing.position
+      updateData.active ??= existing.active
+      updateData.created_at ??= existing.createdAt
+    }
+
+    const { error } = await supabase.from('banners').upsert(updateData)
     if (error) return fail(error.message)
     await refreshBanners()
     return ok()
@@ -889,7 +951,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
 
   const updateStoreCollection = useCallback(async (id: number, collection: Partial<StoreCollection>) => {
     if (!isSupabaseConfigured()) return notConfigured()
-    const updateData: Partial<StoreCollectionRow> = {}
+    const updateData: Partial<StoreCollectionRow> = { id }
     if (collection.name !== undefined) updateData.name = collection.name
     if (collection.subtitle !== undefined) updateData.subtitle = collection.subtitle
     if (collection.image !== undefined) updateData.image = collection.image
@@ -899,7 +961,20 @@ export function AdminProvider({ children }: { children: ReactNode }) {
     if (collection.active !== undefined) updateData.active = collection.active
     if (collection.productIds !== undefined) updateData.product_ids = collection.productIds
 
-    const { error } = await supabase.from('collections').update(updateData).eq('id', id)
+    const existing = storeCollections.find(item => item.id === id)
+    if (existing) {
+      updateData.name ??= existing.name
+      updateData.subtitle ??= existing.subtitle
+      updateData.image ??= existing.image
+      updateData.color ??= existing.color
+      updateData.price ??= existing.price
+      updateData.discount_percent ??= existing.discountPercent
+      updateData.active ??= existing.active
+      updateData.product_ids ??= existing.productIds
+      updateData.created_at ??= existing.createdAt
+    }
+
+    const { error } = await supabase.from('collections').upsert(updateData)
     if (error) return fail(error.message)
     await refreshStoreCollections()
     return ok()

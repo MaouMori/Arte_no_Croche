@@ -27,7 +27,7 @@ export default function Sobre() {
           </h2>
           <p className="text-text-muted leading-relaxed">
             A Arte no Croche nasceu do carinho por casas acolhedoras e pecas feitas a mao.
-            Cada tapecaria, quadro e almofada e criada com cuidado para levar textura,
+            Cada peca de croche, quadro e almofada e criada com cuidado para levar textura,
             beleza e personalidade ao seu ambiente.
           </p>
         </div>

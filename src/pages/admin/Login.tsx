@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { getAuthErrorMessage } from '../../lib/authErrors'
 import { useAuth } from '../../context/useAuth'
-import { LogIn, Eye, EyeOff, Skull, UserPlus, ArrowLeft, Home } from 'lucide-react'
+import { LogIn, Eye, EyeOff, Heart, UserPlus, ArrowLeft, Home } from 'lucide-react'
 
 export default function Login() {
   const { login, logout, signUp } = useAuth()
@@ -78,8 +78,8 @@ export default function Login() {
       <div className="relative w-full max-w-md">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <Skull className="w-8 h-8 text-neon-pink" />
-            <span className="font-display text-3xl text-neon-pink tracking-wider">QUANTIC</span>
+            <Heart className="w-8 h-8 text-neon-pink" />
+            <span className="font-display text-3xl text-neon-pink tracking-wider">Arte no Croche</span>
           </div>
           <p className="text-text-muted">
             {mode === 'login' && 'Painel Administrativo'}
