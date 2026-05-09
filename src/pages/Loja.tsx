@@ -423,6 +423,7 @@ export default function Loja() {
                 (() => {
                   const finalPrice = getFinalPrice(product.price, product.discountPercent)
                   const discountPercent = Math.min(100, Math.max(0, product.discountPercent || 0))
+                  const stockQuantity = product.stockQuantity ?? 0
                   return (
                 <div
                   key={product.id}
@@ -460,6 +461,9 @@ export default function Loja() {
                           -{discountPercent}%
                         </span>
                       )}
+                      <span className={`absolute bottom-2 right-2 rounded bg-white/90 px-2 py-0.5 text-[10px] font-bold ${stockQuantity > 0 ? 'text-green-700' : 'text-red-500'}`}>
+                        {stockQuantity > 0 ? `${stockQuantity} em estoque` : 'Sem estoque'}
+                      </span>
 
                       <button
                         onClick={(e) => {
@@ -498,10 +502,10 @@ export default function Loja() {
                         )}
                       </div>
                       <a
-                        href={getWhatsAppUrl({ ...product, finalPrice })}
+                        href={stockQuantity > 0 ? getWhatsAppUrl({ ...product, finalPrice }) : undefined}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-8 h-8 rounded-lg border border-neon-pink/30 text-neon-pink hover:bg-neon-pink hover:text-white flex items-center justify-center transition-all"
+                        className={`w-8 h-8 rounded-lg border border-neon-pink/30 flex items-center justify-center transition-all ${stockQuantity > 0 ? 'text-neon-pink hover:bg-neon-pink hover:text-white' : 'pointer-events-none text-text-dim opacity-40'}`}
                         aria-label={`Comprar ${product.name} pelo WhatsApp`}
                       >
                         <MessageCircle className="w-4 h-4" />

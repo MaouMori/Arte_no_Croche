@@ -80,6 +80,7 @@ export default function BestSellers() {
               {newArrivals.map(product => {
                 const finalPrice = getFinalPrice(product.price, product.discountPercent)
                 const discountPercent = Math.min(100, Math.max(0, product.discountPercent || 0))
+                const stockQuantity = product.stockQuantity ?? 0
                 return (
                 <div
                   key={product.id}
@@ -118,6 +119,9 @@ export default function BestSellers() {
                           -{discountPercent}%
                         </span>
                       )}
+                      <span className={`absolute bottom-2 right-2 rounded bg-white/90 px-2 py-0.5 text-[10px] font-bold ${stockQuantity > 0 ? 'text-green-700' : 'text-red-500'}`}>
+                        {stockQuantity > 0 ? `${stockQuantity} em estoque` : 'Sem estoque'}
+                      </span>
 
                       <button
                         onClick={(e) => {
@@ -154,10 +158,10 @@ export default function BestSellers() {
                       </p>
                     )}
                     <a
-                      href={getWhatsAppUrl({ ...product, finalPrice })}
+                      href={stockQuantity > 0 ? getWhatsAppUrl({ ...product, finalPrice }) : undefined}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full mt-2 flex items-center justify-center gap-2 border border-neon-pink/30 text-neon-pink hover:bg-neon-pink hover:text-white text-xs font-heading font-bold py-2 rounded-lg transition-all"
+                      className={`w-full mt-2 flex items-center justify-center gap-2 border border-neon-pink/30 text-xs font-heading font-bold py-2 rounded-lg transition-all ${stockQuantity > 0 ? 'text-neon-pink hover:bg-neon-pink hover:text-white' : 'pointer-events-none text-text-dim opacity-40'}`}
                     >
                       <MessageCircle className="w-3.5 h-3.5" />
                       COMPRAR

@@ -56,6 +56,9 @@ export default function Produto() {
   const ratingLabel = ratingCount === 1 ? '1 avaliacao' : `${ratingCount} avaliacoes`
   const cameFromAdmin = searchParams.get('from') === 'admin'
   const canBuyIndividually = product.sellIndividually ?? true
+  const stockQuantity = Math.max(0, product.stockQuantity ?? 0)
+  const hasStock = stockQuantity > 0
+  const selectedQuantity = Math.min(quantity, Math.max(1, stockQuantity || 1))
 
   if (!canBuyIndividually && !cameFromAdmin && !isAdmin) {
     return (
@@ -89,7 +92,10 @@ export default function Produto() {
     setRatingSaving(false)
 
     if (error) {
-      setRatingFeedback(`Nao foi possivel salvar sua avaliacao: ${error.message}`)
+      const missingFunction = error.message?.toLowerCase().includes('could not find the function')
+      setRatingFeedback(missingFunction
+        ? 'A avaliacao ainda precisa ser ativada no Supabase. Rode o SQL de estoque e avaliacoes.'
+        : `Nao foi possivel salvar sua avaliacao: ${error.message}`)
       return
     }
 
@@ -251,6 +257,10 @@ export default function Produto() {
             )}
           </div>
 
+          <div className={`rounded-2xl border px-4 py-3 text-sm font-semibold ${hasStock ? 'border-green-500/20 bg-green-500/10 text-green-700' : 'border-red-500/20 bg-red-500/10 text-red-500'}`}>
+            {hasStock ? `${stockQuantity} unidade${stockQuantity === 1 ? '' : 's'} em estoque` : 'Produto sem estoque no momento'}
+          </div>
+
           <div className="space-y-4 border-t border-neon-pink/10 pt-5">
             <h2 className="font-heading font-bold text-sm tracking-wider text-text-main">DESCRICAO</h2>
             <div className="space-y-4">
@@ -285,23 +295,25 @@ export default function Produto() {
           <div className="flex flex-col gap-4 pt-4 sm:flex-row">
             <div className="flex items-center justify-center gap-1 sm:justify-start">
               <button
-                onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="w-10 h-10 rounded-lg bg-void-lighter border border-neon-pink/20 flex items-center justify-center text-text-muted hover:text-neon-pink transition-colors"
+                onClick={() => setQuantity(Math.max(1, selectedQuantity - 1))}
+                disabled={!hasStock}
+                className="w-10 h-10 rounded-lg bg-void-lighter border border-neon-pink/20 flex items-center justify-center text-text-muted hover:text-neon-pink transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
-              <span className="w-12 text-center font-mono text-text-main">{quantity}</span>
+              <span className="w-12 text-center font-mono text-text-main">{hasStock ? selectedQuantity : 0}</span>
               <button
-                onClick={() => setQuantity(quantity + 1)}
-                className="w-10 h-10 rounded-lg bg-void-lighter border border-neon-pink/20 flex items-center justify-center text-text-muted hover:text-neon-pink transition-colors"
+                onClick={() => setQuantity(Math.min(stockQuantity, selectedQuantity + 1))}
+                disabled={!hasStock || selectedQuantity >= stockQuantity}
+                className="w-10 h-10 rounded-lg bg-void-lighter border border-neon-pink/20 flex items-center justify-center text-text-muted hover:text-neon-pink transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>
 
-            {canBuyIndividually ? (
+            {canBuyIndividually && hasStock ? (
               <a
-                href={getWhatsAppUrl({ ...product, finalPrice, quantity })}
+                href={getWhatsAppUrl({ ...product, finalPrice, quantity: selectedQuantity })}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1 bg-neon-pink hover:bg-hot-pink text-white py-3 rounded-xl font-heading font-bold tracking-wider transition-all btn-shine flex items-center justify-center gap-2"
@@ -309,6 +321,10 @@ export default function Produto() {
                 <MessageCircle className="w-5 h-5" />
                 COMPRAR PELO WHATSAPP
               </a>
+            ) : !hasStock ? (
+              <span className="flex-1 bg-void-lighter text-text-dim py-3 rounded-xl font-heading font-bold tracking-wider flex items-center justify-center gap-2">
+                SEM ESTOQUE
+              </span>
             ) : (
               <span className="flex-1 bg-void-lighter text-text-dim py-3 rounded-xl font-heading font-bold tracking-wider flex items-center justify-center gap-2">
                 DISPONIVEL SOMENTE NA COLECAO
@@ -383,3 +399,4 @@ export default function Produto() {
     </div>
   )
 }
+

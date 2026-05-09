@@ -229,6 +229,7 @@ function mapDbProduct(row: ProductRow): Product {
     discountPercent: row.discount_percent || 0,
     rating: row.rating || 0,
     ratingCount: row.rating_count || 0,
+    stockQuantity: row.stock_quantity ?? null,
     collectionId: row.collection_id || null,
     sellIndividually: row.sell_individually ?? true,
     description: row.description,
@@ -593,6 +594,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
       discount_percent: product.discountPercent || 0,
       rating: product.rating || 0,
       rating_count: product.ratingCount || 0,
+      stock_quantity: product.stockQuantity ?? 0,
       collection_id: product.collectionId || null,
       sell_individually: product.sellIndividually ?? true,
       description: product.description,
@@ -620,6 +622,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
     if (product.discountPercent !== undefined) updateData.discount_percent = product.discountPercent
     if (product.rating !== undefined) updateData.rating = product.rating
     if (product.ratingCount !== undefined) updateData.rating_count = product.ratingCount
+    if (product.stockQuantity !== undefined) updateData.stock_quantity = product.stockQuantity
     if (product.collectionId !== undefined) updateData.collection_id = product.collectionId
     if (product.sellIndividually !== undefined) updateData.sell_individually = product.sellIndividually
     if (product.description !== undefined) updateData.description = product.description
@@ -640,6 +643,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
       updateData.discount_percent ??= existing.discountPercent || 0
       updateData.rating ??= existing.rating || 0
       updateData.rating_count ??= existing.ratingCount || 0
+      updateData.stock_quantity ??= existing.stockQuantity ?? 0
       updateData.collection_id ??= existing.collectionId || null
       updateData.sell_individually ??= existing.sellIndividually ?? true
       updateData.description ??= existing.description

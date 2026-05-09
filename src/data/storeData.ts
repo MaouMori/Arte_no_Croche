@@ -13,6 +13,7 @@ export interface Product {
   discountPercent?: number
   rating?: number
   ratingCount?: number
+  stockQuantity?: number | null
   collectionId?: number | null
   sellIndividually?: boolean
   description: string

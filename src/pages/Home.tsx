@@ -8,6 +8,9 @@ const formatPrice = (price: number) => `R$ ${price.toFixed(2).replace('.', ',')}
 export default function Home() {
   const { products, feedbacks } = useAdmin()
   const featuredProducts = products.slice(0, 5)
+  const promotionProducts = products
+    .filter(product => (product.discountPercent || 0) > 0 && (product.stockQuantity ?? 0) > 0)
+    .slice(0, 4)
   const homeReviews = feedbacks.filter(feedback => feedback.approved).slice(0, 3)
 
   return (
@@ -98,6 +101,46 @@ export default function Home() {
 
       <section className="bg-[#fff8f2] px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
+          {promotionProducts.length > 0 && (
+            <div className="mb-16 rounded-[2rem] border border-neon-pink/15 bg-white p-5 shadow-xl shadow-[#9f7e56]/10 sm:p-8">
+              <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+                <div>
+                  <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-neon-pink">Promocoes</p>
+                  <h2 className="mt-2 font-display text-3xl font-semibold text-text-main">Pecas em destaque</h2>
+                </div>
+                <Link to="/loja" className="text-sm font-bold uppercase tracking-wide text-neon-pink hover:underline">
+                  Ver loja
+                </Link>
+              </div>
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                {promotionProducts.map(product => {
+                  const discountPercent = Math.min(100, Math.max(0, product.discountPercent || 0))
+                  const finalPrice = product.price * (1 - discountPercent / 100)
+                  return (
+                    <article key={product.id} className="overflow-hidden rounded-xl border border-neon-pink/15 bg-[#fff8f2]">
+                      <Link to={`/produto/${product.id}`} className="relative block aspect-square overflow-hidden bg-void-light">
+                        <img src={product.image} alt={product.name} className="h-full w-full object-cover transition duration-500 hover:scale-105" />
+                        <span className="absolute left-3 top-3 rounded-full bg-neon-pink px-3 py-1 text-xs font-bold text-white">
+                          -{discountPercent}%
+                        </span>
+                      </Link>
+                      <div className="p-4">
+                        <Link to={`/produto/${product.id}`} className="font-semibold text-text-main transition hover:text-neon-pink">
+                          {product.name}
+                        </Link>
+                        <p className="mt-1 text-xs text-text-muted">{product.stockQuantity} em estoque</p>
+                        <div className="mt-3 flex items-baseline gap-2">
+                          <span className="text-lg font-bold text-neon-pink">{formatPrice(finalPrice)}</span>
+                          <span className="text-xs text-text-dim line-through">{formatPrice(product.price)}</span>
+                        </div>
+                      </div>
+                    </article>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+
           <div className="mb-8 text-center">
             <h2 className="font-display text-3xl font-semibold text-text-main">Nossos croches artesanais</h2>
             <div className="mx-auto mt-3 flex w-36 items-center justify-center gap-2 text-neon-pink">
@@ -111,29 +154,38 @@ export default function Home() {
             {featuredProducts.length === 0 && (
               <p className="col-span-full text-center text-sm text-text-muted">Nenhum produto cadastrado no Supabase.</p>
             )}
-            {featuredProducts.map(product => (
-              <article key={product.id} className="overflow-hidden rounded-xl border border-neon-pink/15 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl hover:shadow-[#9f7e56]/10">
-                <Link to={`/produto/${product.id}`} className="block aspect-[4/4.2] overflow-hidden bg-void-light">
-                  <img src={product.image} alt={product.name} className="h-full w-full object-cover transition duration-500 hover:scale-105" />
-                </Link>
-                <div className="p-4 text-center">
-                  <Link to={`/produto/${product.id}`} className="font-semibold text-text-main transition hover:text-neon-pink">
-                    {product.name}
+            {featuredProducts.map(product => {
+              const discountPercent = Math.min(100, Math.max(0, product.discountPercent || 0))
+              const finalPrice = product.price * (1 - discountPercent / 100)
+              const stockQuantity = product.stockQuantity ?? 0
+              return (
+                <article key={product.id} className="overflow-hidden rounded-xl border border-neon-pink/15 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl hover:shadow-[#9f7e56]/10">
+                  <Link to={`/produto/${product.id}`} className="relative block aspect-[4/4.2] overflow-hidden bg-void-light">
+                    <img src={product.image} alt={product.name} className="h-full w-full object-cover transition duration-500 hover:scale-105" />
+                    {discountPercent > 0 && <span className="absolute left-3 top-3 rounded-full bg-neon-pink px-3 py-1 text-xs font-bold text-white">-{discountPercent}%</span>}
                   </Link>
-                  <p className="mt-1 text-xs text-text-muted">{product.specs?.[0]?.value || 'Feito a mao'}</p>
-                  <p className="mt-3 text-lg font-bold text-text-main">{formatPrice(product.price)}</p>
-                  <a
-                    href={getWhatsAppUrl(product)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-neon-pink px-3 py-3 text-[11px] font-extrabold uppercase text-white transition hover:bg-hot-pink"
-                  >
-                    <MessageCircle className="h-4 w-4" />
-                    Comprar pelo WhatsApp
-                  </a>
-                </div>
-              </article>
-            ))}
+                  <div className="p-4 text-center">
+                    <Link to={`/produto/${product.id}`} className="font-semibold text-text-main transition hover:text-neon-pink">
+                      {product.name}
+                    </Link>
+                    <p className={`mt-1 text-xs ${stockQuantity > 0 ? 'text-green-700' : 'text-red-500'}`}>
+                      {stockQuantity > 0 ? `${stockQuantity} em estoque` : 'Sem estoque'}
+                    </p>
+                    <p className="mt-3 text-lg font-bold text-text-main">{formatPrice(finalPrice)}</p>
+                    {discountPercent > 0 && <p className="text-xs text-text-dim line-through">{formatPrice(product.price)}</p>}
+                    <a
+                      href={stockQuantity > 0 ? getWhatsAppUrl({ ...product, finalPrice }) : undefined}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full px-3 py-3 text-[11px] font-extrabold uppercase transition ${stockQuantity > 0 ? 'bg-neon-pink text-white hover:bg-hot-pink' : 'pointer-events-none bg-void-lighter text-text-dim'}`}
+                    >
+                      <MessageCircle className="h-4 w-4" />
+                      {stockQuantity > 0 ? 'Comprar pelo WhatsApp' : 'Sem estoque'}
+                    </a>
+                  </div>
+                </article>
+              )
+            })}
           </div>
         </div>
       </section>

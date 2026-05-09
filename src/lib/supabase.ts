@@ -34,6 +34,7 @@ export type Tables = {
     discount_percent?: number
     rating?: number
     rating_count?: number
+    stock_quantity?: number | null
     collection_id?: number | null
     sell_individually?: boolean
     description: string

@@ -126,13 +126,14 @@ export default function AdminProdutos() {
                 <th className="pb-3">Produto</th>
                 <th className="pb-3">Categoria</th>
                 <th className="pb-3">Preco</th>
+                <th className="pb-3">Estoque</th>
                 <th className="pb-3">Status</th>
                 <th className="pb-3">Acoes</th>
               </tr>
             </thead>
             <tbody className="text-sm">
               {products.length === 0 && !isCreating && (
-                <tr><td colSpan={5} className="py-8 text-center text-text-dim">Nenhum produto cadastrado. Clique em "Novo produto" para adicionar.</td></tr>
+                <tr><td colSpan={6} className="py-8 text-center text-text-dim">Nenhum produto cadastrado. Clique em "Novo produto" para adicionar.</td></tr>
               )}
               {paginated.map(product => (
                 <tr key={product.id} className="border-t border-neon-pink/5 hover:bg-void-lighter/30 transition-colors">
@@ -147,9 +148,19 @@ export default function AdminProdutos() {
                     </div>
                   </td>
                   <td className="py-3 text-text-dim">{getCategoryLabel(product.category)}</td>
-                  <td className="py-3 text-neon-pink font-semibold">R$ {product.price.toFixed(2).replace('.', ',')}</td>
                   <td className="py-3">
-                    <span className="text-[10px] bg-green-500/10 text-green-400 px-2 py-0.5 rounded-full">{product.isNew ? 'Novo' : 'Ativo'}</span>
+                    <div className="flex flex-col">
+                      <span className="text-neon-pink font-semibold">R$ {product.price.toFixed(2).replace('.', ',')}</span>
+                      {(product.discountPercent || 0) > 0 && (
+                        <span className="text-[10px] text-green-400">{product.discountPercent}% em promocao</span>
+                      )}
+                    </div>
+                  </td>
+                  <td className="py-3 text-text-dim">{product.stockQuantity ?? 0} un.</td>
+                  <td className="py-3">
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full ${(product.stockQuantity ?? 0) <= 0 ? 'bg-red-500/10 text-red-400' : (product.discountPercent || 0) > 0 ? 'bg-green-500/10 text-green-400' : 'bg-neon-pink/10 text-neon-pink'}`}>
+                      {(product.stockQuantity ?? 0) <= 0 ? 'Sem estoque' : (product.discountPercent || 0) > 0 ? 'Promocao' : product.isNew ? 'Novo' : 'Ativo'}
+                    </span>
                   </td>
                   <td className="py-3">
                     <div className="flex gap-1">
@@ -232,6 +243,7 @@ function ProductModal({
       isNew: true,
       isBestseller: false,
       discountPercent: 0,
+      stockQuantity: 0,
       rating: 0,
       ratingCount: 0,
       collectionId: null,
@@ -271,6 +283,7 @@ function ProductModal({
       inGameImages: [],
       specs: form.specs || [],
       discountPercent: Math.min(100, Math.max(0, form.discountPercent || 0)),
+      stockQuantity: Math.max(0, Math.floor(form.stockQuantity || 0)),
       id: product?.id || Date.now(),
     })
   }
@@ -355,9 +368,16 @@ function ProductModal({
             </div>
 
             <div>
-              <label className="block text-xs font-heading font-bold text-text-main tracking-wider mb-1">Desconto (%)</label>
+              <label className="block text-xs font-heading font-bold text-text-main tracking-wider mb-1">Promocao / desconto (%)</label>
               <input type="number" min="0" max="100" step="1" value={form.discountPercent || 0} onChange={e => setForm({ ...form, discountPercent: Number(e.target.value) })}
                 className="w-full bg-void-light border border-neon-pink/20 rounded-lg px-4 py-2 text-text-main focus:outline-none focus:border-neon-pink/50" />
+              <p className="mt-1 text-[11px] text-text-dim">Acima de 0%, o produto aparece em destaque na home.</p>
+            </div>
+
+            <div>
+              <label className="block text-xs font-heading font-bold text-text-main tracking-wider mb-1">Estoque</label>
+              <input type="number" min="0" step="1" value={form.stockQuantity ?? 0} onChange={e => setForm({ ...form, stockQuantity: Number(e.target.value) })}
+                className="w-full bg-void-light border border-neon-pink/20 rounded-lg px-4 py-2 text-text-main focus:outline-none focus:border-neon-pink/50" required />
             </div>
 
             <div>
