@@ -23,7 +23,7 @@ export interface Order {
   items: { productId: number; name: string; price: number; quantity: number }[]
   couponCode?: string
   discountAmount?: number
-  paymentMethod?: 'pix'
+  paymentMethod?: 'whatsapp'
   paymentStatus?: 'pendente' | 'pago'
   discordVerified?: boolean
   paymentProofUrl?: string
@@ -258,7 +258,7 @@ function mapDbOrder(row: OrderRow): Order {
     })),
     couponCode: row.coupon_code,
     discountAmount: row.discount_amount || 0,
-    paymentMethod: row.payment_method || 'pix',
+    paymentMethod: row.payment_method || 'whatsapp',
     paymentStatus: row.payment_status || (row.status === 'pago' || row.status === 'concluido' ? 'pago' : 'pendente'),
     discordVerified: row.discord_verified || false,
     paymentProofUrl: row.payment_proof_url,
@@ -660,7 +660,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
       })),
       coupon_code: order.couponCode,
       discount_amount: order.discountAmount || 0,
-      payment_method: order.paymentMethod || 'pix',
+      payment_method: order.paymentMethod || 'whatsapp',
       payment_status: order.paymentStatus || 'pendente',
       discord_verified: order.discordVerified || false,
       payment_proof_url: order.paymentProofUrl,

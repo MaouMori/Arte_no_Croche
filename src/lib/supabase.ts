@@ -108,7 +108,7 @@ export type Tables = {
     items: { product_id: number; name: string; price: number; quantity: number }[]
     coupon_code?: string
     discount_amount?: number
-    payment_method?: 'pix'
+    payment_method?: 'whatsapp'
     payment_status?: 'pendente' | 'pago'
     discord_verified?: boolean
     payment_proof_url?: string

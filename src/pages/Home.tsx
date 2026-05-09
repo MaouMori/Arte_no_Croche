@@ -178,7 +178,7 @@ export default function Home() {
           <div className="mt-10 grid gap-4 rounded-2xl border border-neon-pink/15 bg-white p-5 sm:grid-cols-3">
             {[
               { icon: Truck, text: 'Entrega local combinada' },
-              { icon: ShieldCheck, text: 'Pagamento por Pix' },
+              { icon: ShieldCheck, text: 'Pedido combinado pelo WhatsApp' },
               { icon: PackageCheck, text: 'Pecas embaladas com cuidado' },
             ].map(item => (
               <div key={item.text} className="flex items-center justify-center gap-3 text-sm font-semibold text-text-muted">

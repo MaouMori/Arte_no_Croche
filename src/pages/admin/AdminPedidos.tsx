@@ -328,8 +328,8 @@ function OrderModal({
             </select>
             <select value={form.paymentStatus} onChange={event => setForm(prev => ({ ...prev, paymentStatus: event.target.value as NonNullable<Order['paymentStatus']> }))}
               className="bg-void-light border border-neon-pink/20 rounded-lg px-3 py-2 text-text-main text-sm">
-              <option value="pendente">Pix pendente</option>
-              <option value="pago">Pix confirmado</option>
+              <option value="pendente">Pagamento pendente</option>
+              <option value="pago">Pagamento combinado</option>
             </select>
             <label className="sm:col-span-2 flex items-center gap-2 text-sm text-text-muted">
               <input type="checkbox" checked={form.discordVerified} onChange={event => setForm(prev => ({ ...prev, discordVerified: event.target.checked }))} className="accent-neon-pink" />

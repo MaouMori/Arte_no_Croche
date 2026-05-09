@@ -198,7 +198,7 @@ export default function Dashboard() {
           <div className="grid grid-cols-3 gap-3 pt-4 border-t border-neon-pink/10">
             <div><p className="text-[10px] text-neon-pink mb-0.5">Melhor categoria</p><p className="text-sm font-bold text-text-main">Acessorios</p><p className="text-[10px] text-text-dim">R$ 12.560,00</p></div>
             <div><p className="text-[10px] text-neon-pink mb-0.5">Melhor produto</p><p className="text-sm font-bold text-text-main">Conjunto Rebel Girl</p><p className="text-[10px] text-text-dim">156 vendas</p></div>
-            <div><p className="text-[10px] text-neon-pink mb-0.5">Forma de pagamento</p><p className="text-sm font-bold text-text-main">Pix</p><p className="text-[10px] text-text-dim">45.2%</p></div>
+            <div><p className="text-[10px] text-neon-pink mb-0.5">Canal de venda</p><p className="text-sm font-bold text-text-main">WhatsApp</p><p className="text-[10px] text-text-dim">Atendimento direto</p></div>
           </div>
         </div>
       </div>

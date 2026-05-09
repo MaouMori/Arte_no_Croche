@@ -103,7 +103,7 @@ export default function Footer() {
                 WhatsApp
               </a>
               <span className="px-3 py-2 rounded-full bg-void-lighter border border-neon-pink/10 text-text-muted text-[10px] font-bold uppercase">
-                Pix
+                Entrega local
               </span>
             </div>
           </div>
