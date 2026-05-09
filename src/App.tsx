@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
@@ -10,13 +10,9 @@ import ColecaoDetalhe from './pages/ColecaoDetalhe'
 import Sobre from './pages/Sobre'
 import Termos from './pages/Termos'
 import Ajuda from './pages/Ajuda'
-import MeusPedidos from './pages/MeusPedidos'
 import Feedback from './pages/Feedback'
-import Checkout from './pages/Checkout'
 import StoreLogin from './pages/Login'
 import MinhaConta from './pages/MinhaConta'
-import CartDrawer from './components/CartDrawer'
-import { CartProvider } from './context/CartContext'
 import { AuthProvider } from './context/AuthContext'
 import { useAuth } from './context/useAuth'
 import { AdminProvider } from './context/AdminContext'
@@ -69,17 +65,8 @@ function ScrollToTop() {
 }
 
 function AppContent() {
-  const [cartOpen, setCartOpen] = useState(false)
   const location = useLocation()
   const hideStoreChrome = location.pathname === '/login'
-
-  useEffect(() => {
-    if (cartOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
-  }, [cartOpen])
 
   return (
     <Routes>
@@ -123,7 +110,7 @@ function AppContent() {
         element={
           <div className="min-h-screen bg-void text-text-main font-body relative">
             <div className="noise-overlay" />
-            {!hideStoreChrome && <Navbar onCartClick={() => setCartOpen(true)} />}
+            {!hideStoreChrome && <Navbar />}
             
             <main>
               <Routes>
@@ -135,16 +122,15 @@ function AppContent() {
                 <Route path="/sobre" element={<Sobre />} />
                 <Route path="/termos" element={<Termos />} />
                 <Route path="/ajuda" element={<Ajuda />} />
-                <Route path="/meus-pedidos" element={<MeusPedidos />} />
+                <Route path="/meus-pedidos" element={<Navigate to="/loja" replace />} />
                 <Route path="/feedback" element={<Feedback />} />
-                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/checkout" element={<Navigate to="/loja" replace />} />
                 <Route path="/login" element={<StoreLogin />} />
                 <Route path="/minha-conta" element={<MinhaConta />} />
               </Routes>
             </main>
             
             {!hideStoreChrome && <Footer />}
-            {!hideStoreChrome && <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />}
           </div>
         }
       />
@@ -156,12 +142,10 @@ function App() {
   return (
     <AuthProvider>
       <AdminProvider>
-        <CartProvider>
-          <BrowserRouter>
-            <ScrollToTop />
-            <AppContent />
-          </BrowserRouter>
-        </CartProvider>
+        <BrowserRouter>
+          <ScrollToTop />
+          <AppContent />
+        </BrowserRouter>
       </AdminProvider>
     </AuthProvider>
   )

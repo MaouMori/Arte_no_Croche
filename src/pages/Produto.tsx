@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useParams, Link, useSearchParams } from 'react-router-dom'
 import {
-  ShoppingCart,
+  MessageCircle,
   Heart,
   ChevronLeft,
   ChevronRight,
@@ -12,16 +12,15 @@ import {
   Shield,
 } from 'lucide-react'
 import { useAdmin } from '../context/useAdmin'
-import { useCart } from '../context/useCart'
 import { useAuth } from '../context/useAuth'
 import { supabase } from '../lib/supabase'
+import { getWhatsAppUrl } from '../lib/whatsapp'
 
 export default function Produto() {
   const { id } = useParams<{ id: string }>()
   const [searchParams] = useSearchParams()
   const { products, refreshProducts } = useAdmin()
   const product = products.find(p => p.id === Number(id))
-  const { addItem } = useCart()
   const { user, isAuthenticated, isAdmin } = useAuth()
 
   const [selectedImage, setSelectedImage] = useState(0)
@@ -71,18 +70,6 @@ export default function Produto() {
         </Link>
       </div>
     )
-  }
-
-  const handleAddToCart = () => {
-    if (!canBuyIndividually) return
-    for (let i = 0; i < quantity; i++) {
-      addItem({
-        id: product.id,
-        name: product.name,
-        price: finalPrice,
-        image: product.image,
-      })
-    }
   }
 
   const handleRate = async (value: number) => {
@@ -305,22 +292,29 @@ export default function Produto() {
               </button>
             </div>
 
-            <button
-              onClick={handleAddToCart}
-              disabled={!canBuyIndividually}
-              className="flex-1 bg-neon-pink hover:bg-hot-pink disabled:bg-void-lighter disabled:text-text-dim disabled:cursor-not-allowed text-white py-3 rounded-xl font-heading font-bold tracking-wider transition-all btn-shine flex items-center justify-center gap-2"
-            >
-              <ShoppingCart className="w-5 h-5" />
-              {canBuyIndividually ? 'ADICIONAR AO CARRINHO' : 'DISPONIVEL SOMENTE NA COLECAO'}
-            </button>
+            {canBuyIndividually ? (
+              <a
+                href={getWhatsAppUrl({ ...product, finalPrice, quantity })}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 bg-neon-pink hover:bg-hot-pink text-white py-3 rounded-xl font-heading font-bold tracking-wider transition-all btn-shine flex items-center justify-center gap-2"
+              >
+                <MessageCircle className="w-5 h-5" />
+                COMPRAR PELO WHATSAPP
+              </a>
+            ) : (
+              <span className="flex-1 bg-void-lighter text-text-dim py-3 rounded-xl font-heading font-bold tracking-wider flex items-center justify-center gap-2">
+                DISPONIVEL SOMENTE NA COLECAO
+              </span>
+            )}
           </div>
 
           {/* Benefits */}
           <div className="grid grid-cols-3 gap-3 pt-4">
             {[
-              { icon: Truck, label: 'Entrega via Discord' },
-              { icon: Shield, label: 'Compra segura' },
-              { icon: Package, label: 'Arquivos prontos' },
+              { icon: Truck, label: 'Entrega local' },
+              { icon: Shield, label: 'Compra pelo WhatsApp' },
+              { icon: Package, label: 'Feito a mao' },
             ].map(benefit => (
               <div
                 key={benefit.label}

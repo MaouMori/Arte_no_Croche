@@ -5,21 +5,18 @@ import {
   ChevronRight,
   Crown,
   Diamond,
-  Gamepad2,
   Heart,
   MessageCircle,
   Package,
   Palette,
   ShieldCheck,
-  ShoppingCart,
   Sparkles,
   Star,
   Tag,
   Zap,
 } from 'lucide-react'
 import { useAdmin } from '../context/useAdmin'
-import { useCart } from '../context/useCart'
-import { useDiscordUrl } from '../lib/siteConfig'
+import { getWhatsAppUrl } from '../lib/whatsapp'
 
 const getFinalPrice = (price: number, discountPercent = 0) => {
   const safeDiscount = Math.min(100, Math.max(0, discountPercent))
@@ -31,8 +28,6 @@ const formatPrice = (price: number) => `R$ ${price.toFixed(2).replace('.', ',')}
 export default function ColecaoDetalhe() {
   const { id } = useParams<{ id: string }>()
   const { storeCollections, products, productCategories, productColors } = useAdmin()
-  const { addItem } = useCart()
-  const discordUrl = useDiscordUrl()
   const [sortBy, setSortBy] = useState('recentes')
   const [liked, setLiked] = useState<Set<number>>(new Set())
 
@@ -81,15 +76,6 @@ export default function ColecaoDetalhe() {
   const secondLine = heroWords.slice(Math.ceil(heroWords.length / 2)).join(' ')
   const aboutText = collection.subtitle || `A colecao ${collection.name} foi criada para representar atitude, estilo e autenticidade.`
 
-  const handleAddCollection = () => {
-    addItem({
-      id: -collection.id,
-      name: `Colecao ${collection.name}`,
-      price: finalPrice,
-      image: collection.image,
-    })
-  }
-
   return (
     <div className="bg-void">
       <section className="relative overflow-hidden border-b border-neon-pink/15">
@@ -125,7 +111,7 @@ export default function ColecaoDetalhe() {
                   { icon: Diamond, title: 'Pecas exclusivas', text: 'Modelos unicos que voce so encontra aqui.' },
                   { icon: Zap, title: 'Estilo autentico', text: mainCategory ? `Designs feitos para ${mainCategory}.` : 'Designs feitos para quem ousa ser diferente.' },
                   { icon: Crown, title: 'Qualidade premium', text: 'Texturas e detalhes pensados para voce.' },
-                  { icon: Gamepad2, title: 'Entrega via Discord', text: 'Receba seus produtos direto no seu Discord.' },
+                  { icon: MessageCircle, title: 'Compra via WhatsApp', text: 'Atendimento direto para combinar sua peca.' },
                 ].map(item => (
                   <div key={item.title} className="flex gap-3">
                     <div className="w-11 h-11 rounded-lg border border-neon-pink/35 bg-neon-pink/10 flex items-center justify-center flex-shrink-0">
@@ -142,20 +128,20 @@ export default function ColecaoDetalhe() {
               <div className="mt-10 rounded-xl border border-neon-pink/25 bg-black/45 backdrop-blur-sm p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-lg border border-neon-pink/30 bg-white flex items-center justify-center">
-                    <Gamepad2 className="w-7 h-7 text-void" />
+                    <MessageCircle className="w-7 h-7 text-void" />
                   </div>
                   <div>
-                    <h3 className="font-heading font-bold text-text-main text-sm tracking-wider">ENTRE NO NOSSO DISCORD</h3>
-                    <p className="text-text-muted text-xs leading-relaxed mt-1">Fique por dentro de lancamentos, novidades e promocoes exclusivas.</p>
+                    <h3 className="font-heading font-bold text-text-main text-sm tracking-wider">FALE PELO WHATSAPP</h3>
+                    <p className="text-text-muted text-xs leading-relaxed mt-1">Tire duvidas, combine detalhes e faca seu pedido direto com a gente.</p>
                   </div>
                 </div>
                 <a
-                  href={discordUrl}
+                  href={getWhatsAppUrl()}
                   target="_blank"
                   rel="noreferrer"
                   className="bg-neon-pink hover:bg-hot-pink text-white px-4 py-3 rounded-lg font-heading font-bold text-xs tracking-wider transition-all flex items-center justify-center gap-2 whitespace-nowrap"
                 >
-                  ENTRAR NO DISCORD
+                  CHAMAR NO WHATSAPP
                   <MessageCircle className="w-4 h-4" />
                 </a>
               </div>
@@ -183,7 +169,7 @@ export default function ColecaoDetalhe() {
               <h2 className="font-heading font-bold text-xl text-text-main uppercase">Sobre a colecao</h2>
             </div>
             <p className="text-text-muted leading-relaxed">{aboutText}</p>
-            <p className="text-text-muted leading-relaxed mt-3">Cada peca carrega a identidade da colecao e ajuda a montar uma estetica forte dentro do FiveM.</p>
+            <p className="text-text-muted leading-relaxed mt-3">Cada peca carrega a identidade da colecao e ajuda a deixar sua casa mais acolhedora.</p>
             {collection.price > 0 && <div className="mt-6 flex items-baseline gap-3">
               <span className="text-neon-pink font-heading font-bold text-2xl">{formatPrice(finalPrice)}</span>
               {collection.discountPercent > 0 && (
@@ -284,18 +270,15 @@ export default function ColecaoDetalhe() {
                       <Link to={`/produto/${product.id}`} className="text-neon-pink hover:bg-neon-pink hover:text-white text-xs font-heading font-bold py-2 text-center transition-all">
                         VER DETALHES
                       </Link>
-                      <button
-                        onClick={() => {
-                          if (product.sellIndividually ?? true) {
-                            addItem({ id: product.id, name: product.name, price: productPrice, image: product.image })
-                          } else {
-                            handleAddCollection()
-                          }
-                        }}
+                      <a
+                        href={getWhatsAppUrl({ ...product, finalPrice: productPrice })}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="border-l border-neon-pink/30 text-neon-pink hover:bg-neon-pink hover:text-white flex items-center justify-center transition-all"
+                        aria-label={`Comprar ${product.name} pelo WhatsApp`}
                       >
-                        <ShoppingCart className="w-4 h-4" />
-                      </button>
+                        <MessageCircle className="w-4 h-4" />
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -316,12 +299,12 @@ export default function ColecaoDetalhe() {
             </div>
             <div>
               <p className="font-heading font-bold text-neon-pink">Pecas que combinam</p>
-              <p className="text-text-muted text-sm">Monte looks unicos com os itens da colecao {collection.name}.</p>
+              <p className="text-text-muted text-sm">Combine pecas da colecao {collection.name} para transformar o seu ambiente.</p>
             </div>
           </div>
           <div className="relative font-heading font-bold text-2xl sm:text-3xl text-text-main uppercase tracking-wider">
-            Expresse sua essencia.
-            <span className="block text-neon-pink">Quebre regras.</span>
+            Sua casa, sua essencia.
+            <span className="block text-neon-pink">Feita a mao.</span>
           </div>
           <Link to="/loja" className="relative bg-neon-pink hover:bg-hot-pink text-white px-5 py-3 rounded-lg font-heading font-bold text-sm tracking-wider transition-all flex items-center gap-2">
             VER TODOS OS PRODUTOS

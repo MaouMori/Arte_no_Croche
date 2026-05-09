@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import {
-  ShoppingCart,
+  MessageCircle,
   Heart,
   ChevronDown,
   ChevronLeft,
@@ -11,7 +11,7 @@ import {
 } from 'lucide-react'
 import { categories as defaultCategories, styles as defaultStyles, colors as defaultColors } from '../data/storeData'
 import { useAdmin } from '../context/useAdmin'
-import { useCart } from '../context/useCart'
+import { getWhatsAppUrl } from '../lib/whatsapp'
 
 const ITEMS_PER_PAGE = 16
 
@@ -38,7 +38,7 @@ export default function Loja() {
   const [category, setCategory] = useState('todos')
   const [selectedStyles, setSelectedStyles] = useState<Set<string>>(new Set())
   const [selectedColors, setSelectedColors] = useState<Set<string>>(new Set())
-  const [priceRange, setPriceRange] = useState(200)
+  const [priceRange, setPriceRange] = useState(500)
   const [onlyNew, setOnlyNew] = useState(false)
   const [liked, setLiked] = useState<Set<number>>(new Set())
   const [searchQuery, setSearchQuery] = useState('')
@@ -47,7 +47,6 @@ export default function Loja() {
   const [openFilters, setOpenFilters] = useState<Set<string>>(
     new Set(['categorias', 'preco', 'cor', 'estilo', 'lancamentos'])
   )
-  const { addItem } = useCart()
 
   const toggleFilter = (key: string) => {
     setOpenFilters(prev => {
@@ -86,7 +85,7 @@ export default function Loja() {
     setCategory('todos')
     setSelectedStyles(new Set())
     setSelectedColors(new Set())
-    setPriceRange(200)
+    setPriceRange(500)
     setOnlyNew(false)
     setSearchQuery('')
     setCurrentPage(1)
@@ -96,7 +95,7 @@ export default function Loja() {
     (category !== 'todos' ? 1 : 0) +
     selectedStyles.size +
     selectedColors.size +
-    (priceRange < 200 ? 1 : 0) +
+    (priceRange < 500 ? 1 : 0) +
     (onlyNew ? 1 : 0)
 
   const filtered = useMemo(() => {
@@ -240,7 +239,7 @@ export default function Loja() {
                   <input
                     type="range"
                     min="0"
-                    max="200"
+                    max="500"
                     value={priceRange}
                     onChange={e => {
                       setPriceRange(Number(e.target.value))
@@ -494,19 +493,15 @@ export default function Loja() {
                           </span>
                         )}
                       </div>
-                      <button
-                        onClick={() =>
-                          addItem({
-                            id: product.id,
-                            name: product.name,
-                            price: finalPrice,
-                            image: product.image,
-                          })
-                        }
+                      <a
+                        href={getWhatsAppUrl({ ...product, finalPrice })}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="w-8 h-8 rounded-lg border border-neon-pink/30 text-neon-pink hover:bg-neon-pink hover:text-white flex items-center justify-center transition-all"
+                        aria-label={`Comprar ${product.name} pelo WhatsApp`}
                       >
-                        <ShoppingCart className="w-4 h-4" />
-                      </button>
+                        <MessageCircle className="w-4 h-4" />
+                      </a>
                     </div>
                   </div>
                 </div>

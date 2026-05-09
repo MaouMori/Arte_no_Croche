@@ -1,18 +1,13 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { ChevronDown, LayoutDashboard, LogIn, LogOut, Menu, MessageCircle, ShoppingCart, User, X, Heart } from 'lucide-react'
-import { useCart } from '../context/useCart'
+import { ChevronDown, LayoutDashboard, LogIn, LogOut, Menu, MessageCircle, User, X, Heart } from 'lucide-react'
 import { useAuth } from '../context/useAuth'
+import { getWhatsAppUrl } from '../lib/whatsapp'
 
-interface NavbarProps {
-  onCartClick: () => void
-}
-
-export default function Navbar({ onCartClick }: NavbarProps) {
+export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [accountOpen, setAccountOpen] = useState(false)
-  const { totalItems } = useCart()
   const { user, isAuthenticated, isAdmin, logout } = useAuth()
   const location = useLocation()
 
@@ -83,20 +78,8 @@ export default function Navbar({ onCartClick }: NavbarProps) {
 
             {/* Actions */}
             <div className="flex items-center gap-2 lg:gap-3">
-              <button
-                onClick={onCartClick}
-                className="relative p-2 text-text-muted hover:text-neon-pink transition-colors group"
-              >
-                <ShoppingCart className="w-5 h-5" />
-                {totalItems > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-neon-pink text-white text-xs font-bold rounded-full flex items-center justify-center badge-bounce">
-                    {totalItems}
-                  </span>
-                )}
-              </button>
-
               <a
-                href="https://wa.me/5512991234567?text=Ola!%20Vim%20pelo%20site%20Arte%20no%20Croche%20e%20quero%20fazer%20um%20pedido."
+                href={getWhatsAppUrl()}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hidden lg:flex items-center gap-2 rounded-full bg-neon-pink px-5 py-3 text-xs font-extrabold uppercase tracking-wide text-white transition hover:bg-hot-pink"
@@ -146,14 +129,6 @@ export default function Navbar({ onCartClick }: NavbarProps) {
                           <User className="w-4 h-4" />
                           Minha conta
                         </Link>
-                        <Link
-                          to="/meus-pedidos"
-                          onClick={() => setAccountOpen(false)}
-                          className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-text-muted hover:bg-neon-pink/10 hover:text-neon-pink transition-colors"
-                        >
-                          <ShoppingCart className="w-4 h-4" />
-                          Meus pedidos
-                        </Link>
                         <button
                           onClick={handleLogout}
                           className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-text-muted hover:bg-neon-pink/10 hover:text-neon-pink transition-colors text-left"
@@ -164,14 +139,6 @@ export default function Navbar({ onCartClick }: NavbarProps) {
                       </>
                     ) : (
                       <>
-                        <Link
-                          to="/meus-pedidos"
-                          onClick={() => setAccountOpen(false)}
-                          className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-text-muted hover:bg-neon-pink/10 hover:text-neon-pink transition-colors"
-                        >
-                          <ShoppingCart className="w-4 h-4" />
-                          Meus pedidos
-                        </Link>
                         <Link
                           to="/feedback"
                           onClick={() => setAccountOpen(false)}
@@ -235,14 +202,6 @@ export default function Navbar({ onCartClick }: NavbarProps) {
               </Link>
             ))}
             <Link
-              to="/meus-pedidos"
-              onClick={() => setMobileOpen(false)}
-              className="flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-heading font-semibold tracking-wider text-text-muted hover:bg-void-lighter hover:text-text-main transition-colors"
-            >
-              <ShoppingCart className="w-4 h-4" />
-              MEUS PEDIDOS
-            </Link>
-            <Link
               to="/feedback"
               onClick={() => setMobileOpen(false)}
               className="flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-heading font-semibold tracking-wider text-text-muted hover:bg-void-lighter hover:text-text-main transition-colors"
@@ -250,6 +209,16 @@ export default function Navbar({ onCartClick }: NavbarProps) {
               <Heart className="w-4 h-4" />
               FEEDBACK
             </Link>
+            <a
+              href={getWhatsAppUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-heading font-semibold tracking-wider text-neon-pink hover:bg-neon-pink/10 transition-colors"
+            >
+              <MessageCircle className="w-4 h-4" />
+              COMPRAR PELO WHATSAPP
+            </a>
             <Link
               to={isAuthenticated && isAdmin ? '/admin' : isAuthenticated ? '/minha-conta' : '/login'}
               onClick={() => setMobileOpen(false)}

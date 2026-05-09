@@ -1,9 +1,7 @@
 import { MessageCircle, Mail } from 'lucide-react'
-import { useDiscordUrl } from '../lib/siteConfig'
+import { getWhatsAppUrl } from '../lib/whatsapp'
 
 export default function DiscordCTA() {
-  const discordUrl = useDiscordUrl()
-
   return (
     <section className="py-12 lg:py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -24,22 +22,22 @@ export default function DiscordCTA() {
             {/* Center - Text */}
             <div className="flex-1 text-center lg:text-left">
               <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl text-white tracking-wide mb-2">
-                FACA PARTE DO NOSSO MUNDO!
+                FALE COM A GENTE!
               </h2>
               <p className="text-text-muted text-sm sm:text-base">
-                Receba novidades, lancamentos e ofertas exclusivas no nosso Discord.
+                Tire duvidas, combine detalhes e compre pelo WhatsApp.
               </p>
             </div>
 
             {/* Right - Button */}
             <a
-              href={discordUrl}
+              href={getWhatsAppUrl()}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-shrink-0 inline-flex items-center gap-2 bg-[#5865F2] hover:bg-[#4752C4] text-white px-6 py-3 rounded-xl font-heading font-bold text-sm tracking-wider transition-all btn-shine"
+              className="flex-shrink-0 inline-flex items-center gap-2 bg-neon-pink hover:bg-hot-pink text-white px-6 py-3 rounded-xl font-heading font-bold text-sm tracking-wider transition-all btn-shine"
             >
                 <MessageCircle className="w-5 h-5" />
-                ENTRAR NO DISCORD
+                CHAMAR NO WHATSAPP
             </a>
           </div>
         </div>

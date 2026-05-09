@@ -1,4 +1,4 @@
-import { Diamond, Zap, Lock, Star, Headphones } from 'lucide-react'
+import { Diamond, MessageCircle, Lock, Star, Headphones } from 'lucide-react'
 
 const features = [
   {
@@ -7,9 +7,9 @@ const features = [
     description: 'Pecas unicas criadas com muito estilo.',
   },
   {
-    icon: Zap,
-    title: 'ENVIO VIA DISCORD',
-    description: 'Entrega rapida e segura direto no seu Discord.',
+    icon: MessageCircle,
+    title: 'COMPRA PELO WHATSAPP',
+    description: 'Atendimento direto para combinar seu pedido.',
   },
   {
     icon: Lock,
@@ -24,7 +24,7 @@ const features = [
   {
     icon: Headphones,
     title: 'ATENDIMENTO',
-    description: 'Suporte humanizado via Discord.',
+    description: 'Suporte humanizado pelo WhatsApp.',
   },
 ]
 

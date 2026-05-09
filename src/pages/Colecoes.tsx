@@ -5,14 +5,12 @@ import {
   Box,
   Crown,
   Diamond,
-  Gamepad2,
   Gift,
   Headphones,
   MessageCircle,
   Package,
   Search,
   Shirt,
-  ShoppingCart,
   Skull,
   Sparkles,
   Star,
@@ -22,8 +20,7 @@ import {
 import { categories as defaultCategories } from '../data/storeData'
 import type { Product } from '../data/storeData'
 import { useAdmin } from '../context/useAdmin'
-import { useCart } from '../context/useCart'
-import { useDiscordUrl } from '../lib/siteConfig'
+import { getWhatsAppUrl } from '../lib/whatsapp'
 
 const getFinalPrice = (price: number, discountPercent = 0) => {
   const safeDiscount = Math.min(100, Math.max(0, discountPercent))
@@ -42,9 +39,7 @@ const categoryIcons: Record<string, typeof Package> = {
 }
 
 export default function Colecoes() {
-  const discordUrl = useDiscordUrl()
   const { banners, storeCollections, products, productCategories } = useAdmin()
-  const { addItem } = useCart()
   const [selectedCategory, setSelectedCategory] = useState('todos')
   const [selectedCollectionId, setSelectedCollectionId] = useState<number | null>(null)
   const [sortBy, setSortBy] = useState('recentes')
@@ -119,14 +114,14 @@ export default function Colecoes() {
                 <span className="block text-neon-pink">SUA ESSENCIA</span>
               </h1>
               <p className="mt-6 text-text-muted text-base sm:text-lg max-w-xl leading-relaxed">
-                Cada colecao foi criada para representar uma vibe unica. Escolha o seu brilho no FiveM.
+                Cada colecao foi criada para trazer textura, aconchego e personalidade para a sua casa.
               </p>
               <div className="grid grid-cols-2 gap-4 mt-8 max-w-2xl">
                 {[
                   { icon: Diamond, title: 'Exclusividade', text: 'Pecas unicas para voce.' },
                   { icon: Zap, title: 'Estilo autentico', text: 'Designs feitos para marcar.' },
                   { icon: Crown, title: 'Qualidade premium', text: 'Detalhes pensados com carinho.' },
-                  { icon: Gamepad2, title: 'Via Discord', text: 'Entrega direta e pratica.' },
+                  { icon: MessageCircle, title: 'Via WhatsApp', text: 'Atendimento direto e pratico.' },
                 ].map(item => (
                   <div key={item.title} className="flex items-start gap-3">
                     <item.icon className="w-7 h-7 text-neon-pink flex-shrink-0" />
@@ -289,12 +284,7 @@ export default function Colecoes() {
           {featuredProducts.length > 0 ? (
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
               {featuredProducts.map(product => (
-                <ProductCard key={product.id} product={product} onAdd={() => addItem({
-                  id: product.id,
-                  name: product.name,
-                  price: getFinalPrice(product.price, product.discountPercent),
-                  image: product.image,
-                })} />
+                <ProductCard key={product.id} product={product} />
               ))}
             </div>
           ) : (
@@ -319,12 +309,12 @@ export default function Colecoes() {
               </div>
             </div>
             <a
-              href={discordUrl}
+              href={getWhatsAppUrl()}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-lg bg-neon-pink px-6 py-3 text-sm font-heading font-bold uppercase tracking-wider text-white shadow-lg shadow-neon-pink/25 hover:bg-hot-pink transition-colors"
             >
-              Entrar no Discord
+              Comprar pelo WhatsApp
               <MessageCircle className="w-4 h-4" />
             </a>
           </div>
@@ -334,7 +324,7 @@ export default function Colecoes() {
   )
 }
 
-function ProductCard({ product, onAdd }: { product: Product; onAdd: () => void }) {
+function ProductCard({ product }: { product: Product }) {
   const finalPrice = getFinalPrice(product.price, product.discountPercent)
 
   return (
@@ -361,14 +351,15 @@ function ProductCard({ product, onAdd }: { product: Product; onAdd: () => void }
           <p className="text-sm font-bold text-neon-pink">
             R$ {finalPrice.toFixed(2).replace('.', ',')}
           </p>
-          <button
-            type="button"
-            onClick={onAdd}
+          <a
+            href={getWhatsAppUrl({ ...product, finalPrice })}
+            target="_blank"
+            rel="noopener noreferrer"
             className="w-8 h-8 rounded-md border border-neon-pink/30 text-neon-pink hover:bg-neon-pink hover:text-white flex items-center justify-center transition-colors"
-            aria-label={`Comprar ${product.name}`}
+            aria-label={`Comprar ${product.name} pelo WhatsApp`}
           >
-            <ShoppingCart className="w-4 h-4" />
-          </button>
+            <MessageCircle className="w-4 h-4" />
+          </a>
         </div>
       </div>
     </div>

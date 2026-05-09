@@ -22,25 +22,25 @@ export default function Termos() {
             icon: FileText,
             title: '1. Sobre os Produtos',
             content:
-              'Todos os produtos vendidos na Quantic Store sao criados exclusivamente para uso no FiveM. Os arquivos sao digitais e nao incluem itens fisicos. Ao comprar, voce adquire uma licenca de uso pessoal e nao pode revender ou distribuir os arquivos.',
+              'Todos os produtos da Arte no Croche sao pecas artesanais feitas a mao. Pequenas variacoes de ponto, textura e cor podem acontecer e fazem parte da identidade manual de cada produto.',
           },
           {
             icon: RefreshCw,
-            title: '2. Entrega e Acesso',
+            title: '2. Compra e Entrega',
             content:
-              'A entrega e realizada automaticamente via Discord apos a confirmacao do pagamento. Certifique-se de fornecer seu Discord tag correto durante a compra. O acesso aos arquivos e permanente, desde que respeite os termos de uso.',
+              'A compra e combinada pelo WhatsApp. Atendemos somente Lorena e regiao, com entrega local personalizada conforme disponibilidade e combinados feitos no atendimento.',
           },
           {
             icon: Shield,
             title: '3. Politica de Reembolso',
             content:
-              'Por se tratarem de produtos digitais, nao realizamos reembolsos apos a entrega do arquivo. Em casos excepcionais onde o arquivo apresentar defeitos, entraremos em contato para resolver a situacao da melhor forma possivel.',
+              'Trocas, ajustes e devolucoes sao avaliados caso a caso pelo atendimento. Produtos personalizados ou feitos sob encomenda podem ter condicoes especificas combinadas antes da producao.',
           },
           {
             icon: MessageSquare,
             title: '4. Suporte',
             content:
-              'Nosso suporte e realizado exclusivamente via Discord. O tempo de resposta pode variar entre algumas horas ate 24h em dias uteis. Para duvidas rapidas, consulte nossa secao de Perguntas Frequentes.',
+              'Nosso suporte e realizado pelo WhatsApp. O tempo de resposta pode variar conforme a rotina de producao e entregas, mas responderemos assim que possivel.',
           },
         ].map((section, i) => (
           <div key={i} className="review-card rounded-2xl p-6 sm:p-8">

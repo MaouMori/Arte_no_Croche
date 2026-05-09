@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
 import { ChevronRight, HelpCircle, MessageCircle, Sparkles } from 'lucide-react'
-import { useDiscordUrl, useHelpTopics } from '../lib/siteConfig'
+import { useHelpTopics } from '../lib/siteConfig'
+import { getWhatsAppUrl } from '../lib/whatsapp'
 
 export default function Ajuda() {
-  const discordUrl = useDiscordUrl()
   const { topics, loading } = useHelpTopics()
   const visibleTopics = topics.filter(topic => topic.active)
 
@@ -20,7 +20,7 @@ export default function Ajuda() {
             <p className="font-heading font-bold text-neon-pink tracking-wider mb-3">CENTRAL DE AJUDA</p>
             <h1 className="font-display text-5xl sm:text-6xl text-text-main tracking-wide">Como podemos ajudar?</h1>
             <p className="text-text-muted mt-4 leading-relaxed">
-              Tire suas duvidas sobre compra, pagamento, entrega e suporte da Quantic Store.
+              Tire suas duvidas sobre compra pelo WhatsApp, pagamento, entrega local e suporte da Arte no Croche.
             </p>
           </div>
         </div>
@@ -59,10 +59,10 @@ export default function Ajuda() {
         <div className="review-card rounded-xl p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h2 className="font-heading font-bold text-text-main">Ainda precisa de ajuda?</h2>
-            <p className="text-text-muted text-sm mt-1">Entre no Discord oficial e fale com o suporte.</p>
+            <p className="text-text-muted text-sm mt-1">Chame a gente no WhatsApp para falar sobre sua peca.</p>
           </div>
-          <a href={discordUrl} target="_blank" rel="noreferrer" className="bg-neon-pink hover:bg-hot-pink text-white px-5 py-3 rounded-lg font-heading font-bold text-sm tracking-wider transition-all flex items-center justify-center gap-2">
-            ENTRAR NO DISCORD
+          <a href={getWhatsAppUrl()} target="_blank" rel="noreferrer" className="bg-neon-pink hover:bg-hot-pink text-white px-5 py-3 rounded-lg font-heading font-bold text-sm tracking-wider transition-all flex items-center justify-center gap-2">
+            CHAMAR NO WHATSAPP
             <MessageCircle className="w-4 h-4" />
           </a>
         </div>

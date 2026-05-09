@@ -13,7 +13,6 @@ import {
   Mail,
   MessageCircle,
   ShieldCheck,
-  Skull,
   Sparkles,
   User,
   UserPlus,
@@ -22,7 +21,7 @@ import {
 import { useAuth } from '../context/useAuth'
 
 export default function Login() {
-  const { login, signUp, loginWithDiscord } = useAuth()
+  const { login, signUp } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
   const requestedPath = (location.state as { from?: string } | null)?.from
@@ -64,16 +63,10 @@ export default function Login() {
     setMode('login')
   }
 
-  const handleDiscordLogin = async () => {
-    setError('')
-    const result = await loginWithDiscord()
-    if (!result.success) setError(result.error || 'Nao foi possivel entrar com Discord.')
-  }
-
   return (
     <div className="relative min-h-screen overflow-hidden bg-black text-text-main">
       <div className="absolute inset-0">
-        <img src="/hero/slide1.jpg" alt="" className="h-full w-full object-cover opacity-25" />
+        <img src="/crochet/hero-crochet.png" alt="" className="h-full w-full object-cover opacity-25" />
         <div className="absolute inset-0 bg-black/70" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(255,45,149,0.20),transparent_34%)]" />
       </div>
@@ -82,11 +75,11 @@ export default function Login() {
         <header className="flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3 group">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-neon-pink/30 bg-neon-pink/10 shadow-lg shadow-neon-pink/10">
-              <Skull className="h-7 w-7 text-neon-pink" />
+              <Heart className="h-7 w-7 text-neon-pink" />
             </div>
             <div className="leading-none">
-              <span className="block font-display text-3xl text-neon-pink tracking-wider">QUANTIC</span>
-              <span className="block font-heading text-xs tracking-[0.38em] text-white">STORE</span>
+              <span className="block font-display text-3xl text-neon-pink tracking-wider">Arte</span>
+              <span className="block font-['Caveat'] text-2xl text-white">no croche</span>
             </div>
           </Link>
           <Link to="/" className="text-sm text-text-muted hover:text-neon-pink transition-colors">
@@ -106,17 +99,17 @@ export default function Login() {
                   {mode === 'login' ? (
                     <>
                       Faca login
-                      <span className="block text-neon-pink">na Quantic</span>
+                      <span className="block text-neon-pink">no painel</span>
                     </>
                   ) : (
                     <>
                       Crie sua conta
-                      <span className="block text-neon-pink">na Quantic</span>
+                      <span className="block text-neon-pink">no painel</span>
                     </>
                   )}
                 </h1>
                 <p className="mt-5 max-w-sm text-sm leading-relaxed text-text-muted">
-                  Acesse sua conta e descubra um universo de estilo, atitude e exclusividade.
+                  Acesse sua conta para administrar a loja e acompanhar as configuracoes do site.
                 </p>
               </div>
 
@@ -198,20 +191,6 @@ export default function Login() {
                 </button>
               </form>
 
-              <div className="my-8 flex items-center gap-3 text-xs text-text-dim">
-                <div className="h-px flex-1 bg-neon-pink/15" />
-                ou continue com
-                <div className="h-px flex-1 bg-neon-pink/15" />
-              </div>
-
-              <button
-                onClick={handleDiscordLogin}
-                className="w-full rounded-lg border border-[#5865F2]/60 bg-[#5865F2]/15 px-4 py-3 font-heading text-xs font-bold uppercase tracking-wider text-[#9ba4ff] transition-colors hover:bg-[#5865F2]/25 flex items-center justify-center gap-2"
-              >
-                <MessageCircle className="h-5 w-5" />
-                Entrar com Discord
-              </button>
-
               <div className="mt-8 text-center text-sm text-text-muted">
                 {mode === 'login' ? 'Ainda nao tem uma conta?' : 'Ja tem uma conta?'}
                 <button
@@ -229,16 +208,16 @@ export default function Login() {
             </section>
 
             <section className="relative hidden min-h-[720px] overflow-hidden border-l border-neon-pink/20 lg:block">
-              <img src="/hero/slide1.jpg" alt="Quantic Store" className="absolute inset-0 h-full w-full object-cover object-center" />
+              <img src="/crochet/hero-crochet.png" alt="Arte no Croche" className="absolute inset-0 h-full w-full object-cover object-center" />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/15 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-12">
                 <p className="mb-7 font-heading text-sm font-bold uppercase tracking-wider text-white">Ao fazer login, voce desbloqueia:</p>
                 <div className="space-y-6">
                   {[
-                    { icon: Gem, title: 'Acesso a produtos exclusivos', text: 'Itens unicos que voce so encontra aqui.' },
-                    { icon: Gift, title: 'Promocoes e beneficios', text: 'Descontos especiais para membros.' },
-                    { icon: Zap, title: 'Entrega automatica via Discord', text: 'Seus produtos entregues na hora.' },
-                    { icon: ShieldCheck, title: 'Compra 100% segura', text: 'Seus dados sempre protegidos.' },
+                    { icon: Gem, title: 'Produtos autorais', text: 'Pecas unicas feitas a mao.' },
+                    { icon: Gift, title: 'Pedidos pelo WhatsApp', text: 'Atendimento direto com a cliente.' },
+                    { icon: Zap, title: 'Entrega local', text: 'Combinada para Lorena e regiao.' },
+                    { icon: ShieldCheck, title: 'Painel seguro', text: 'Acesso protegido para administrar o site.' },
                   ].map(item => (
                     <div key={item.title} className="flex gap-4">
                       <item.icon className="mt-0.5 h-8 w-8 flex-shrink-0 text-neon-pink" />
@@ -258,7 +237,7 @@ export default function Login() {
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {[
               { icon: Lock, title: 'Compra segura', text: 'Seus dados protegidos do inicio ao fim.' },
-              { icon: Zap, title: 'Entrega rapida', text: 'Receba seus produtos direto no Discord.' },
+              { icon: Zap, title: 'Entrega local', text: 'Combinada pelo WhatsApp.' },
               { icon: Headphones, title: 'Suporte humano', text: 'Atendimento exclusivo e humanizado.' },
               { icon: Heart, title: 'Comunidade ativa', text: 'Faca parte de uma comunidade incrivel.' },
             ].map(item => (
@@ -275,10 +254,10 @@ export default function Login() {
 
         <footer className="flex flex-col items-center justify-between gap-4 pb-6 text-sm text-text-dim sm:flex-row">
           <Link to="/" className="flex items-center gap-2">
-            <span className="font-display text-2xl text-neon-pink">QUANTIC</span>
+            <span className="font-display text-2xl text-neon-pink">Arte no Croche</span>
             <Heart className="h-4 w-4 fill-neon-pink text-neon-pink" />
           </Link>
-          <span>(c) {new Date().getFullYear()} Quantic Store. Todos os direitos reservados.</span>
+          <span>(c) {new Date().getFullYear()} Arte no Croche. Todos os direitos reservados.</span>
           <div className="flex gap-2">
             {[MessageCircle, Heart, Zap].map((Icon, index) => (
               <span key={index} className="flex h-9 w-9 items-center justify-center rounded-lg border border-neon-pink/25 text-neon-pink">

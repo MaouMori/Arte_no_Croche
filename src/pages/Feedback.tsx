@@ -8,7 +8,7 @@ export default function Feedback() {
   const { user } = useAuth()
   const [name, setName] = useState(user?.name || '')
   const [email, setEmail] = useState(user?.email || '')
-  const [discord, setDiscord] = useState('')
+  const [whatsapp, setWhatsapp] = useState('')
   const [rating, setRating] = useState(5)
   const [text, setText] = useState('')
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
@@ -37,7 +37,7 @@ export default function Feedback() {
     const result = await addFeedback({
       name: name.trim(),
       email: email.trim() || undefined,
-      discord: discord.trim() || undefined,
+      discord: whatsapp.trim() || undefined,
       rating,
       text: text.trim(),
     })
@@ -55,8 +55,8 @@ export default function Feedback() {
     <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="text-center mb-8">
         <Heart className="w-10 h-10 text-neon-pink fill-neon-pink mx-auto mb-3" />
-        <h1 className="font-display text-4xl sm:text-5xl text-white tracking-wide">DEIXE SEU FEEDBACK</h1>
-        <p className="text-text-muted text-sm mt-2">Conte como foi sua experiencia na Quantic Store.</p>
+        <h1 className="font-display text-4xl sm:text-5xl text-text-main tracking-wide">DEIXE SEU FEEDBACK</h1>
+        <p className="text-text-muted text-sm mt-2">Conte como foi sua experiencia na Arte no Croche.</p>
       </div>
 
       <form onSubmit={handleSubmit} className="review-card rounded-2xl p-6 space-y-4">
@@ -74,9 +74,9 @@ export default function Feedback() {
         </div>
 
         <div>
-          <label className="block text-xs font-heading font-bold text-text-main tracking-wider mb-1">Discord opcional</label>
-          <input value={discord} onChange={event => setDiscord(event.target.value)}
-            placeholder="@seuusuario"
+          <label className="block text-xs font-heading font-bold text-text-main tracking-wider mb-1">WhatsApp opcional</label>
+          <input value={whatsapp} onChange={event => setWhatsapp(event.target.value)}
+            placeholder="(12) 99999-9999"
             className="w-full bg-void-light border border-neon-pink/20 rounded-lg px-4 py-3 text-text-main placeholder-text-dim focus:outline-none focus:border-neon-pink/50" />
         </div>
 

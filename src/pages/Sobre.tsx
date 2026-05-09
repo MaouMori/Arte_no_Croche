@@ -11,12 +11,12 @@ export default function Sobre() {
         <div className="flex items-center justify-center gap-2 mb-4">
           <Heart className="w-6 h-6 text-neon-pink fill-neon-pink" />
           <h1 className="font-display text-4xl sm:text-5xl text-white tracking-wide">
-            SOBRE A QUANTIC
+            SOBRE A ARTE NO CROCHE
           </h1>
           <Heart className="w-6 h-6 text-neon-pink fill-neon-pink" />
         </div>
         <p className="text-text-muted max-w-2xl mx-auto">
-          Criando estilo e atitude para o universo FiveM.
+          Pecas artesanais para transformar ambientes com afeto.
         </p>
       </div>
 
@@ -26,9 +26,9 @@ export default function Sobre() {
             Nossa Historia
           </h2>
           <p className="text-text-muted leading-relaxed">
-            A Quantic Store nasceu da paixao por moda e jogos. Somos uma equipe de criadores
-            dedicados a trazer os melhores cabelos, roupas e acessorios para o FiveM. Cada peca
-            e criada com atencao aos detalhes para garantir que voce se destaque no servidor.
+            A Arte no Croche nasceu do carinho por casas acolhedoras e pecas feitas a mao.
+            Cada tapecaria, quadro e almofada e criada com cuidado para levar textura,
+            beleza e personalidade ao seu ambiente.
           </p>
         </div>
 
@@ -51,15 +51,15 @@ export default function Sobre() {
 
         <div className="review-card rounded-2xl p-6 sm:p-8">
           <h2 className="font-heading font-bold text-xl text-text-main mb-4">
-            Por que escolher a Quantic?
+            Por que escolher a Arte no Croche?
           </h2>
           <ul className="space-y-3">
             {[
               'Pecas exclusivas e originais',
-              'Entrega automatica via Discord',
-              'Suporte humanizado e atencioso',
-              'Atualizacoes semanais com novidades',
-              'Precos justos e acessiveis',
+              'Atendimento direto pelo WhatsApp',
+              'Entrega local em Lorena e regiao',
+              'Feito a mao com carinho',
+              'Pecas para transformar sua casa',
             ].map((item, i) => (
               <li key={i} className="flex items-center gap-3 text-text-muted">
                 <Star className="w-4 h-4 text-neon-pink fill-neon-pink flex-shrink-0" />

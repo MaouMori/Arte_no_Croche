@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
 import { useState, useRef, useEffect } from 'react'
-import { ChevronLeft, ChevronRight, ShoppingCart, Heart, Sparkles } from 'lucide-react'
+import { ChevronLeft, ChevronRight, MessageCircle, Heart, Sparkles } from 'lucide-react'
 import { useAdmin } from '../context/useAdmin'
-import { useCart } from '../context/useCart'
+import { getWhatsAppUrl } from '../lib/whatsapp'
 
 const getFinalPrice = (price: number, discountPercent = 0) => {
   const safeDiscount = Math.min(100, Math.max(0, discountPercent))
@@ -15,7 +15,6 @@ export default function BestSellers() {
   const { products } = useAdmin()
   const [startIndex, setStartIndex] = useState(0)
   const [liked, setLiked] = useState<Set<number>>(new Set())
-  const { addItem } = useCart()
   const trackRef = useRef<HTMLDivElement>(null)
 
   const newArrivals = products
@@ -154,20 +153,15 @@ export default function BestSellers() {
                         R$ {product.price.toFixed(2).replace('.', ',')}
                       </p>
                     )}
-                    <button
-                      onClick={() =>
-                        addItem({
-                          id: product.id,
-                          name: product.name,
-                          price: finalPrice,
-                          image: product.image,
-                        })
-                      }
+                    <a
+                      href={getWhatsAppUrl({ ...product, finalPrice })}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="w-full mt-2 flex items-center justify-center gap-2 border border-neon-pink/30 text-neon-pink hover:bg-neon-pink hover:text-white text-xs font-heading font-bold py-2 rounded-lg transition-all"
                     >
-                      <ShoppingCart className="w-3.5 h-3.5" />
+                      <MessageCircle className="w-3.5 h-3.5" />
                       COMPRAR
-                    </button>
+                    </a>
                   </div>
                 </div>
                 )

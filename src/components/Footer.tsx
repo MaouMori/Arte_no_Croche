@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Heart, MapPin, MessageCircle, PackageCheck, Shield, Sparkles } from 'lucide-react'
 import { useHelpTopics } from '../lib/siteConfig'
+import { getWhatsAppUrl } from '../lib/whatsapp'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -98,7 +99,7 @@ export default function Footer() {
           <div>
             <h3 className="font-heading font-bold text-xs text-text-main tracking-wider mb-3">ATENDIMENTO</h3>
             <div className="flex flex-wrap gap-1.5">
-              <a href="https://wa.me/5512991234567" target="_blank" rel="noopener noreferrer" className="px-3 py-2 rounded-full bg-neon-pink text-white text-[10px] font-bold uppercase">
+              <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="px-3 py-2 rounded-full bg-neon-pink text-white text-[10px] font-bold uppercase">
                 WhatsApp
               </a>
               <span className="px-3 py-2 rounded-full bg-void-lighter border border-neon-pink/10 text-text-muted text-[10px] font-bold uppercase">

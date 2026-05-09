@@ -1,16 +1,13 @@
 import { Heart, Leaf, MapPin, MessageCircle, PackageCheck, ShieldCheck, Truck } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useAdmin } from '../context/useAdmin'
-import { useCart } from '../context/useCart'
 import { products as defaultProducts, reviews as defaultReviews } from '../data/storeData'
-
-const whatsappUrl = 'https://wa.me/5512991234567?text=Ola!%20Vim%20pelo%20site%20Arte%20no%20Croche%20e%20quero%20fazer%20um%20pedido.'
+import { getWhatsAppUrl } from '../lib/whatsapp'
 
 const formatPrice = (price: number) => `R$ ${price.toFixed(2).replace('.', ',')}`
 
 export default function Home() {
   const { products, feedbacks } = useAdmin()
-  const { addItem } = useCart()
   const featuredProducts = (products.length ? products : defaultProducts).slice(0, 5)
   const homeReviews = feedbacks.filter(feedback => feedback.approved).length
     ? feedbacks.filter(feedback => feedback.approved).slice(0, 3)
@@ -38,7 +35,7 @@ export default function Home() {
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a
-                href={whatsappUrl}
+                href={getWhatsAppUrl()}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-neon-pink px-7 py-4 text-sm font-extrabold uppercase tracking-wide text-white shadow-lg shadow-neon-pink/20 transition hover:bg-hot-pink"
@@ -120,13 +117,15 @@ export default function Home() {
                   </Link>
                   <p className="mt-1 text-xs text-text-muted">{product.specs?.[0]?.value || 'Feito a mao'}</p>
                   <p className="mt-3 text-lg font-bold text-text-main">{formatPrice(product.price)}</p>
-                  <button
-                    onClick={() => addItem({ id: product.id, name: product.name, price: product.price, image: product.image })}
+                  <a
+                    href={getWhatsAppUrl(product)}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-neon-pink px-3 py-3 text-[11px] font-extrabold uppercase text-white transition hover:bg-hot-pink"
                   >
                     <MessageCircle className="h-4 w-4" />
                     Comprar pelo WhatsApp
-                  </button>
+                  </a>
                 </div>
               </article>
             ))}
@@ -140,7 +139,7 @@ export default function Home() {
           <div className="flex flex-col justify-center p-8 lg:p-10">
             <h2 className="font-display text-4xl leading-tight text-text-main">Mais que decoracao, <span className="block font-['Caveat'] text-5xl text-neon-pink">um sentimento.</span></h2>
             <p className="mt-5 text-sm leading-7 text-text-muted">Cada peca e criada para levar aconchego, estilo e personalidade para o seu lar. Feito a mao com amor em cada detalhe.</p>
-            <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-neon-pink px-6 py-3 text-sm font-bold uppercase text-white">
+            <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-neon-pink px-6 py-3 text-sm font-bold uppercase text-white">
               <MessageCircle className="h-5 w-5" />
               Comprar pelo WhatsApp
             </a>
