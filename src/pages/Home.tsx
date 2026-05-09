@@ -15,59 +15,64 @@ export default function Home() {
 
   return (
     <div className="overflow-hidden">
-      <section className="relative min-h-[calc(100vh-5rem)] bg-[#fff8f2]">
-        <div className="absolute inset-x-0 bottom-0 h-28 bg-[#f7dfd2]/45" />
-        <div className="relative mx-auto grid min-h-[calc(100vh-5rem)] max-w-7xl grid-cols-1 items-center gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[0.86fr_1.14fr] lg:px-8">
-          <div className="z-10 max-w-xl">
-            <div className="mb-5 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-neon-pink">
-              <Heart className="h-4 w-4" />
+      <section className="relative min-h-[calc(100vh-5rem)] overflow-hidden bg-[#fbefe3]">
+        <div className="absolute inset-y-0 left-0 z-10 hidden w-[42%] bg-[#fff8f2] lg:block" />
+        <div className="absolute bottom-0 left-0 z-20 hidden h-64 w-20 rounded-tr-[100%] border-r border-neon-pink/20 opacity-70 lg:block" />
+        <div className="relative grid min-h-[calc(100vh-5rem)] grid-cols-1 lg:grid-cols-[38%_62%]">
+          <div className="relative z-20 flex flex-col justify-center px-6 py-10 sm:px-12 lg:px-16 xl:pl-24">
+            <div className="mb-16 flex items-end gap-3">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-neon-pink/40 text-neon-pink">
+                <Heart className="h-8 w-8" />
+              </div>
+              <div className="leading-none">
+                <span className="block font-display text-6xl font-semibold text-text-main">Arte</span>
+                <span className="-mt-2 block font-['Caveat'] text-4xl text-neon-pink">no croche</span>
+              </div>
+            </div>
+
+            <div className="mb-5 text-sm font-extrabold uppercase tracking-[0.16em] text-neon-pink sm:text-base">
               Arte que transforma
             </div>
 
-            <h1 className="font-display text-[clamp(3rem,8vw,6.8rem)] font-semibold leading-[0.94] text-text-main">
-              Sua casa.
-              <span className="block text-neon-pink">Sua essencia.</span>
+            <h1 className="font-display text-[clamp(3.25rem,6vw,6rem)] font-semibold leading-[0.96] text-text-main">
+              Detalhes que
+              <span className="block font-['Caveat'] text-[clamp(4rem,7vw,7rem)] font-semibold italic leading-[0.85] text-neon-pink">transformam</span>
+              seu lar.
             </h1>
 
-            <p className="mt-6 max-w-md text-base leading-7 text-text-muted sm:text-lg">
-              Tapecarias exclusivas feitas a mao que levam aconchego, beleza e personalidade para o seu ambiente.
+            <div className="mt-8 flex w-52 items-center gap-4 text-neon-pink">
+              <span className="h-px flex-1 bg-neon-pink/45" />
+              <Heart className="h-7 w-7" />
+              <span className="h-px flex-1 bg-neon-pink/45" />
+            </div>
+
+            <p className="mt-8 max-w-md text-lg leading-9 text-text-muted">
+              Pecas feitas a mao que levam aconchego, beleza e personalidade para cada cantinho da sua casa.
             </p>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-8 flex flex-col items-start gap-5">
               <a
                 href={getWhatsAppUrl()}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-neon-pink px-7 py-4 text-sm font-extrabold uppercase tracking-wide text-white shadow-lg shadow-neon-pink/20 transition hover:bg-hot-pink"
+                className="inline-flex items-center justify-center gap-3 rounded-full bg-neon-pink px-8 py-5 text-sm font-extrabold uppercase tracking-wide text-white shadow-lg shadow-neon-pink/20 transition hover:bg-hot-pink sm:text-base"
               >
                 <MessageCircle className="h-5 w-5" />
                 Comprar pelo WhatsApp
               </a>
-              <Link
-                to="/loja"
-                className="inline-flex items-center justify-center rounded-full border border-neon-pink/30 px-7 py-4 text-sm font-extrabold uppercase tracking-wide text-neon-pink transition hover:bg-neon-pink/10"
-              >
-                Ver produtos
-              </Link>
-            </div>
-
-            <div className="mt-8 max-w-sm rounded-2xl border border-neon-pink/20 bg-white/55 p-5 shadow-sm backdrop-blur">
-              <div className="flex items-center gap-4">
-                <MapPin className="h-9 w-9 text-neon-pink" />
-                <div>
-                  <p className="font-bold text-text-main">Atendemos somente Lorena e regiao</p>
-                  <p className="mt-1 text-sm text-text-muted">Entrega local e personalizada.</p>
-                </div>
+              <div className="flex items-center gap-3 text-base text-text-muted">
+                <MapPin className="h-6 w-6 text-neon-pink" />
+                <span>Atendemos somente Lorena e regiao</span>
               </div>
             </div>
           </div>
 
-          <div className="relative min-h-[380px] lg:min-h-[650px]">
-            <div className="absolute -left-10 top-14 hidden h-[520px] w-44 rounded-[50%] bg-[#fff8f2] lg:block" />
+          <div className="relative min-h-[420px] lg:min-h-[calc(100vh-5rem)]">
+            <div className="absolute inset-y-0 -left-24 z-10 hidden w-56 rounded-r-[50%] bg-[#fff8f2] lg:block" />
             <img
-              src="/crochet/hero-crochet.png"
-              alt="Sala acolhedora com tapecaria artesanal em croche"
-              className="h-full min-h-[380px] w-full rounded-[2rem] object-cover object-center shadow-2xl shadow-[#9f7e56]/15 lg:min-h-[650px]"
+              src="/crochet/choce.png"
+              alt="Sousplats artesanais em croche preto com acabamento dourado"
+              className="h-full min-h-[420px] w-full object-cover object-center lg:min-h-[calc(100vh-5rem)]"
             />
           </div>
         </div>
