@@ -9,7 +9,7 @@ import {
   X,
   Search,
 } from 'lucide-react'
-import { categories as defaultCategories, styles as defaultStyles, colors as defaultColors } from '../data/storeData'
+import { categories as defaultCategories, products as defaultProducts, styles as defaultStyles, colors as defaultColors } from '../data/storeData'
 import { useAdmin } from '../context/useAdmin'
 import { getWhatsAppUrl } from '../lib/whatsapp'
 
@@ -20,8 +20,17 @@ const getFinalPrice = (price: number, discountPercent = 0) => {
   return Number((price * (1 - safeDiscount / 100)).toFixed(2))
 }
 
+const normalizeSlug = (value = '') =>
+  value
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace('tapacarias', 'tapecarias')
+
 export default function Loja() {
   const { products, banners, productCategories, productStyles, productColors } = useAdmin()
+  const visibleProducts = products.length > 0 ? products : defaultProducts
   const pageBanners = banners.filter(banner => banner.active && banner.position === 'loja')
   const categories = [
     { value: 'todos', label: 'Todos os produtos' },
@@ -99,8 +108,10 @@ export default function Loja() {
     (onlyNew ? 1 : 0)
 
   const filtered = useMemo(() => {
-    let result = products.filter(p => {
-      const matchCategory = category === 'todos' || p.category === category
+    let result = visibleProducts.filter(p => {
+      const normalizedCategory = normalizeSlug(category)
+      const normalizedProductCategory = normalizeSlug(p.category)
+      const matchCategory = normalizedCategory === 'todos' || normalizedProductCategory === normalizedCategory
       const matchVisibility = p.sellIndividually ?? true
       const matchSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase())
       const matchPrice = getFinalPrice(p.price, p.discountPercent) <= priceRange
@@ -130,7 +141,7 @@ export default function Loja() {
     }
 
     return result
-  }, [category, products, searchQuery, priceRange, onlyNew, selectedStyles, selectedColors, sortBy])
+  }, [category, visibleProducts, searchQuery, priceRange, onlyNew, selectedStyles, selectedColors, sortBy])
 
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE)
   const paginated = filtered.slice(
