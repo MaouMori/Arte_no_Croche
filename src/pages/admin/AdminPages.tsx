@@ -603,28 +603,32 @@ export function AdminConfiguracoes() {
     }
 
     setSaving(true)
-    const updatedAt = new Date().toISOString()
-    const { error } = await supabase.from('site_settings').upsert([
-      {
-        key: 'extra_link_url',
-        value: extraLinkUrl.trim() || DEFAULT_EXTRA_LINK_URL,
-        updated_at: updatedAt,
+    const { data: sessionData } = await supabase.auth.getSession()
+    const token = sessionData.session?.access_token
+
+    if (!token) {
+      setSaving(false)
+      setFeedback({ type: 'error', message: 'Sessao expirada. Entre novamente no painel.' })
+      return
+    }
+
+    const response = await fetch('/api/admin-settings', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
-      {
-        key: 'whatsapp_number',
-        value: cleanedWhatsApp,
-        updated_at: updatedAt,
-      },
-      {
-        key: 'whatsapp_message',
-        value: whatsappMessage.trim() || DEFAULT_WHATSAPP_MESSAGE,
-        updated_at: updatedAt,
-      },
-    ], { onConflict: 'key' })
+      body: JSON.stringify({
+        extraLinkUrl: extraLinkUrl.trim() || DEFAULT_EXTRA_LINK_URL,
+        whatsappNumber: cleanedWhatsApp,
+        whatsappMessage: whatsappMessage.trim() || DEFAULT_WHATSAPP_MESSAGE,
+      }),
+    })
+    const result = await response.json().catch(() => null)
     setSaving(false)
 
-    if (error) {
-      setFeedback({ type: 'error', message: error.message })
+    if (!response.ok) {
+      setFeedback({ type: 'error', message: result?.error || 'Nao foi possivel salvar as configuracoes.' })
       return
     }
 
