@@ -10,10 +10,10 @@ export default function Collections() {
     <section className="py-12 lg:py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col gap-3 mb-8 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-neon-pink" />
-            <h2 className="font-display text-2xl sm:text-3xl text-white tracking-wide">
+            <h2 className="font-display text-2xl sm:text-3xl text-text-main tracking-wide">
               ESCOLHA SUA VIBE
             </h2>
             <Sparkles className="w-5 h-5 text-neon-pink" />

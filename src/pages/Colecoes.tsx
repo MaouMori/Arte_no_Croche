@@ -109,14 +109,14 @@ export default function Colecoes() {
                 COLECOES EXCLUSIVAS
                 <Sparkles className="w-4 h-4" />
               </div>
-              <h1 className="font-display text-6xl sm:text-7xl lg:text-8xl leading-none text-white tracking-wide">
+              <h1 className="font-display text-4xl sm:text-6xl lg:text-8xl leading-none text-text-main tracking-wide">
                 EXPRESSE
                 <span className="block text-neon-pink">SUA ESSENCIA</span>
               </h1>
               <p className="mt-6 text-text-muted text-base sm:text-lg max-w-xl leading-relaxed">
                 Cada colecao foi criada para trazer textura, aconchego e personalidade para a sua casa.
               </p>
-              <div className="grid grid-cols-2 gap-4 mt-8 max-w-2xl">
+              <div className="grid grid-cols-1 gap-4 mt-8 max-w-2xl sm:grid-cols-2">
                 {[
                   { icon: Diamond, title: 'Exclusividade', text: 'Pecas unicas para voce.' },
                   { icon: Zap, title: 'Estilo autentico', text: 'Designs feitos para marcar.' },
@@ -142,7 +142,7 @@ export default function Colecoes() {
           <div className="text-center lg:text-left">
             <div className="flex items-center justify-center lg:justify-start gap-2">
               <Sparkles className="w-5 h-5 text-neon-pink" />
-              <h2 className="font-display text-3xl sm:text-4xl text-white tracking-wide">
+              <h2 className="font-display text-3xl sm:text-4xl text-text-main tracking-wide">
                 NOSSAS COLECOES
               </h2>
               <Sparkles className="w-5 h-5 text-neon-pink" />
@@ -196,7 +196,7 @@ export default function Colecoes() {
                   </div>
                   <div className="p-4">
                     <h3
-                      className="font-display text-3xl tracking-wide leading-none"
+                      className="font-display text-2xl tracking-wide leading-none sm:text-3xl"
                       style={{ color: collection.color || '#ff2d95' }}
                     >
                       {collection.name}
@@ -233,14 +233,14 @@ export default function Colecoes() {
         <div className="text-center mb-6">
           <div className="flex items-center justify-center gap-2">
             <Sparkles className="w-5 h-5 text-neon-pink" />
-            <h2 className="font-display text-3xl sm:text-4xl text-white tracking-wide">
+              <h2 className="font-display text-3xl sm:text-4xl text-text-main tracking-wide">
               ESCOLHA SUA VIBE
             </h2>
             <Sparkles className="w-5 h-5 text-neon-pink" />
           </div>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-5">
+        <div className="grid grid-cols-1 gap-3 mb-5 sm:grid-cols-3 lg:grid-cols-6">
           {categoryOptions.slice(0, 6).map(category => {
             const Icon = categoryIcons[category.value] || Package
             return (
@@ -264,7 +264,7 @@ export default function Colecoes() {
         <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-4 rounded-lg border border-neon-pink/20 bg-void-light/60 p-4">
           <div className="rounded-lg border border-neon-pink/10 bg-void p-5 flex flex-col justify-between">
             <div>
-              <h3 className="font-display text-3xl text-white tracking-wide leading-none">
+              <h3 className="font-display text-3xl text-text-main tracking-wide leading-none">
                 DESTAQUES DA
                 <span className="block text-neon-pink">COLECAO</span>
               </h3>
@@ -282,7 +282,7 @@ export default function Colecoes() {
           </div>
 
           {featuredProducts.length > 0 ? (
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {featuredProducts.map(product => (
                 <ProductCard key={product.id} product={product} />
               ))}
@@ -303,7 +303,7 @@ export default function Colecoes() {
               <Gift className="hidden sm:block w-12 h-12 text-neon-pink" />
               <div>
                 <p className="font-heading font-bold text-neon-pink uppercase tracking-wider text-sm">Lancamentos sempre</p>
-                <h2 className="font-display text-3xl sm:text-4xl text-white tracking-wide">
+                <h2 className="font-display text-2xl sm:text-4xl text-text-main tracking-wide">
                   SEU ESTILO. SUA ATITUDE. <span className="text-neon-pink">SUA ESSENCIA.</span>
                 </h2>
               </div>

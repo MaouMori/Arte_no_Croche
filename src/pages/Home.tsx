@@ -15,18 +15,18 @@ export default function Home() {
 
   return (
     <div className="overflow-hidden">
-      <section className="relative min-h-[calc(100vh-5rem)] overflow-hidden bg-[#fbefe3]">
+      <section className="relative overflow-hidden bg-[#fbefe3] lg:min-h-[calc(100vh-5rem)]">
         <div className="absolute inset-y-0 left-0 z-10 hidden w-[42%] bg-[#fff8f2] lg:block" />
         <div className="absolute bottom-0 left-0 z-20 hidden h-64 w-20 rounded-tr-[100%] border-r border-neon-pink/20 opacity-70 lg:block" />
-        <div className="relative grid min-h-[calc(100vh-5rem)] grid-cols-1 lg:grid-cols-[38%_62%]">
-          <div className="relative z-20 flex flex-col justify-center px-6 py-10 sm:px-12 lg:px-16 xl:pl-24">
-            <div className="mb-16 flex items-end gap-3">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-neon-pink/40 text-neon-pink">
-                <Heart className="h-8 w-8" />
+        <div className="relative grid lg:min-h-[calc(100vh-5rem)] grid-cols-1 lg:grid-cols-[38%_62%]">
+          <div className="relative z-20 flex flex-col justify-center px-5 py-8 sm:px-12 lg:px-16 xl:pl-24">
+            <div className="mb-8 flex items-end gap-3 lg:mb-16">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-neon-pink/40 text-neon-pink sm:h-16 sm:w-16">
+                <Heart className="h-6 w-6 sm:h-8 sm:w-8" />
               </div>
               <div className="leading-none">
-                <span className="block font-display text-6xl font-semibold text-text-main">Arte</span>
-                <span className="-mt-2 block font-['Caveat'] text-4xl text-neon-pink">no croche</span>
+                <span className="block font-display text-5xl font-semibold text-text-main sm:text-6xl">Arte</span>
+                <span className="-mt-2 block font-['Caveat'] text-3xl text-neon-pink sm:text-4xl">no croche</span>
               </div>
             </div>
 
@@ -34,9 +34,9 @@ export default function Home() {
               Arte que transforma
             </div>
 
-            <h1 className="font-display text-[clamp(3.25rem,6vw,6rem)] font-semibold leading-[0.96] text-text-main">
+            <h1 className="font-display text-[clamp(2.8rem,15vw,6rem)] font-semibold leading-[0.96] text-text-main">
               Detalhes que
-              <span className="block font-['Caveat'] text-[clamp(4rem,7vw,7rem)] font-semibold italic leading-[0.85] text-neon-pink">transformam</span>
+              <span className="block font-['Caveat'] text-[clamp(3.4rem,16vw,7rem)] font-semibold italic leading-[0.85] text-neon-pink">transformam</span>
               seu lar.
             </h1>
 
@@ -46,16 +46,16 @@ export default function Home() {
               <span className="h-px flex-1 bg-neon-pink/45" />
             </div>
 
-            <p className="mt-8 max-w-md text-lg leading-9 text-text-muted">
+            <p className="mt-7 max-w-md text-base leading-8 text-text-muted sm:text-lg sm:leading-9">
               Pecas feitas a mao que levam aconchego, beleza e personalidade para cada cantinho da sua casa.
             </p>
 
-            <div className="mt-8 flex flex-col items-start gap-5">
+            <div className="mt-8 flex flex-col items-stretch gap-5 sm:items-start">
               <a
                 href={getWhatsAppUrl()}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-3 rounded-full bg-neon-pink px-8 py-5 text-sm font-extrabold uppercase tracking-wide text-white shadow-lg shadow-neon-pink/20 transition hover:bg-hot-pink sm:text-base"
+                className="inline-flex items-center justify-center gap-3 rounded-full bg-neon-pink px-7 py-4 text-sm font-extrabold uppercase tracking-wide text-white shadow-lg shadow-neon-pink/20 transition hover:bg-hot-pink sm:px-8 sm:py-5 sm:text-base"
               >
                 <MessageCircle className="h-5 w-5" />
                 Comprar pelo WhatsApp
@@ -67,19 +67,19 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="relative min-h-[420px] lg:min-h-[calc(100vh-5rem)]">
+          <div className="relative min-h-[320px] sm:min-h-[420px] lg:min-h-[calc(100vh-5rem)]">
             <div className="absolute inset-y-0 -left-24 z-10 hidden w-56 rounded-r-[50%] bg-[#fff8f2] lg:block" />
             <img
               src="/crochet/choce.png"
               alt="Sousplats artesanais em croche preto com acabamento dourado"
-              className="h-full min-h-[420px] w-full object-cover object-center lg:min-h-[calc(100vh-5rem)]"
+              className="h-full min-h-[320px] w-full object-cover object-center sm:min-h-[420px] lg:min-h-[calc(100vh-5rem)]"
             />
           </div>
         </div>
       </section>
 
       <section className="relative z-20 -mt-8 px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-4 rounded-3xl bg-white/85 p-5 shadow-xl shadow-[#9f7e56]/10 backdrop-blur sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-4 rounded-2xl bg-white/85 p-4 shadow-xl shadow-[#9f7e56]/10 backdrop-blur sm:grid-cols-2 sm:p-5 lg:grid-cols-4 lg:rounded-3xl">
           {[
             { icon: MapPin, title: 'Atendemos Lorena e regiao', desc: 'Entrega local e personalizada.' },
             { icon: MessageCircle, title: 'Compre pelo WhatsApp', desc: 'Rapido, pratico e seguro.' },
@@ -110,7 +110,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5 lg:gap-6">
             {featuredProducts.map(product => (
               <article key={product.id} className="overflow-hidden rounded-xl border border-neon-pink/15 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl hover:shadow-[#9f7e56]/10">
                 <Link to={`/produto/${product.id}`} className="block aspect-[4/4.2] overflow-hidden bg-void-light">
@@ -139,10 +139,10 @@ export default function Home() {
       </section>
 
       <section className="px-4 pb-16 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 overflow-hidden rounded-[2rem] bg-[#fff1e8] lg:grid-cols-[0.9fr_1fr_0.9fr]">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 overflow-hidden rounded-2xl bg-[#fff1e8] lg:grid-cols-[0.9fr_1fr_0.9fr] lg:rounded-[2rem]">
           <img src="/crochet/hero-crochet.png" alt="" className="h-full min-h-72 w-full object-cover" />
           <div className="flex flex-col justify-center p-8 lg:p-10">
-            <h2 className="font-display text-4xl leading-tight text-text-main">Mais que decoracao, <span className="block font-['Caveat'] text-5xl text-neon-pink">um sentimento.</span></h2>
+            <h2 className="font-display text-3xl leading-tight text-text-main sm:text-4xl">Mais que decoracao, <span className="block font-['Caveat'] text-4xl text-neon-pink sm:text-5xl">um sentimento.</span></h2>
             <p className="mt-5 text-sm leading-7 text-text-muted">Cada peca e criada para levar aconchego, estilo e personalidade para o seu lar. Feito a mao com amor em cada detalhe.</p>
             <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-neon-pink px-6 py-3 text-sm font-bold uppercase text-white">
               <MessageCircle className="h-5 w-5" />

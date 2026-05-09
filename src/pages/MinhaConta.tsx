@@ -73,7 +73,7 @@ export default function MinhaConta() {
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="text-center mb-8">
         <User className="w-10 h-10 text-neon-pink mx-auto mb-3" />
-        <h1 className="font-display text-4xl sm:text-5xl text-white tracking-wide">MINHA CONTA</h1>
+        <h1 className="font-display text-3xl sm:text-5xl text-text-main tracking-wide">MINHA CONTA</h1>
         <p className="text-text-muted text-sm mt-2">Gerencie seus dados, seguranca e feedbacks.</p>
       </div>
 
@@ -128,7 +128,7 @@ export default function MinhaConta() {
             </div>
           )}
 
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <button onClick={saveAccount} disabled={saving} className="bg-neon-pink hover:bg-hot-pink disabled:opacity-50 text-white px-5 py-3 rounded-lg font-heading font-bold text-sm tracking-wider transition-all flex items-center justify-center gap-2">
               <Save className="w-4 h-4" />
               {saving ? 'SALVANDO...' : 'SALVAR ALTERACOES'}

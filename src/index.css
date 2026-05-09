@@ -222,8 +222,9 @@ body {
 
 /* Review card */
 .review-card {
-  background: linear-gradient(145deg, #13131f, #1a1a25);
-  border: 1px solid #ff2d9520;
+  background: linear-gradient(145deg, #fffaf5, #fff1e8);
+  border: 1px solid #df745c24;
+  box-shadow: 0 12px 35px rgba(159, 126, 86, 0.08);
 }
 
 /* Collection card */
@@ -247,14 +248,14 @@ body {
 
 /* Product card */
 .product-card {
-  background: linear-gradient(145deg, #13131f, #1a1a25);
-  border: 1px solid #ff2d9515;
+  background: linear-gradient(145deg, #fffaf5, #fff1e8);
+  border: 1px solid #df745c24;
   transition: all 0.3s ease;
 }
 .product-card:hover {
-  border-color: #ff2d9540;
+  border-color: #df745c66;
   transform: translateY(-4px);
-  box-shadow: 0 10px 40px #ff2d9520;
+  box-shadow: 0 10px 35px rgba(159, 126, 86, 0.12);
 }
 
 /* Feature icon glow */

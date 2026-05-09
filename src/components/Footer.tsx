@@ -12,7 +12,7 @@ export default function Footer() {
     <footer className="border-t border-neon-pink/10 bg-void">
       <div className="border-b border-neon-pink/10 bg-void-light/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
               {
                 icon: MapPin,
@@ -50,8 +50,8 @@ export default function Footer() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8">
-          <div className="col-span-2 sm:col-span-3 lg:col-span-1">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="sm:col-span-2 lg:col-span-1">
             <div className="flex items-end gap-2 mb-3">
               <span className="font-display text-3xl text-text-main">Arte</span>
               <span className="font-['Caveat'] text-2xl text-neon-pink">no croche</span>

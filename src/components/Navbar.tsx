@@ -45,15 +45,15 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-3 group">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full border border-neon-pink/30 text-neon-pink">
+            <Link to="/" className="flex min-w-0 items-center gap-2 sm:gap-3 group">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-neon-pink/30 text-neon-pink sm:h-11 sm:w-11">
                 <Heart className="h-5 w-5" />
               </div>
-              <div className="relative leading-none">
-                <span className="font-display text-2xl lg:text-4xl text-text-main">
+              <div className="relative min-w-0 leading-none">
+                <span className="font-display text-2xl text-text-main lg:text-4xl">
                   Arte
                 </span>
-                <span className="block -mt-1 font-['Caveat'] text-lg lg:text-2xl text-text-muted">
+                <span className="block -mt-1 font-['Caveat'] text-lg text-text-muted lg:text-2xl">
                   no croche
                 </span>
               </div>
@@ -183,10 +183,10 @@ export default function Navbar() {
         {/* Mobile Menu */}
         <div
           className={`lg:hidden overflow-hidden transition-all duration-300 ${
-            mobileOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+            mobileOpen ? 'max-h-[80vh] opacity-100' : 'max-h-0 opacity-0'
           }`}
         >
-          <div className="bg-void/95 backdrop-blur-xl border-t border-neon-pink/10 px-4 py-4 space-y-1">
+          <div className="max-h-[80vh] overflow-y-auto bg-void/95 backdrop-blur-xl border-t border-neon-pink/10 px-4 py-4 space-y-1">
             {navLinks.map(link => (
                 <Link
                   key={link.path}

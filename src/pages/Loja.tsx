@@ -54,7 +54,7 @@ export default function Loja() {
   const [sortBy, setSortBy] = useState('recentes')
   const [currentPage, setCurrentPage] = useState(1)
   const [openFilters, setOpenFilters] = useState<Set<string>>(
-    new Set(['categorias', 'preco', 'cor', 'estilo', 'lancamentos'])
+    new Set(['categorias'])
   )
 
   const toggleFilter = (key: string) => {
@@ -164,7 +164,7 @@ export default function Loja() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       {/* Page Header */}
       <div className="text-center mb-8">
-        <h1 className="font-display text-3xl sm:text-4xl text-white tracking-wide mb-2">
+        <h1 className="font-display text-3xl sm:text-4xl text-text-main tracking-wide mb-2">
           LOJA
         </h1>
         <p className="text-text-muted text-sm">
@@ -175,7 +175,7 @@ export default function Loja() {
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Sidebar Filters */}
         <aside className="lg:w-64 flex-shrink-0">
-          <div className="sticky top-24 space-y-4">
+          <div className="space-y-4 lg:sticky lg:top-24">
             {/* Filter Header */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -390,8 +390,8 @@ export default function Loja() {
         {/* Main Content */}
         <div className="flex-1">
           {/* Toolbar */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-            <div className="relative flex-1 max-w-xs">
+          <div className="flex flex-col items-stretch justify-between gap-4 mb-6 sm:flex-row sm:items-center">
+            <div className="relative flex-1 sm:max-w-xs">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-dim" />
               <input
                 type="text"
@@ -405,7 +405,7 @@ export default function Loja() {
               />
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <span className="text-text-dim text-xs">
                 Mostrando {(currentPage - 1) * ITEMS_PER_PAGE + 1}-
                 {Math.min(currentPage * ITEMS_PER_PAGE, filtered.length)} de {filtered.length} produtos
@@ -413,7 +413,7 @@ export default function Loja() {
               <select
                 value={sortBy}
                 onChange={e => setSortBy(e.target.value)}
-                className="bg-void-light border border-neon-pink/20 rounded-lg px-3 py-2 text-text-main text-sm focus:outline-none focus:border-neon-pink/50"
+                className="w-full bg-void-light border border-neon-pink/20 rounded-lg px-3 py-2 text-text-main text-sm focus:outline-none focus:border-neon-pink/50 sm:w-auto"
               >
                 <option value="recentes">Mais recentes</option>
                 <option value="preco-baixo">Menor preco</option>
@@ -425,7 +425,7 @@ export default function Loja() {
 
           {/* Products Grid */}
           {paginated.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {paginated.map(product => (
                 (() => {
                   const finalPrice = getFinalPrice(product.price, product.discountPercent)

@@ -10,7 +10,7 @@ export default function Sobre() {
       <div className="text-center mb-12">
         <div className="flex items-center justify-center gap-2 mb-4">
           <Heart className="w-6 h-6 text-neon-pink fill-neon-pink" />
-          <h1 className="font-display text-4xl sm:text-5xl text-white tracking-wide">
+          <h1 className="font-display text-3xl sm:text-5xl text-text-main tracking-wide">
             SOBRE A ARTE NO CROCHE
           </h1>
           <Heart className="w-6 h-6 text-neon-pink fill-neon-pink" />
@@ -43,7 +43,7 @@ export default function Sobre() {
               className="review-card rounded-xl p-6 text-center"
             >
               <stat.icon className="w-8 h-8 text-neon-pink mx-auto mb-3" />
-              <p className="font-display text-3xl text-white">{stat.value}</p>
+              <p className="font-display text-3xl text-text-main">{stat.value}</p>
               <p className="text-text-dim text-sm mt-1">{stat.label}</p>
             </div>
           ))}

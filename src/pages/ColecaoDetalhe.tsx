@@ -87,7 +87,7 @@ export default function ColecaoDetalhe() {
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12 lg:pb-16">
-          <nav className="flex items-center gap-2 text-sm text-text-dim mb-12">
+          <nav className="flex flex-wrap items-center gap-2 text-sm text-text-dim mb-8 lg:mb-12">
             <Link to="/" className="hover:text-neon-pink transition-colors">Inicio</Link>
             <ChevronRight className="w-3 h-3" />
             <Link to="/colecoes" className="hover:text-neon-pink transition-colors">Colecoes</Link>
@@ -98,7 +98,7 @@ export default function ColecaoDetalhe() {
           <div className="grid lg:grid-cols-[0.78fr_1.22fr] items-center gap-8 lg:gap-10">
             <div className="max-w-xl">
               <p className="font-heading font-bold text-neon-pink tracking-wider mb-4">COLECAO</p>
-              <h1 className="font-display text-6xl sm:text-7xl lg:text-8xl tracking-wide leading-[0.82] text-white drop-shadow-[0_0_22px_rgba(255,45,149,0.25)]">
+              <h1 className="font-display text-4xl sm:text-6xl lg:text-8xl tracking-wide leading-[0.9] text-white drop-shadow-[0_0_22px_rgba(255,45,149,0.25)]">
                 <span className="block">{firstLine}</span>
                 {secondLine && <span className="block text-neon-pink">{secondLine}</span>}
               </h1>
@@ -106,7 +106,7 @@ export default function ColecaoDetalhe() {
                 {aboutText}
               </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-10">
+              <div className="grid grid-cols-1 gap-5 mt-8 sm:grid-cols-2 lg:mt-10">
                 {[
                   { icon: Diamond, title: 'Pecas exclusivas', text: 'Modelos unicos que voce so encontra aqui.' },
                   { icon: Zap, title: 'Estilo autentico', text: mainCategory ? `Designs feitos para ${mainCategory}.` : 'Designs feitos para quem ousa ser diferente.' },
@@ -210,17 +210,17 @@ export default function ColecaoDetalhe() {
         </div>
 
         <div className="review-card rounded-lg p-5 border-neon-pink/20">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
+          <div className="flex flex-col justify-between gap-4 mb-5 sm:flex-row sm:items-center">
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-5 h-5 text-neon-pink" />
               <h2 className="font-heading font-bold text-xl text-text-main uppercase">Produtos da colecao</h2>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
               <span className="text-text-dim text-xs uppercase tracking-widest">Ordenar por:</span>
               <select
                 value={sortBy}
                 onChange={event => setSortBy(event.target.value)}
-                className="bg-void-light border border-neon-pink/30 rounded-lg px-4 py-3 text-text-main text-sm focus:outline-none focus:border-neon-pink/70"
+                className="w-full bg-void-light border border-neon-pink/30 rounded-lg px-4 py-3 text-text-main text-sm focus:outline-none focus:border-neon-pink/70 sm:w-auto"
               >
                 <option value="recentes">Mais recentes</option>
                 <option value="preco-baixo">Menor preco</option>
@@ -230,7 +230,7 @@ export default function ColecaoDetalhe() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
             {collectionProducts.map(product => {
               const productPrice = getFinalPrice(product.price, product.discountPercent)
               return (
@@ -302,11 +302,11 @@ export default function ColecaoDetalhe() {
               <p className="text-text-muted text-sm">Combine pecas da colecao {collection.name} para transformar o seu ambiente.</p>
             </div>
           </div>
-          <div className="relative font-heading font-bold text-2xl sm:text-3xl text-text-main uppercase tracking-wider">
+          <div className="relative font-heading font-bold text-xl sm:text-3xl text-text-main uppercase tracking-wider">
             Sua casa, sua essencia.
             <span className="block text-neon-pink">Feita a mao.</span>
           </div>
-          <Link to="/loja" className="relative bg-neon-pink hover:bg-hot-pink text-white px-5 py-3 rounded-lg font-heading font-bold text-sm tracking-wider transition-all flex items-center gap-2">
+          <Link to="/loja" className="relative flex w-full items-center justify-center gap-2 rounded-lg bg-neon-pink px-5 py-3 text-sm font-heading font-bold tracking-wider text-white transition-all hover:bg-hot-pink sm:w-auto">
             VER TODOS OS PRODUTOS
             <ChevronRight className="w-4 h-4" />
           </Link>

@@ -109,12 +109,12 @@ export default function Produto() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-sm text-text-dim mb-6">
+      <nav className="flex flex-wrap items-center gap-2 text-sm text-text-dim mb-6">
         <Link to="/" className="hover:text-neon-pink transition-colors">Home</Link>
         <span>/</span>
         <Link to="/loja" className="hover:text-neon-pink transition-colors">Loja</Link>
         <span>/</span>
-        <span className="text-text-main">{product.name}</span>
+        <span className="text-text-main break-words">{product.name}</span>
       </nav>
 
       {cameFromAdmin && (
@@ -228,8 +228,8 @@ export default function Produto() {
             )}
           </div>
 
-          <div className="flex items-baseline gap-3">
-            <span className="text-3xl font-bold text-neon-pink">
+          <div className="flex flex-wrap items-baseline gap-3">
+            <span className="text-2xl font-bold text-neon-pink sm:text-3xl">
               R$ {finalPrice.toFixed(2).replace('.', ',')}
             </span>
             {discountPercent > 0 && (
@@ -275,8 +275,8 @@ export default function Produto() {
           </div>
 
           {/* Quantity & Add to Cart */}
-          <div className="flex flex-col sm:flex-row gap-4 pt-4">
-            <div className="flex items-center gap-1">
+          <div className="flex flex-col gap-4 pt-4 sm:flex-row">
+            <div className="flex items-center justify-center gap-1 sm:justify-start">
               <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
                 className="w-10 h-10 rounded-lg bg-void-lighter border border-neon-pink/20 flex items-center justify-center text-text-muted hover:text-neon-pink transition-colors"
@@ -310,7 +310,7 @@ export default function Produto() {
           </div>
 
           {/* Benefits */}
-          <div className="grid grid-cols-3 gap-3 pt-4">
+          <div className="grid grid-cols-1 gap-3 pt-4 sm:grid-cols-3">
             {[
               { icon: Truck, label: 'Entrega local' },
               { icon: Shield, label: 'Compra pelo WhatsApp' },
@@ -331,10 +331,10 @@ export default function Produto() {
       {/* Related Products */}
       {related.length > 0 && (
         <div className="mt-16">
-          <h2 className="font-display text-2xl text-white tracking-wide mb-6">
+          <h2 className="font-display text-2xl text-text-main tracking-wide mb-6">
             VOCE TAMBEM PODE GOSTAR
           </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {related.map(p => (
               <Link
                 key={p.id}

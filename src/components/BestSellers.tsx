@@ -46,10 +46,10 @@ export default function BestSellers() {
     <section className="py-12 lg:py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col gap-3 mb-8 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-neon-pink" />
-            <h2 className="font-display text-2xl sm:text-3xl text-white tracking-wide">
+            <h2 className="font-display text-2xl sm:text-3xl text-text-main tracking-wide">
               NOVIDADES
             </h2>
             <Sparkles className="w-5 h-5 text-neon-pink" />
@@ -83,7 +83,7 @@ export default function BestSellers() {
                 return (
                 <div
                   key={product.id}
-                  className="product-card flex-shrink-0 w-[calc(50%-8px)] sm:w-[calc(33.333%-11px)] lg:w-[calc(20%-13px)] rounded-xl overflow-hidden group"
+                  className="product-card flex-shrink-0 w-full sm:w-[calc(50%-8px)] md:w-[calc(33.333%-11px)] lg:w-[calc(20%-13px)] rounded-xl overflow-hidden group"
                 >
                   {/* Image */}
                   <Link to={`/produto/${product.id}`} className="block">

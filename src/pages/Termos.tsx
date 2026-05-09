@@ -6,7 +6,7 @@ export default function Termos() {
       <div className="text-center mb-12">
         <div className="flex items-center justify-center gap-2 mb-4">
           <FileText className="w-6 h-6 text-neon-pink" />
-          <h1 className="font-display text-4xl sm:text-5xl text-white tracking-wide">
+          <h1 className="font-display text-3xl sm:text-5xl text-text-main tracking-wide">
             TERMOS E CONDICOES
           </h1>
           <FileText className="w-6 h-6 text-neon-pink" />
