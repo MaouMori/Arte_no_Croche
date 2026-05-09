@@ -1,24 +1,24 @@
 @import "tailwindcss";
 
 @theme {
-  --color-void: #0a0a0f;
-  --color-void-light: #12121a;
-  --color-void-lighter: #1a1a25;
-  --color-void-card: #13131f;
-  --color-neon-pink: #ff2d95;
-  --color-neon-pink-dim: #ff2d9540;
-  --color-neon-purple: #b347d9;
-  --color-neon-purple-dim: #b347d940;
-  --color-hot-pink: #ff4da6;
-  --color-soft-pink: #ff85c0;
-  --color-star: #ffd700;
-  --color-text-main: #f0e6f5;
-  --color-text-muted: #9a8fb0;
-  --color-text-dim: #6b5f7d;
-  --color-border-glow: #ff2d9530;
-  --font-display: 'Creepster', cursive;
-  --font-body: 'Outfit', sans-serif;
-  --font-heading: 'Sora', sans-serif;
+  --color-void: #fff8f2;
+  --color-void-light: #fff1e8;
+  --color-void-lighter: #f7dfd2;
+  --color-void-card: #fffaf5;
+  --color-neon-pink: #df745c;
+  --color-neon-pink-dim: #df745c40;
+  --color-neon-purple: #9f7e56;
+  --color-neon-purple-dim: #9f7e5640;
+  --color-hot-pink: #c95e4d;
+  --color-soft-pink: #f4b8a6;
+  --color-star: #d69b3a;
+  --color-text-main: #3a2118;
+  --color-text-muted: #6d554b;
+  --color-text-dim: #9c8378;
+  --color-border-glow: #df745c30;
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'Inter', sans-serif;
+  --font-heading: 'Inter', sans-serif;
 }
 
 html {
@@ -26,9 +26,9 @@ html {
 }
 
 body {
-  background-color: #0a0a0f;
-  color: #f0e6f5;
-  font-family: 'Outfit', sans-serif;
+  background-color: #fff8f2;
+  color: #3a2118;
+  font-family: 'Inter', sans-serif;
   overflow-x: hidden;
 }
 
@@ -37,14 +37,14 @@ body {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #0a0a0f;
+  background: #fff8f2;
 }
 ::-webkit-scrollbar-thumb {
-  background: #ff2d9540;
+  background: #df745c60;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #ff2d9590;
+  background: #df745c;
 }
 
 /* Noise texture overlay */

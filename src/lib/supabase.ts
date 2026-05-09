@@ -1,11 +1,12 @@
 import { createClient } from '@supabase/supabase-js'
 
-// Use environment variables or fallback to empty strings
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || ''
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || ''
+// Use environment variables or a harmless local placeholder so the public
+// storefront can render while Supabase is not configured in development.
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co'
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder-anon-key'
 
 // Validate that we have the required config
-if (!supabaseUrl || !supabaseAnonKey) {
+if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_ANON_KEY) {
   console.warn('Supabase credentials not configured. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY environment variables.')
 }
 

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Heart, MessageCircle, Zap, Shield, Lock, Diamond } from 'lucide-react'
+import { Heart, MapPin, MessageCircle, PackageCheck, Shield, Sparkles } from 'lucide-react'
 import { useHelpTopics } from '../lib/siteConfig'
 
 export default function Footer() {
@@ -8,34 +8,34 @@ export default function Footer() {
   const helpLinks = topics.filter(topic => topic.active).slice(0, 4)
 
   return (
-    <footer className="border-t border-neon-pink/10">
+    <footer className="border-t border-neon-pink/10 bg-void">
       <div className="border-b border-neon-pink/10 bg-void-light/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {[
               {
+                icon: MapPin,
+                title: 'ATENDEMOS LORENA E REGIAO',
+                desc: 'Entrega local e personalizada para voce.',
+              },
+              {
                 icon: MessageCircle,
-                title: 'ENTREGA VIA DISCORD',
-                desc: 'Todos os pedidos sao entregues diretamente no seu Discord.',
+                title: 'COMPRA PELO WHATSAPP',
+                desc: 'A unica forma de compra: rapido, pratico e seguro.',
               },
               {
-                icon: Zap,
-                title: 'ATENDIMENTO RAPIDO',
-                desc: 'Suporte humanizado e agil pelo nosso servidor.',
-              },
-              {
-                icon: Lock,
-                title: 'PAGAMENTO SEGURO',
-                desc: 'Pagamento por Pix com comprovante e conferencia do pedido.',
-              },
-              {
-                icon: Diamond,
+                icon: Sparkles,
                 title: 'PRODUTOS EXCLUSIVOS',
-                desc: 'Itens digitais criados com identidade propria para voce.',
+                desc: 'Pecas autorais feitas com amor e materiais de qualidade.',
+              },
+              {
+                icon: PackageCheck,
+                title: 'FEITO PARA TRANSFORMAR',
+                desc: 'Mais que decoracao: sua casa com historia.',
               },
             ].map(f => (
               <div key={f.title} className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-lg bg-neon-pink/10 border border-neon-pink/20 flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 rounded-full bg-neon-pink/10 border border-neon-pink/20 flex items-center justify-center flex-shrink-0">
                   <f.icon className="w-5 h-5 text-neon-pink" />
                 </div>
                 <div>
@@ -51,12 +51,12 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8">
           <div className="col-span-2 sm:col-span-3 lg:col-span-1">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="font-display text-2xl text-neon-pink tracking-wider">QUANTIC</span>
-              <Heart className="w-4 h-4 text-neon-pink fill-neon-pink" />
+            <div className="flex items-end gap-2 mb-3">
+              <span className="font-display text-3xl text-text-main">Arte</span>
+              <span className="font-['Caveat'] text-2xl text-neon-pink">no croche</span>
             </div>
             <p className="text-text-dim text-xs leading-relaxed">
-              Estilo, atitude e autenticidade em cada detalhe.
+              Arte que transforma ambientes e conecta voce ao que realmente importa: o seu lar.
             </p>
           </div>
 
@@ -64,8 +64,8 @@ export default function Footer() {
             <h3 className="font-heading font-bold text-xs text-text-main tracking-wider mb-3">LINKS RAPIDOS</h3>
             <ul className="space-y-1.5">
               {[
-                { path: '/', label: 'Home' },
-                { path: '/loja', label: 'Loja' },
+                { path: '/', label: 'Inicio' },
+                { path: '/loja', label: 'Tapecarias' },
                 { path: '/colecoes', label: 'Colecoes' },
                 { path: '/sobre', label: 'Sobre' },
                 { path: '/ajuda', label: 'Ajuda' },
@@ -96,20 +96,23 @@ export default function Footer() {
           </div>
 
           <div>
-            <h3 className="font-heading font-bold text-xs text-text-main tracking-wider mb-3">PAGAMENTOS</h3>
+            <h3 className="font-heading font-bold text-xs text-text-main tracking-wider mb-3">ATENDIMENTO</h3>
             <div className="flex flex-wrap gap-1.5">
-              <span className="px-2 py-1 rounded bg-void-lighter border border-neon-pink/10 text-text-muted text-[10px] font-mono">
+              <a href="https://wa.me/5512991234567" target="_blank" rel="noopener noreferrer" className="px-3 py-2 rounded-full bg-neon-pink text-white text-[10px] font-bold uppercase">
+                WhatsApp
+              </a>
+              <span className="px-3 py-2 rounded-full bg-void-lighter border border-neon-pink/10 text-text-muted text-[10px] font-bold uppercase">
                 Pix
               </span>
             </div>
           </div>
 
           <div>
-            <h3 className="font-heading font-bold text-xs text-text-main tracking-wider mb-3">SEGURANCA</h3>
+            <h3 className="font-heading font-bold text-xs text-text-main tracking-wider mb-3">IMPORTANTE</h3>
             <div className="flex items-start gap-2">
               <Shield className="w-4 h-4 text-neon-pink flex-shrink-0 mt-0.5" />
               <p className="text-text-dim text-[11px] leading-relaxed">
-                Seus dados estao protegidos com criptografia.
+                A unica forma de compra e pelo WhatsApp. Nao trabalhamos com site de pagamentos nem cartoes.
               </p>
             </div>
           </div>
@@ -117,11 +120,11 @@ export default function Footer() {
 
         <div className="mt-10 pt-5 border-t border-neon-pink/10 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-text-dim text-[11px]">
-            © {currentYear} Quantic Store. Todos os direitos reservados.
+            © {currentYear} Arte no Croche. Todos os direitos reservados.
           </p>
           <div className="flex items-center gap-1.5">
             <Heart className="w-3 h-3 text-neon-pink fill-neon-pink" />
-            <span className="text-text-dim text-[11px]">Feito por Maou</span>
+            <span className="text-text-dim text-[11px]">Feito com carinho</span>
           </div>
         </div>
       </div>

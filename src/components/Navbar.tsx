@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { ChevronDown, LayoutDashboard, LogIn, LogOut, Menu, ShoppingCart, User, X, Heart } from 'lucide-react'
+import { ChevronDown, LayoutDashboard, LogIn, LogOut, Menu, MessageCircle, ShoppingCart, User, X, Heart } from 'lucide-react'
 import { useCart } from '../context/useCart'
 import { useAuth } from '../context/useAuth'
 
@@ -25,12 +25,12 @@ export default function Navbar({ onCartClick }: NavbarProps) {
   }, [])
 
   const navLinks = [
-    { path: '/', label: 'HOME' },
-    { path: '/loja', label: 'LOJA' },
-    { path: '/colecoes', label: 'COLECOES' },
-    { path: '/sobre', label: 'SOBRE' },
-    { path: '/ajuda', label: 'AJUDA' },
-    { path: '/termos', label: 'TERMOS' },
+    { path: '/', label: 'Inicio' },
+    { path: '/loja', label: 'Tapecarias' },
+    { path: '/colecoes', label: 'Colecoes' },
+    { path: '/sobre', label: 'Sobre nos' },
+    { path: '/ajuda', label: 'Ajuda' },
+    { path: '/termos', label: 'Termos' },
   ]
 
   const handleLogout = async () => {
@@ -43,23 +43,25 @@ export default function Navbar({ onCartClick }: NavbarProps) {
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           scrolled
-            ? 'bg-void/90 backdrop-blur-xl border-b border-neon-pink/10 shadow-lg shadow-neon-pink/5'
-            : 'bg-transparent'
+            ? 'bg-void/92 backdrop-blur-xl border-b border-neon-pink/10 shadow-lg shadow-[#9f7e56]/5'
+            : 'bg-void/80 backdrop-blur-sm'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-2 group">
-              <div className="relative">
-                <span className="font-display text-2xl lg:text-3xl text-neon-pink tracking-wider">
-                  QUANTIC
+            <Link to="/" className="flex items-center gap-3 group">
+              <div className="flex h-11 w-11 items-center justify-center rounded-full border border-neon-pink/30 text-neon-pink">
+                <Heart className="h-5 w-5" />
+              </div>
+              <div className="relative leading-none">
+                <span className="font-display text-2xl lg:text-4xl text-text-main">
+                  Arte
                 </span>
-                <span className="absolute -bottom-1 left-0 text-[10px] lg:text-xs text-text-muted tracking-[0.3em] font-heading">
-                  STORE
+                <span className="block -mt-1 font-['Caveat'] text-lg lg:text-2xl text-text-muted">
+                  no croche
                 </span>
               </div>
-              <Heart className="w-4 h-4 text-neon-pink fill-neon-pink animate-pulse" />
             </Link>
 
             {/* Desktop Nav */}
@@ -68,7 +70,7 @@ export default function Navbar({ onCartClick }: NavbarProps) {
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`nav-link text-sm font-heading font-semibold tracking-wider transition-colors ${
+                  className={`nav-link text-sm font-heading font-semibold transition-colors ${
                     location.pathname === link.path
                       ? 'text-neon-pink active'
                       : 'text-text-muted hover:text-text-main'
@@ -93,6 +95,16 @@ export default function Navbar({ onCartClick }: NavbarProps) {
                 )}
               </button>
 
+              <a
+                href="https://wa.me/5512991234567?text=Ola!%20Vim%20pelo%20site%20Arte%20no%20Croche%20e%20quero%20fazer%20um%20pedido."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden lg:flex items-center gap-2 rounded-full bg-neon-pink px-5 py-3 text-xs font-extrabold uppercase tracking-wide text-white transition hover:bg-hot-pink"
+              >
+                <MessageCircle className="h-4 w-4" />
+                Comprar pelo WhatsApp
+              </a>
+
               <div className="relative hidden sm:block">
                 <button
                   onClick={() => setAccountOpen(open => !open)}
@@ -109,7 +121,7 @@ export default function Navbar({ onCartClick }: NavbarProps) {
                 </button>
 
                 {accountOpen && (
-                  <div className="absolute right-0 mt-2 w-56 rounded-xl border border-neon-pink/20 bg-void/95 backdrop-blur-xl shadow-xl shadow-black/30 p-2">
+                  <div className="absolute right-0 mt-2 w-56 rounded-xl border border-neon-pink/20 bg-white/95 backdrop-blur-xl shadow-xl shadow-[#9f7e56]/20 p-2">
                     {isAuthenticated ? (
                       <>
                         <div className="px-3 py-2 border-b border-neon-pink/10 mb-1">

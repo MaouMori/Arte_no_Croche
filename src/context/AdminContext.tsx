@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, type ReactNode } from 'react'
 import { supabase } from '../lib/supabase'
 import type { Tables } from '../lib/supabase'
+import { products as defaultProducts, storeCollections as defaultStoreCollections } from '../data/storeData'
 import type { Product } from '../data/storeData'
 import { AdminContext } from './adminContextValue'
 
@@ -354,13 +355,13 @@ function mapDbFeedback(row: FeedbackRow): Feedback {
 }
 
 export function AdminProvider({ children }: { children: ReactNode }) {
-  const [products, setProducts] = useState<Product[]>([])
+  const [products, setProducts] = useState<Product[]>(defaultProducts)
   const [orders, setOrders] = useState<Order[]>([])
   const [coupons, setCoupons] = useState<Coupon[]>([])
   const [customers, setCustomers] = useState<Customer[]>([])
   const [banners, setBanners] = useState<Banner[]>([])
   const [roles, setRoles] = useState<Role[]>([])
-  const [storeCollections, setStoreCollections] = useState<StoreCollection[]>([])
+  const [storeCollections, setStoreCollections] = useState<StoreCollection[]>(defaultStoreCollections)
   const [productCategories, setProductCategories] = useState<ProductCategory[]>([])
   const [productStyles, setProductStyles] = useState<ProductStyle[]>([])
   const [productColors, setProductColors] = useState<ProductColor[]>([])
