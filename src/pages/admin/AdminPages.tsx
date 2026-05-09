@@ -805,151 +805,76 @@ export function AdminLogs() {
   const [running, setRunning] = useState<string | null>(null)
   const [results, setResults] = useState<{ name: string; success: boolean; message: string }[]>([])
 
-  const pushResult = (name: string, success: boolean, message: string) => {
-    setResults(prev => [{ name, success, message }, ...prev].slice(0, 12))
-  }
+  const tests = [
+    { key: 'all', label: 'Testar tudo', desc: 'Executa todos os diagnosticos abaixo' },
+    { key: 'env', label: 'Ambiente', desc: 'Variaveis Vercel e Supabase' },
+    { key: 'publicRead', label: 'Leitura publica', desc: 'Loja lendo dados reais' },
+    { key: 'products', label: 'Produtos', desc: 'Criar, editar e apagar teste' },
+    { key: 'collections', label: 'Colecoes', desc: 'Criar, editar e apagar teste' },
+    { key: 'banners', label: 'Banners', desc: 'Criar, editar e apagar teste' },
+    { key: 'settings', label: 'Configuracoes', desc: 'Salvar dados globais do site' },
+    { key: 'help', label: 'Ajuda/FAQ', desc: 'Criar, editar e apagar pergunta' },
+    { key: 'feedbacks', label: 'Depoimentos', desc: 'Criar, aprovar e apagar teste' },
+    { key: 'orders', label: 'Pedidos', desc: 'Criar, editar e apagar teste' },
+    { key: 'roles', label: 'Cargos', desc: 'Criar, editar e apagar teste' },
+    { key: 'taxonomy', label: 'Categorias', desc: 'Categorias, estilos e cores' },
+    { key: 'ratings', label: 'Avaliacoes', desc: 'Tabela e funcao rate_product' },
+    { key: 'storage', label: 'Upload', desc: 'Enviar e apagar imagem teste' },
+  ]
 
-  const runTest = async (name: string, test: () => Promise<void>) => {
-    setRunning(name)
+  const runSystemTest = async (key: string) => {
+    setRunning(key)
+    const { data: sessionData } = await supabase.auth.getSession()
+    const token = sessionData.session?.access_token
+
+    if (!token) {
+      setResults(prev => [{ name: 'Sessao', success: false, message: 'Sessao expirada. Entre novamente no painel.' }, ...prev])
+      setRunning(null)
+      return
+    }
+
     try {
-      await test()
-      pushResult(name, true, 'Teste concluido com sucesso.')
-    } catch (err) {
-      pushResult(name, false, err instanceof Error ? err.message : 'Teste falhou.')
+      const response = await fetch('/api/admin-system-tests', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ test: key }),
+      })
+      const result = await response.json().catch(() => null)
+      if (!response.ok) throw new Error(result?.error || 'Nao foi possivel executar os diagnosticos.')
+      setResults(prev => [...(result?.results || []), ...prev].slice(0, 40))
+    } catch (error) {
+      setResults(prev => [{
+        name: tests.find(test => test.key === key)?.label || key,
+        success: false,
+        message: error instanceof Error ? error.message : 'Teste falhou.',
+      }, ...prev].slice(0, 40))
     } finally {
       setRunning(null)
     }
   }
 
-  const assertDb = (error: { message: string } | null) => {
-    if (error) throw new Error(error.message)
-  }
-
-  const testProduct = () => runTest('Produtos', async () => {
-    const marker = Date.now()
-    const { data, error } = await supabase.from('products').insert({
-      name: `TESTE PRODUTO ${marker}`,
-      price: 1,
-      image: '/hero/slide1.jpg',
-      images: ['/hero/slide1.jpg'],
-      category: 'outros',
-      is_new: true,
-      is_bestseller: false,
-      description: 'Produto criado pelo teste automatico do painel.',
-      in_game_images: [],
-      specs: [],
-    }).select('id').single()
-    assertDb(error)
-    if (!data) throw new Error('Produto teste nao retornou id.')
-
-    const update = await supabase.from('products').update({ name: `TESTE PRODUTO OK ${marker}` }).eq('id', data.id)
-    assertDb(update.error)
-
-    const remove = await supabase.from('products').delete().eq('id', data.id)
-    assertDb(remove.error)
-  })
-
-  const testBanner = () => runTest('Banners', async () => {
-    const id = crypto.randomUUID()
-    const { error } = await supabase.from('banners').insert({
-      id,
-      title: `TESTE BANNER ${Date.now()}`,
-      image: '/hero/slide1.jpg',
-      link: '/loja',
-      position: 'loja',
-      active: true,
-    })
-    assertDb(error)
-
-    const update = await supabase.from('banners').update({ active: false }).eq('id', id)
-    assertDb(update.error)
-
-    const remove = await supabase.from('banners').delete().eq('id', id)
-    assertDb(remove.error)
-  })
-
-  const testCoupon = () => runTest('Cupons', async () => {
-    const id = crypto.randomUUID()
-    const { error } = await supabase.from('coupons').insert({
-      id,
-      code: `TESTE${Date.now().toString().slice(-6)}`,
-      discount: 1,
-      type: 'percent',
-      min_purchase: 0,
-      max_uses: 1,
-      active: true,
-    })
-    assertDb(error)
-
-    const update = await supabase.from('coupons').update({ active: false }).eq('id', id)
-    assertDb(update.error)
-
-    const remove = await supabase.from('coupons').delete().eq('id', id)
-    assertDb(remove.error)
-  })
-
-  const testRole = () => runTest('Cargos', async () => {
-    const id = crypto.randomUUID()
-    const { error } = await supabase.from('roles').insert({
-      id,
-      name: `Teste ${Date.now().toString().slice(-6)}`,
-      color: '#ff2d95',
-      permissions: ['panel_limited'],
-    })
-    assertDb(error)
-
-    const update = await supabase.from('roles').update({ color: '#b347d9' }).eq('id', id)
-    assertDb(update.error)
-
-    const remove = await supabase.from('roles').delete().eq('id', id)
-    assertDb(remove.error)
-  })
-
-  const testOrder = () => runTest('Pedidos', async () => {
-    const id = crypto.randomUUID()
-    const { error } = await supabase.from('orders').insert({
-      id,
-      customer_name: 'Cliente Teste',
-      customer_email: 'cliente.teste@quantic.local',
-      customer_avatar: '/avatars/default.jpg',
-      status: 'em_processamento',
-      total: 1,
-      items: [{ product_id: 0, name: 'Item Teste', price: 1, quantity: 1 }],
-    })
-    assertDb(error)
-
-    const update = await supabase.from('orders').update({ status: 'pago' }).eq('id', id)
-    assertDb(update.error)
-
-    const remove = await supabase.from('orders').delete().eq('id', id)
-    assertDb(remove.error)
-  })
-
   return (
     <div className="space-y-6">
       <div>
         <h1 className="font-heading font-bold text-xl text-text-main">Logs do Sistema</h1>
-        <p className="text-text-dim text-sm">Teste as funcoes principais do painel e veja o retorno do Supabase.</p>
+        <p className="text-text-dim text-sm">Teste o site inteiro pelo backend administrativo e veja o retorno real do Supabase.</p>
       </div>
 
       <div className="review-card rounded-xl p-5">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {[
-            ['Produtos', testProduct],
-            ['Banners', testBanner],
-            ['Cupons', testCoupon],
-            ['Cargos', testRole],
-            ['Pedidos', testOrder],
-          ].map(([label, action]) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
+          {tests.map(test => (
             <button
-              key={label as string}
-              onClick={action as () => void}
+              key={test.key}
+              onClick={() => runSystemTest(test.key)}
               disabled={!!running}
-              className="rounded-lg border border-neon-pink/20 bg-void-lighter px-4 py-3 text-left text-sm text-text-main hover:border-neon-pink/50 disabled:opacity-50"
+              className={`rounded-lg border px-4 py-3 text-left text-sm transition disabled:opacity-50 ${test.key === 'all' ? 'border-neon-pink bg-neon-pink/10 text-neon-pink' : 'border-neon-pink/20 bg-void-lighter text-text-main hover:border-neon-pink/50'}`}
             >
-              <span className="font-heading font-bold">{label as string}</span>
+              <span className="font-heading font-bold">{test.label}</span>
               <span className="block text-xs text-text-dim mt-1">
-                {running === label ? 'Testando...' : 'Criar, editar e apagar teste'}
+                {running === test.key ? 'Testando...' : test.desc}
               </span>
             </button>
           ))}
@@ -960,6 +885,7 @@ export function AdminLogs() {
         <div className="flex items-center gap-2">
           <ClipboardList className="w-5 h-5 text-neon-pink" />
           <h2 className="font-heading font-bold text-text-main">Resultados</h2>
+          {running && <span className="text-xs text-text-dim">Executando...</span>}
         </div>
         {results.length === 0 ? (
           <p className="text-text-dim text-sm">Nenhum teste executado ainda.</p>
